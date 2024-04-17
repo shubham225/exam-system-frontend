@@ -1,27 +1,55 @@
 import React from "react";
-import { Form } from "react-router-dom";
-import { Box, Button } from '@mui/material';
-
-import FormControl from '@mui/material/FormControl';
-import TextField from '@mui/material/TextField';
-import AccountCircle from '@mui/icons-material/AccountCircle';
+import UserContext from "../../Context/UserContext";
+import request, { setAuthToken } from "../../Utils/AxiosHelper";
 
 function LoginForm() {
+    const {user, setUser} = React.useContext(UserContext);
+    const [username, setUsername] = React.useState("");
+    const [password, setPassowrd] = React.useState("");
+
+    const handleLogin = (e) => {
+        e.preventDefault();
+        request(
+            "POST",
+            "/auth/login",
+            {
+                username : username,
+                password : password
+            }
+        ).then((response) => {
+            setAuthToken(response.data.token);
+            console.log("login : " + username);
+            setUser({isAuthenticated : true});
+        }).catch((error) => {
+            setUser({isAuthenticated : false});
+            console.log("error" + error);
+        });
+    }
+
     return (
-        <Box sx={{ '& > :not(style)': { m: 10 } }}>
-          <FormControl variant="standard">
-            <Box sx={{ display: 'flex', alignItems: 'flex-end', m: 1 }}>
-                <TextField id="input-with-sx" label="Username" variant="standard" />
-            </Box>
-            <Box sx={{ display: 'flex', alignItems: 'flex-end', m: 1}}>
-                <TextField id="input-with-sx" label="Password" type="password" variant="standard" />
-            </Box>
-            <Box sx={{ display: 'flex', alignItems: 'flex-end', m: 1}}>
-                <Button variant="contained">Sign In</Button>
-            </Box>
-          </FormControl>
-          
-        </Box>
+        <>
+        <div className="login">
+            <div className="loginContainer">
+                <form className="loginForm" onSubmit={handleLogin}>
+                    <div className="loginFormItem">
+                        <input 
+                            type="text" 
+                            alt="username"
+                            onChange={(e) => setUsername(e.target.value)}
+                         />
+                    </div>
+                    <div className="loginFormItem">
+                        <input 
+                            type="password" 
+                            alt="password"
+                            onChange={(e) => setPassowrd(e.target.value)}
+                         />
+                    </div>
+                    <input type="submit" value="Login"/>
+                </form> 
+            </div>
+        </div>
+        </>
       );
 }
 
