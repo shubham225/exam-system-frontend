@@ -1,7 +1,8 @@
 import React from 'react'
 import AuthContext from "../../Context/AuthContext";
 import request, { setAuthToken } from "../../Utils/AxiosHelper";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import './Login.css'
 
 function Login() {
     const [username, setUsername] = React.useState('');
@@ -26,8 +27,7 @@ function Login() {
             setAuth(response.data);
             navigateTo("/home")
         }).catch((error) => {
-            // setAuthentication(false);
-            // setUserInfo({});
+            setAuth({});
             window.localStorage.removeItem("auth_token");
             console.log("error" + error);
         });
@@ -35,27 +35,23 @@ function Login() {
 
     return (
         <>
-        <div className="login">
-            <div className="loginContainer">
-                <form className="loginForm" onSubmit={handleLogin}>
-                    <div className="loginFormItem">
-                        <input 
-                            type='text' 
-                            alt='username'
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                         />
-                    </div>
-                    <div className="loginFormItem">
-                        <input 
-                            type='password' 
-                            alt='password'
-                            value={password}
-                            onChange={(e) => setPassowrd(e.target.value)}
-                         />
-                    </div>
-                    <input type="submit" value="Login"/>
+        <div className="login-container">
+            <div className="form-container">
+                <form onSubmit={handleLogin} >
+                    <h1>Sign In</h1>
+                    <label for="email">Email or phone number</label>
+                    <input type="text" id="email" name="email" 
+                        value={username} 
+                        onChange={(e) => setUsername(e.target.value)} required />
+
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" 
+                        value={password} 
+                        onChange={(e) => setPassowrd(e.target.value)} required />
+				    <input type="submit" value="Sign In" />
                 </form> 
+                <p className="signup-link">Don't have an Account? <Link to={"/home"}>Register now</Link>.</p>
+                <p className="help-link">Forgot your email or password? <a href="/home">Click here</a>.</p>
             </div>
         </div>
         </>
