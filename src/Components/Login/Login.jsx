@@ -1,11 +1,15 @@
-import React from "react";
-import UserContext from "../../Context/UserContext";
+import React from 'react'
+import AuthContext from "../../Context/AuthContext";
 import request, { setAuthToken } from "../../Utils/AxiosHelper";
+import { useNavigate } from 'react-router-dom';
 
-function LoginForm() {
-    const {user, setUser} = React.useContext(UserContext);
-    const [username, setUsername] = React.useState("");
-    const [password, setPassowrd] = React.useState("");
+function Login() {
+    const [username, setUsername] = React.useState('');
+    const [password, setPassowrd] = React.useState('');
+
+    const {setAuth} = React.useContext(AuthContext);
+
+    const navigateTo = useNavigate();
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -18,10 +22,13 @@ function LoginForm() {
             }
         ).then((response) => {
             setAuthToken(response.data.token);
-            console.log("login : " + username);
-            setUser({isAuthenticated : true});
+            console.log("login : " + JSON.stringify(response.data));
+            setAuth(response.data);
+            navigateTo("/home")
         }).catch((error) => {
-            setUser({isAuthenticated : false});
+            // setAuthentication(false);
+            // setUserInfo({});
+            window.localStorage.removeItem("auth_token");
             console.log("error" + error);
         });
     }
@@ -33,15 +40,17 @@ function LoginForm() {
                 <form className="loginForm" onSubmit={handleLogin}>
                     <div className="loginFormItem">
                         <input 
-                            type="text" 
-                            alt="username"
+                            type='text' 
+                            alt='username'
+                            value={username}
                             onChange={(e) => setUsername(e.target.value)}
                          />
                     </div>
                     <div className="loginFormItem">
                         <input 
-                            type="password" 
-                            alt="password"
+                            type='password' 
+                            alt='password'
+                            value={password}
                             onChange={(e) => setPassowrd(e.target.value)}
                          />
                     </div>
@@ -54,4 +63,4 @@ function LoginForm() {
 }
 
 
-export default LoginForm;
+export default Login;
