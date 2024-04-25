@@ -1,10 +1,10 @@
 import React from 'react'
-import AuthContext from "../../Context/AuthContext";
+import AuthContext from "../../Context/AuthContext/AuthContext";
 import request, { setAuthToken } from "../../Utils/AxiosHelper";
 import { Link, useNavigate } from 'react-router-dom';
-import './Register.css'
+import './Login.css'
 
-function Register() {
+function Login() {
     const [username, setUsername] = React.useState('');
     const [password, setPassowrd] = React.useState('');
 
@@ -38,7 +38,7 @@ function Register() {
         <div className="login-container">
             <div className="form-container">
                 <form onSubmit={handleLogin} >
-                    <h1>Register</h1>
+                    <h1>Sign In</h1>
                     <label for="email">Email or phone number</label>
                     <input type="text" id="email" name="email" 
                         value={username} 
@@ -59,4 +59,4 @@ function Register() {
 }
 
 
-export default Register;
+export default Login;
