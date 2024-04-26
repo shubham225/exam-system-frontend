@@ -1,8 +1,12 @@
 import React from 'react'
 import AuthContext from "../../Context/AuthContext/AuthContext";
 import request, { setAuthToken } from "../../Utils/AxiosHelper";
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './Register.css'
+
+import {Box, 
+        Paper,
+        Button} from '@mui/material';
 
 function Register() {
     const [username, setUsername] = React.useState('');
@@ -12,32 +16,40 @@ function Register() {
 
     const navigateTo = useNavigate();
 
-    const handleLogin = (e) => {
+    const handleRegister = (e) => {
         e.preventDefault();
-        request(
-            "POST",
-            "/auth/login",
-            {
-                username : username,
-                password : password
-            }
-        ).then((response) => {
-            setAuthToken(response.data.token);
-            console.log("login : " + JSON.stringify(response.data));
-            setAuth(response.data);
-            navigateTo("/home")
-        }).catch((error) => {
-            setAuth({});
-            window.localStorage.removeItem("auth_token");
-            console.log("error" + error);
-        });
+        console.log("In Register")
     }
 
     return (
-        <>
-        <div className="login-container">
+        <Box 
+            sx={{
+                height: '100%',
+                flexGrow: 1,
+                alignContent: 'center'
+            }}
+        >
+            <Paper elevation={3}
+             sx= {{
+                    height: '100%',
+                    flexGrow: 1,
+                    borderRadius: '10px'
+                }}
+                >
+                <Button>
+                    This is Button
+                </Button>
+            </Paper>
+        </Box>
+      );
+}
+
+
+export default Register;
+
+{/* <div className="login-container">
             <div className="form-container">
-                <form onSubmit={handleLogin} >
+                <form onSubmit={handleRegister} >
                     <h1>Register</h1>
                     <label for="email">Email or phone number</label>
                     <input type="text" id="email" name="email" 
@@ -53,10 +65,4 @@ function Register() {
                 <p className="signup-link">Don't have an Account? <Link to={"/home"}>Register now</Link>.</p>
                 <p className="help-link">Forgot your email or password? <a href="/home">Click here</a>.</p>
             </div>
-        </div>
-        </>
-      );
-}
-
-
-export default Register;
+        </div> */}
