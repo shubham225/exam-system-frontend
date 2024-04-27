@@ -11,15 +11,7 @@ body {
 	margin: 0;
 	padding: 0;
 	background: #edf5fe;
-  /* background-image: linear-gradient(to bottom right, rgb(164, 219, 217), rgb(201, 198, 245)); */
 	font-family: 'Helvetica Neue', sans-serif;
-}
-
-html {
-  height:100%;
-  width:100%;
-  margin:0%;
-  padding:0%;
 }
 
 code {
