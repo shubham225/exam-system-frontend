@@ -3,13 +3,7 @@ import { Outlet } from 'react-router-dom'
 import NavigationBar from '../../Components/NavigationBar';
 import WindowContextProvider from '../../Context/WindowContext/WindowContextProvider';
 
-import {Box, 
-    Paper,
-    Grid,
-    Button,
-    Stack,
-    TextField,
-    Typography} from '@mui/material';
+import { Box } from '@mui/material';
 function Root() {
 
     return (

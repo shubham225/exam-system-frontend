@@ -33,6 +33,7 @@ const NavigationBar = () => {
                     <Typography variant="h6" component="div" onClick={() => {navigateTo('/');}}>
                         Exam-Portal
                     </Typography>
+                    
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         
                     </Typography>
