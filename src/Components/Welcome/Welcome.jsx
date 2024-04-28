@@ -13,60 +13,48 @@ function Welcome() {
     const navigateTo = useNavigate();
 
     return (
-        <Box 
-            sx={{
-                height: '100%',
-                alignContent: 'center'
-            }}
-        >
-            <Paper elevation={3}
-             sx= {{
-                    height: '100%',
-                    borderRadius: '10px'
-                }}
-            >
-                <Typography variant="h2" paddingY={2} >
-                    Exam-Portal Home Page
-                </Typography>
-                <Typography variant="h5" paddingY={2} >
-                    {(!auth) ? "You are not Logged-in, Login or Register to continue" : "you are logged in"}
-                </Typography>
-                {
-                    (auth) ? <Button 
+        <>
+            <Typography variant="h2" paddingY={2} >
+                Exam-Portal Home Page
+            </Typography>
+            <Typography variant="h5" paddingY={2} >
+                {(!auth) ? "You are not Logged-in, Login or Register to continue" : "you are logged in"}
+            </Typography>
+            {
+                (auth) ? <Button 
+                        variant="outlined" 
+                        endIcon={<ArrowForwardIosIcon/>}
+                        onClick={() => navigateTo('/dashboard')}
+                    >
+                        Go to Dashboard
+                    </Button> : 
+                    (<Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <Button
                             variant="outlined" 
-                            endIcon={<ArrowForwardIosIcon/>}
-                            onClick={() => navigateTo('/dashboard')}
+                            endIcon={<LoginIcon/>}
+                            onClick={() => navigateTo('/login')}
                         >
-                            Go to Dashboard
-                        </Button> : 
-                        (<Box
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                            }}
+                            Sign in
+                        </Button>
+
+                        <Typography variant="h5" paddingX={3} paddingY={2}>OR</Typography>
+
+                        <Button
+                            variant="outlined" 
+                            endIcon={<AssignmentIndIcon />}
+                            onClick={() => navigateTo('/register')}
                         >
-                            <Button
-                                variant="outlined" 
-                                endIcon={<LoginIcon/>}
-                                onClick={() => navigateTo('/login')}
-                            >
-                                Sign in
-                            </Button>
-
-                            <Typography variant="h5" paddingX={3} paddingY={2}>OR</Typography>
-
-                            <Button
-                                variant="outlined" 
-                                endIcon={<AssignmentIndIcon />}
-                                onClick={() => navigateTo('/register')}
-                            >
-                                Register
-                            </Button>
-                        </Box>
-                        )
-                }
-            </Paper>
-        </Box>
+                            Register
+                        </Button>
+                    </Box>
+                    )
+            }
+        </>
       );
 }
 

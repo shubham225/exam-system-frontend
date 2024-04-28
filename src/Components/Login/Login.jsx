@@ -56,7 +56,7 @@ function Login() {
                     justifyContent: 'center'
                 }}
             >
-                <Paper elevation={3}
+                <Paper elevation={6}
                 sx= {{
                         height: '70%',
                         width: '60%',

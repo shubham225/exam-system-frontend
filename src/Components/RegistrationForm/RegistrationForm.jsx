@@ -95,6 +95,7 @@ const RegisterationForm = (props) => {
                     <Grid item xs={12} sm={3}>
                         <Button  
                             fullWidth
+                            type='submit'
                             variant="contained"
                             sx={{
                                 height: '100%'
@@ -107,6 +108,7 @@ const RegisterationForm = (props) => {
                     <Grid item xs={12} sm={3}>
                         <Button  
                             fullWidth
+                            type='reset'
                             variant="contained"
                             sx={{
                                 height: '100%'

@@ -22,7 +22,7 @@ const NavigationBar = () => {
     return (
         <>
             <Paper
-                elevation={3}
+                elevation={6}
                 sx= {{
                         flexGrow: 1,
                         alignContent: 'center',
