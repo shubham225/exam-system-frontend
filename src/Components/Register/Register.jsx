@@ -5,67 +5,50 @@ import {Box,
         Paper,
         Typography} from '@mui/material';
 import RegisterationForm from '../RegistrationForm/RegistrationForm';
+import MediumWindow from '../Layouts/MediumWindow';
 
 function Register() {
 
     return (
-        <Box 
-            sx={{
-                height: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-            }}
-        >
-            <Paper elevation={6}
-                sx= {{
-                        height: '70%',
-                        width: '60%',
-                        borderRadius: '10px',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'flex-start'
-                    }}
+        <MediumWindow>
+            <Box
+                padding={3}
+                sx={{
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between'
+                }}
             >
                 <Box
-                    padding={3}
                     sx={{
-                        height: '100%',
                         display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'space-between'
+                        flexDirection: 'row'
                     }}
                 >
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'row'
-                        }}
-                    >
-                        <Typography variant='h4'>       
-                            Registration
-                        </Typography>
-                    </Box>
-                    <Box
-                        sx={{
-                            flexGrow : 1
-                        }}
-                    >
-                        <RegisterationForm />
-                    </Box>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'row-reverse'
-                        }}
-                    >
-                        <Typography variant='h9' padding={1}>
-                            Already have an Account? <RouterLink to={'/login'}>Sign in</RouterLink>.
-                        </Typography>
-                    </Box>
+                    <Typography variant='h4'>       
+                        Registration
+                    </Typography>
                 </Box>
-            </Paper>
-        </Box>
+                <Box
+                    sx={{
+                        flexGrow : 1
+                    }}
+                >
+                    <RegisterationForm />
+                </Box>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'row-reverse'
+                    }}
+                >
+                    <Typography variant='h9' padding={1}>
+                        Already have an Account? <RouterLink to={'/login'}>Sign in</RouterLink>.
+                    </Typography>
+                </Box>
+            </Box>
+        </MediumWindow>
       );
 }
 

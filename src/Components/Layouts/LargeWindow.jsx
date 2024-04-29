@@ -6,8 +6,7 @@ export default function LargeWindow(props) {
     return (
         <Box 
             sx={{
-                height: '100%',
-                alignContent: 'center'
+                height: '100%'
             }}
         >
             <Paper elevation={3}

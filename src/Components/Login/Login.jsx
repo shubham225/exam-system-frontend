@@ -12,6 +12,7 @@ import {Box,
         Stack} from '@mui/material';
 
 import LoginIcon from '@mui/icons-material/Login';
+import MediumWindow from '../Layouts/MediumWindow';
 
 function Login() {
     const [username, setUsername] = React.useState('');
@@ -47,95 +48,76 @@ function Login() {
 
 
     return (
-        <>
+        <MediumWindow>
             <Box 
                 sx={{
                     height: '100%',
+                    width: '40%',
                     display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
+                    bgcolor: 'lightblue'
                 }}
             >
-                <Paper elevation={6}
-                sx= {{
-                        height: '70%',
-                        width: '60%',
-                        borderRadius: '10px',
-                        display: 'flex',
-                        justifyContent: 'flex-start'
-                    }}
-                    >
-                        <Box 
-                            sx={{
-                                height: '100%',
-                                width: '40%',
-                                display: 'flex',
-                                bgcolor: 'lightblue'
-                            }}
-                        >
-                            <Typography variant='h4' padding={1}>
-                                
-                            </Typography>
-                        </Box>
-
-                        <Box 
-                            component='form' noValidate
-                            sx={{
-                                height: '100%',
-                                width: '60%',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'center',
-                                alignItems: 'center'
-                            }}
-                        >
-                            {
-                                (errorMsg) && 
-                                <Alert severity="error" color="error">
-                                    {errorMsg}
-                                </Alert>
-                            } 
-
-                            <Typography variant='h4' padding={1}>
-                                Sign In
-                            </Typography>
-                            <Stack spacing={3} 
-                                padding={4}
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: 'center',
-                                    alignItems: 'center'
-                                }}
-                            >
-                                <TextField
-                                    id="standard-search"
-                                    label="Username"
-                                    type="search"
-                                    variant="standard"
-                                    value={username}
-                                    onChange={(e) => setUsername(e.target.value)}
-                                />
-                                <TextField
-                                    id="standard-password-input"
-                                    label="Password"
-                                    type="password"
-                                    autoComplete="current-password"
-                                    variant="standard"
-                                    value={password}
-                                    onChange={(e) => setPassowrd(e.target.value)}
-                                />
-                                <Button variant="contained" type='submit' endIcon={<LoginIcon />} onClick={handleLogin}>
-                                    Sign In
-                                </Button>
-                                <Typography variant='h9' padding={1}>
-                                    Don't have an Account? <RouterLink to={'/register'}>Register now</RouterLink>.
-                                </Typography>
-                            </Stack>
-                        </Box>
-                </Paper>
+                <Typography variant='h4' padding={1}>
+                    
+                </Typography>
             </Box>
-        </>
+
+            <Box 
+                component='form' noValidate
+                sx={{
+                    height: '100%',
+                    width: '60%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}
+            >
+                {
+                    (errorMsg) && 
+                    <Alert severity="error" color="error">
+                        {errorMsg}
+                    </Alert>
+                } 
+
+                <Typography variant='h4' padding={1}>
+                    Sign In
+                </Typography>
+                <Stack spacing={3} 
+                    padding={4}
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}
+                >
+                    <TextField
+                        id="standard-search"
+                        label="Username"
+                        type="search"
+                        variant="standard"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+                    <TextField
+                        id="standard-password-input"
+                        label="Password"
+                        type="password"
+                        autoComplete="current-password"
+                        variant="standard"
+                        value={password}
+                        onChange={(e) => setPassowrd(e.target.value)}
+                    />
+                    <Button variant="contained" type='submit' endIcon={<LoginIcon />} onClick={handleLogin}>
+                        Sign In
+                    </Button>
+                    <Typography variant='h9' padding={1}>
+                        Don't have an Account? <RouterLink to={'/register'}>Register now</RouterLink>.
+                    </Typography>
+                </Stack>
+            </Box>
+        </MediumWindow>
       );
 }
 

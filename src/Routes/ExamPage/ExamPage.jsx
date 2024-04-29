@@ -1,17 +1,16 @@
 import React from 'react';
 import AuthContext from '../../Context/AuthContext/AuthContext';
+import Layouts from '../../Components/Layouts';
 
 function ExamPage() {
     const {auth} = React.useContext(AuthContext);
 
-    if (!auth) return (<div>No Auth</div>);
+    //if (!auth) return (<div>No Auth</div>);
 
     return (
-        <>
-        <h1>Exam Page</h1>
-        <br/>
-        <h1>user is authenticated : {auth.username}</h1>
-        </>
+        <Layouts.LargeWindow>
+            
+        </Layouts.LargeWindow>
     )
 }
 

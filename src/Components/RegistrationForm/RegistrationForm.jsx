@@ -14,17 +14,39 @@ import {Box,
         TextField} from '@mui/material';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import useForm from "../../Utils/FormHelper.jsx";
 
-/* TODO: Only form UI is created Logic is still remaining, Component is not responsive when window size change every thing messup */
+const initialFormValues = {
+    fullName: '',
+    gender: "male",
+    email: "",
+    password: "",
+    institute: "",
+    degree: 10
+}
 
 const RegisterationForm = (props) => {
 
+    const {
+        values,
+        setValues,
+        handleFormInputChange
+    } = useForm(initialFormValues);
+
+    const doRegisterUser = (e) => {
+        e.preventDefault();
+        console.log(values);
+    }
+
     return (
         <>
-            <Box component='form' noValidate sx={{m: 3}}>
+            <Box component='form' noValidate sx={{m: 3}} onSubmit={doRegisterUser}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
                         <TextField
+                            name="fullName"
+                            value={values.fullName}
+                            onChange={handleFormInputChange}
                             label="Full Name"
                             type="input"
                             variant="outlined"
@@ -35,9 +57,11 @@ const RegisterationForm = (props) => {
                         <FormControl>
                             <FormLabel id="row-radio-buttons-group-label">Gender</FormLabel>
                             <RadioGroup
+                                name="gender"
+                                value={values.gender}
+                                onChange={handleFormInputChange}
                                 row
                                 aria-labelledby="row-radio-buttons-group-label"
-                                name="row-radio-buttons-group"
                             >
                                 <FormControlLabel value="male" control={<Radio />} label="Male" />
                                 <FormControlLabel value="female" control={<Radio />} label="Female" />
@@ -47,6 +71,9 @@ const RegisterationForm = (props) => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField
+                            name="email"
+                            value={values.email}
+                            onChange={handleFormInputChange}
                             label="Email"
                             type="input"
                             variant="outlined"
@@ -55,6 +82,9 @@ const RegisterationForm = (props) => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField
+                            name="password"
+                            value={values.password}
+                            onChange={handleFormInputChange}
                             label="Password"
                             type="password"
                             variant="outlined"
@@ -63,6 +93,9 @@ const RegisterationForm = (props) => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField
+                            name="institute"
+                            value={values.institute}
+                            onChange={handleFormInputChange}
                             label="Institute"
                             type="input"
                             variant="outlined"
@@ -73,10 +106,12 @@ const RegisterationForm = (props) => {
                         <FormControl fullWidth>
                             <InputLabel id="simple-select-label">Degree</InputLabel>
                             <Select
+                                name="degree"
+                                value={values.degree}
+                                onChange={handleFormInputChange}
                                 labelId="simple-select-label"
                                 id="simple-select"
                                 label="Age"
-                                // onChange={handleChange}
                             >
                                 <MenuItem value={10}>B.E.</MenuItem>
                                 <MenuItem value={20}>B.Tech.</MenuItem>
@@ -86,6 +121,9 @@ const RegisterationForm = (props) => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField
+                            name="address"
+                            value={values.address}
+                            onChange={handleFormInputChange}
                             label="Address"
                             type="search"
                             variant="outlined"

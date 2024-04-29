@@ -21,7 +21,7 @@ function Dashboard() {
                         <Button
                             variant="outlined"
                             startIcon={<MenuBookIcon/>}
-                            onClick={() => navigateTo("/exams")}
+                            onClick={() => navigateTo("/exam")}
                         >
                             View/Edit Exams
                         </Button>
@@ -35,7 +35,7 @@ function Dashboard() {
                         </Button>
                     </Grid>
                 </Grid> 
-            </Layouts.LargeWindow>
+        </Layouts.LargeWindow>
     )
 }
 

@@ -27,7 +27,7 @@ const router = createBrowserRouter(
                     element: <RegisterPage />
                 },
                 {
-                    path: "/exams",
+                    path: "/exam",
                     element: <ExamPage />
                 },
                 {
