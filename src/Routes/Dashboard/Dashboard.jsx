@@ -7,6 +7,7 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import { useNavigate } from 'react-router-dom';
 import Layouts from '../../Components/Layouts';
+import AdminDashboard from '../../Components/AdminDashboard';
 
 function Dashboard() {
     const {auth} = React.useContext(AuthContext);
@@ -16,25 +17,7 @@ function Dashboard() {
 
     return (
         <Layouts.LargeWindow>
-                <Grid container>
-                    <Grid item sm={12} margin='10px'>
-                        <Button
-                            variant="outlined"
-                            startIcon={<MenuBookIcon/>}
-                            onClick={() => navigateTo("/exam")}
-                        >
-                            View/Edit Exams
-                        </Button>
-                    </Grid>
-                    <Grid item sm={12} margin='10px'>
-                        <Button
-                            variant="outlined"
-                            startIcon={<AssessmentIcon/>}
-                        >
-                            View Results
-                        </Button>
-                    </Grid>
-                </Grid> 
+            < AdminDashboard /> 
         </Layouts.LargeWindow>
     )
 }

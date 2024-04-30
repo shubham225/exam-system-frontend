@@ -15,6 +15,7 @@ import {Box,
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import useForm from "../../Utils/FormHelper.jsx";
+import Controls from "../../Components/Controls"
 
 const initialFormValues = {
     fullName: '',
@@ -24,6 +25,12 @@ const initialFormValues = {
     institute: "",
     degree: 10
 }
+
+const genderItems = [
+    { id: 'male', label: 'Male' },
+    { id: 'female', label: 'Female' },
+    { id: 'other', label: 'Other' }
+]
 
 const RegisterationForm = (props) => {
 
@@ -43,15 +50,12 @@ const RegisterationForm = (props) => {
             <Box component='form' noValidate sx={{m: 3}} onSubmit={doRegisterUser}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
-                        <TextField
+                        <Controls.Input
                             name="fullName"
                             value={values.fullName}
                             onChange={handleFormInputChange}
                             label="Full Name"
-                            type="input"
-                            variant="outlined"
-                            fullWidth
-                        />
+                            type="input"/>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <FormControl>
@@ -70,7 +74,7 @@ const RegisterationForm = (props) => {
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <TextField
+                        <Controls.Input
                             name="email"
                             value={values.email}
                             onChange={handleFormInputChange}
@@ -81,7 +85,7 @@ const RegisterationForm = (props) => {
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <TextField
+                        <Controls.Input
                             name="password"
                             value={values.password}
                             onChange={handleFormInputChange}
@@ -92,7 +96,7 @@ const RegisterationForm = (props) => {
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <TextField
+                        <Controls.Input
                             name="institute"
                             value={values.institute}
                             onChange={handleFormInputChange}
@@ -120,7 +124,7 @@ const RegisterationForm = (props) => {
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <TextField
+                        <Controls.Input
                             name="address"
                             value={values.address}
                             onChange={handleFormInputChange}
