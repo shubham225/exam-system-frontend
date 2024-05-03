@@ -66,10 +66,12 @@ const RegisterationForm = (props) => {
                                 onChange={handleFormInputChange}
                                 row
                                 aria-labelledby="row-radio-buttons-group-label"
-                            >
-                                <FormControlLabel value="male" control={<Radio />} label="Male" />
-                                <FormControlLabel value="female" control={<Radio />} label="Female" />
-                                <FormControlLabel value="other" control={<Radio />} label="Other" />
+                            >{
+                                genderItems.map(
+                                    item => (
+                                        <FormControlLabel key={item.id} value={item.id} control={<Radio />} label={item.label} />
+                                    )
+                            )}
                             </RadioGroup>
                         </FormControl>
                     </Grid>

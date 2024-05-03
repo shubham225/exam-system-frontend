@@ -10,7 +10,8 @@ export default function AdminDashboard() {
     const navigateTo = useNavigate();
 
     return (
-        <Grid container direction={'column'} >
+        <Box>
+        <Grid container direction={'column'}>
             <Grid item >
                 <Button
                     variant="outlined"
@@ -29,5 +30,6 @@ export default function AdminDashboard() {
                 </Button>
             </Grid>
         </Grid> 
+        </Box>
     )
 }
