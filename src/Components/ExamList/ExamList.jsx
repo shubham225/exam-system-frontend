@@ -5,45 +5,59 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import { Button, IconButton } from '@mui/material';
+import InputIcon from '@mui/icons-material/Input';
 
-function createData(id, description, actions) {
-  return { id, description, actions };
+function createData(id, description) {
+  return { id, description};
 }
 
-const rows = [
-  createData(123, 'EXAM TEST 1', 'add, remove'),
-  createData(124, 'EXAM TEST 2', 'add, remove'),
-  createData(125, 'EXAM TEST 3', 'add, remove'),
-  createData(126, 'EXAM TEST 4', 'add, remove'),
+const header = ['Exam Id', 'Description', 'Actions'];
+
+const data = [
+  createData(123, 'EXAM TEST 1'),
+  createData(124, 'EXAM TEST 2'),
+  createData(125, 'EXAM TEST 3'),
+  createData(126, 'EXAM TEST 4'),
 ];
 
-export default function ExamList() {
+export default function ExamList(props) {
+
   return (
     <TableContainer >
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Exam Id</TableCell>
-            <TableCell align="right">Description</TableCell>
-            <TableCell align="right">Actions</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.id}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.id}
-              </TableCell>
-              <TableCell align="right">{row.description}</TableCell>
-              <TableCell align="right">{row.actions}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+        <Table size='medium'>
+            <TableHead>
+                <TableRow>
+                    <TableCell/>
+                    {
+                        header.map((header) => (
+                            <TableCell>{header}</TableCell>
+                        ))
+                    }
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {data.map((row) => (
+                    <TableRow
+                    key={row.id}
+                    >
+                        <TableCell> 
+                          <IconButton size='small'>
+                            <InputIcon />
+                          </IconButton>
+                        </TableCell>
+               
+                        <TableCell component="th" scope="row">
+                            {row.id}
+                        </TableCell>
+                        <TableCell>{row.description}</TableCell>
+                        <TableCell>
+                            <Button variant='contained' color='error'>Remove</Button>  
+                        </TableCell>
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
     </TableContainer>
   );
 }
