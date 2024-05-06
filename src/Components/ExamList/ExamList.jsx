@@ -7,6 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { Button, IconButton } from '@mui/material';
 import InputIcon from '@mui/icons-material/Input';
+import Controls from '../Controls/Controls';
 
 function createData(id, description) {
   return { id, description};
@@ -21,7 +22,40 @@ const data = [
   createData(126, 'EXAM TEST 4'),
 ];
 
+const Qoption = [
+    {
+      text  : 'Yes',
+      value : true
+    },
+    {
+      text  : 'No',
+      value : false
+    }
+]
+
 export default function ExamList(props) {
+  const [open, setOpen] = React.useState(false);
+  const [selectedRowId, setSelectedRowId] = React.useState(0);
+
+  const handleClickOpen = (val) => {
+    setSelectedRowId(val);
+    setOpen(true);
+  };
+
+  const handleClose = (question) => {
+    setOpen(false);
+
+      // Call api to remove the exam
+      if(question.answer === true) {
+        console.log("Removing " + question.rowId);
+      }else {
+        console.log("Not Remove " + question.rowId);
+      }
+  };
+
+  const openExamPage = (input) => {
+    console.log("Opening page for : " + input);
+  }
 
   return (
     <TableContainer >
@@ -42,7 +76,7 @@ export default function ExamList(props) {
                     key={row.id}
                     >
                         <TableCell> 
-                          <IconButton size='small'>
+                          <IconButton size='small' onClick={() => openExamPage(row.id)}>
                             <InputIcon />
                           </IconButton>
                         </TableCell>
@@ -52,7 +86,17 @@ export default function ExamList(props) {
                         </TableCell>
                         <TableCell>{row.description}</TableCell>
                         <TableCell>
-                            <Button variant='contained' color='error'>Remove</Button>  
+                            <Button variant='contained' color='error' onClick={() => handleClickOpen(row.id)}
+                            >
+                              Remove
+                            </Button>  
+                            <Controls.Question
+                              open={open}
+                              rowId={selectedRowId}
+                              onClose={handleClose}
+                              options= {Qoption}
+                              questionText= "Do You Want to Delete Exam?"
+                            />
                         </TableCell>
                     </TableRow>
                 ))}
