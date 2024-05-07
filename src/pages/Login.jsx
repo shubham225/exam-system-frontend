@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 
 import MediumWindow from 'layouts/MediumWindow';
-import AuthContext from "context/AuthContext.old/AuthContext";
+import { AuthContext } from "context/AuthContext";
 import request, { setAuthToken } from "utils/AxiosHelper";
 
 import {Box, 

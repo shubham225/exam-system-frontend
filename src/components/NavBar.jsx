@@ -1,14 +1,14 @@
 import React from "react";
+import { useNavigate } from 'react-router-dom'
 
-import AuthContext from '../../context/AuthContext.old/AuthContext';
-import {useNavigate} from 'react-router-dom'
+import { AuthContext } from 'context/AuthContext';
 
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-const NavigationBar = () => {
+const NavBar = () => {
     const { auth, setAuth } = React.useContext(AuthContext);
     const navigateTo = useNavigate();
 
@@ -53,4 +53,4 @@ const NavigationBar = () => {
 }
 
 
-export default NavigationBar;
+export default NavBar;

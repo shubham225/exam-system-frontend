@@ -72,9 +72,7 @@ export default function ExamTable(props) {
             </TableHead>
             <TableBody>
                 {data.map((row) => (
-                    <TableRow
-                      key={row.id}
-                    >
+                    <TableRow key={row.id} >
                         <TableCell> 
                           <IconButton size='small' onClick={() => openExamPage(row.id)}>
                             <InputIcon />

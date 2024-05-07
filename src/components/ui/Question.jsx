@@ -28,7 +28,7 @@ export default function Question(props) {
             <DialogActions>
                 {options.map(
                     option => (
-                        <Button onClick={() => onButtonClick(option.value)}>{option.text}</Button>
+                        <Button key={option.value} onClick={() => onButtonClick(option.value)}>{option.text}</Button>
                     )
                 )}
             </DialogActions>
