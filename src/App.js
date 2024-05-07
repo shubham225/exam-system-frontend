@@ -1,14 +1,13 @@
-import './App.css';
 import React from 'react'
-import AuthContextProvider from './Context/AuthContext/AuthContextProvider';
+import AuthContextProvider from './context/AuthContext';
 import { RouterProvider } from 'react-router-dom';
-import router from './Routes/Router';
+import router from './pages/Router';
 
 function App() {
 
   return (    
     <AuthContextProvider>
-      <div className="App">
+      <div>
         <RouterProvider router={router} />
       </div>
     </AuthContextProvider>
