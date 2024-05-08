@@ -20,35 +20,26 @@ const NavBar = () => {
     }
 
     return (
-        <>
-            <Paper
-                elevation={6}
-                sx= {{
-                        flexGrow: 1,
-                        alignContent: 'center',
-                        borderRadius: '10px'
-                    }}
-            >
-                <Toolbar>
-                    <Typography variant="h6" component="div" onClick={() => {navigateTo('/');}}>
-                        Exam-Portal
-                    </Typography>
+        <Paper elevation={6} sx= {{ borderRadius: '10px' }} >
+            <Toolbar>
+                <Typography variant="h6" component="div" onClick={() => {navigateTo('/');}}>
+                    Exam-Portal
+                </Typography>
+                
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        
-                    </Typography>
-                    {
-                        (auth) && 
-                        <Button 
-                            color="inherit"
-                            onClick={handleLogout}
-                        >
-                            Logout
-                        </Button>
-                    }
-                </Toolbar>
-            </Paper>
-        </>
+                </Typography>
+                {
+                    (auth) && 
+                    <Button 
+                        color="inherit"
+                        onClick={handleLogout}
+                    >
+                        Logout
+                    </Button>
+                }
+            </Toolbar>
+        </Paper>
     );
 }
 

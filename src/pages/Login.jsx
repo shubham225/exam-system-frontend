@@ -2,121 +2,29 @@ import React from 'react'
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 
 import MediumWindow from 'layouts/MediumWindow';
-import { AuthContext } from "context/AuthContext";
-import request, { setAuthToken } from "utils/AxiosHelper";
 
-import {Box, 
-        TextField,
+import LoginForm from 'components/form/LoginForm';
+
+import {Grid,
         Typography,
-        Button,
-        Alert,
-        Stack} from '@mui/material';
+        Divider} from '@mui/material';
 
-import LoginIcon from '@mui/icons-material/Login';
+import AdbIcon from '@mui/icons-material/Adb';
 
 function Login() {
-    const [username, setUsername] = React.useState('');
-    const [password, setPassowrd] = React.useState('');
-    const [errorMsg, setErrorMsg] = React.useState('');
-
-    const {setAuth} = React.useContext(AuthContext);
-
-    const navigateTo = useNavigate();
-
-    const handleLogin = (e) => {
-        e.preventDefault();
-        setErrorMsg('');
-        request(
-            "POST",
-            "/auth/login",
-            {
-                username : username,
-                password : password
-            }
-        ).then((response) => {
-            setAuthToken(response.data.token);
-            console.log("login : " + JSON.stringify(response.data));
-            setAuth(response.data);
-            navigateTo("/dashboard")
-        }).catch((error) => {
-            setAuth(null);
-            setErrorMsg(error.message + " : " +  error.response.data.message);
-            window.localStorage.removeItem("auth_token");
-            console.log("error" + JSON.stringify(error));
-        });
-    }
-
-
     return (
         <MediumWindow>
-            <Box 
-                sx={{
-                    height: '100%',
-                    width: '40%',
-                    display: 'flex',
-                    bgcolor: 'lightblue'
-                }}
-            >
-                <Typography variant='h4' padding={1}>
-                    
-                </Typography>
-            </Box>
+            <Grid container height='100%' direction='row'>
+                <Grid item xs={0} lg={6} bgcolor='lightskyblue'>
+                    <Divider orientation="vertical" variant="fullWidth" />
+                </Grid>
+                <Grid item xs={12} lg={6} >
+                    <Typography variant='h4' padding={2} align='center'> Sign In </Typography>
+                    <LoginForm />
+                </Grid>
+            </Grid>
 
-            <Box 
-                component='form' noValidate
-                sx={{
-                    height: '100%',
-                    width: '60%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}
-            >
-                {
-                    (errorMsg) && 
-                    <Alert severity="error" color="error">
-                        {errorMsg}
-                    </Alert>
-                } 
-
-                <Typography variant='h4' padding={1}>
-                    Sign In
-                </Typography>
-                <Stack spacing={3} 
-                    padding={4}
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}
-                >
-                    <TextField
-                        id="standard-search"
-                        label="Username"
-                        type="search"
-                        variant="standard"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                    <TextField
-                        id="standard-password-input"
-                        label="Password"
-                        type="password"
-                        autoComplete="current-password"
-                        variant="standard"
-                        value={password}
-                        onChange={(e) => setPassowrd(e.target.value)}
-                    />
-                    <Button variant="contained" type='submit' endIcon={<LoginIcon />} onClick={handleLogin}>
-                        Sign In
-                    </Button>
-                    <Typography variant='h9' padding={1}>
-                        Don't have an Account? <RouterLink to={'/register'}>Register now</RouterLink>.
-                    </Typography>
-                </Stack>
-            </Box>
+            
         </MediumWindow>
       );
 }

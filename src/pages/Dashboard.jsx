@@ -16,7 +16,7 @@ function Dashboard() {
     return (
         <LargeWindow>
             <Admin /> 
-        </LargeWindow>
+       </LargeWindow>
     )
 }
 

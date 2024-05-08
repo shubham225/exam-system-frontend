@@ -46,11 +46,12 @@ const RegisterationForm = (props) => {
 
     return (
         <>
-            <Box component='form' noValidate sx={{m: 3}} onSubmit={doRegisterUser}>
+            <Box component='form' sx={{m: 3}} onSubmit={doRegisterUser}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
                         <Input
                             name="fullName"
+                            required
                             value={values.fullName}
                             onChange={handleFormInputChange}
                             label="Full Name"
@@ -77,6 +78,7 @@ const RegisterationForm = (props) => {
                     <Grid item xs={12} sm={6}>
                         <Input
                             name="email"
+                            required
                             value={values.email}
                             onChange={handleFormInputChange}
                             label="Email"
@@ -88,6 +90,7 @@ const RegisterationForm = (props) => {
                     <Grid item xs={12} sm={6}>
                         <Input
                             name="password"
+                            required
                             value={values.password}
                             onChange={handleFormInputChange}
                             label="Password"
@@ -99,6 +102,7 @@ const RegisterationForm = (props) => {
                     <Grid item xs={12} sm={6}>
                         <Input
                             name="institute"
+                            required
                             value={values.institute}
                             onChange={handleFormInputChange}
                             label="Institute"

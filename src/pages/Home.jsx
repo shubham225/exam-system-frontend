@@ -16,7 +16,7 @@ function Home() {
     const navigateTo = useNavigate();
 
     return (
-        <LargeWindow>
+        // <LargeWindow>
             <Stack spacing={2}>
                 <Typography variant="h2"> Exam-Portal Home Page </Typography>
                 <Typography variant="h5">
@@ -44,7 +44,7 @@ function Home() {
                         </Stack>
                 }
             </Stack>
-        </LargeWindow>
+        // </LargeWindow>
     )
 }
 
