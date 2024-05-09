@@ -1,5 +1,4 @@
 import React from 'react'
-import { useNavigate, Link as RouterLink } from 'react-router-dom';
 
 import MediumWindow from 'layouts/MediumWindow';
 
@@ -9,7 +8,6 @@ import {Grid,
         Typography,
         Divider} from '@mui/material';
 
-import AdbIcon from '@mui/icons-material/Adb';
 
 function Login() {
     return (

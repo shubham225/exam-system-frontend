@@ -1,42 +1,69 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { AuthContext } from 'context/AuthContext';
 
 import LargeWindow from 'layouts/LargeWindow';
-import Exam from 'components/dialog/Exam';
-import ExamTable from 'components/form/ExamTable';
+import NewExam from 'components/dialog/NewExam';
+import DataTable from 'components/form/DataTable';
+import EditActions from 'components/ui/EditActions';
+import { examColumns } from 'data/columnDefinitions';
 
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Divider, Grid, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import { createNewExam, getAllExams } from 'services/examService';
 
 function Exams() {
     const {auth} = React.useContext(AuthContext);
     const [open, setOpen] = React.useState(false);
+    const [rows, setRows] = React.useState([]);
 
     const handleClickOpen = () => {
       setOpen(true);
     };
   
-    const handleClose = (data) => {
-      setOpen(false);
-      console.log(data);
+    const handleClose = (newExam) => {
+        let data = createNewExam(newExam);
+        setOpen(false);
+        setRows([...rows, data]);
     };
-  
+
+    const columns = [...examColumns, 
+                    {
+                    field: 'action',
+                    headerName: 'Action',
+                    type: 'action',
+                    width: 200,
+                    renderCell: (params)=> (
+                        <EditActions {...{params}}/>
+                    )
+                    }];
+                    
+    const examList = getAllExams();
+
+    useEffect(() => {
+        setRows(examList);
+    },[])
 
     //if (!auth) return (<div>No Auth</div>);
 
     return (
         <LargeWindow>
-            <Box sx={{
-                display:'flex',
-                justifyContent: 'space-between',
-                padding: '10px'
-            }}>
-                <Typography variant='h3'>EXAMS</Typography>
-                <Button variant='outlined' size='medium' startIcon={<AddIcon/>} onClick={handleClickOpen}>New Exam</Button>
-            </Box>
-            <ExamTable />
-            <Exam 
+            <Grid container direction='column' p={2}>
+                <Grid item pb={2}>
+                    <Box display='flex' justifyContent='space-between'>
+                        <Typography variant='h3'>Exams</Typography>
+                        <Button variant='outlined' startIcon={<AddIcon/>} onClick={handleClickOpen}>New Exam</Button>
+                    </Box>
+                </Grid>
+                <Divider />
+                <Grid item alignSelf='center' pt={2}>
+                    <DataTable 
+                        columns={columns}
+                        rows={rows}
+                    />
+                </Grid>
+            </Grid>
+            <NewExam 
                 open= {open}
                 onCloseDialog= {handleClose}
             /> 

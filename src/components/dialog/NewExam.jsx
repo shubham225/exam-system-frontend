@@ -7,7 +7,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
-export default function Exam(props) {
+export default function NewExam(props) {
     const {
         open,
         onCloseDialog
@@ -34,7 +34,7 @@ export default function Exam(props) {
                 required
                 margin="dense"
                 id="name"
-                name="name"
+                name="examName"
                 label="Exam Name"
                 type="input"
                 fullWidth
