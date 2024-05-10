@@ -16,7 +16,7 @@ function DataTable(props) {
     <Box sx={{ height: {height}, width: {width} }}>
       <DataGrid
         pageSize={pageSize}
-        rowsPerPageOptions={[5, 10, 15]}
+        rowsPerPageOptions={[7, 14, 21]}
         onPageSizeChange={(size) => { setPageSize(size)}}
         getRowId={row => row.id}
         {...other}

@@ -1,6 +1,6 @@
 
 export const examColumns = 
-[
+  [
     { field: 'id', headerName: 'ID', width: 100 },
     {
       field: 'examName',
@@ -12,10 +12,10 @@ export const examColumns =
       headerName: 'Description',
       width: 350
     }
-];
+  ];
 
 export const moduleColumns = 
-[
+  [
     { field: 'id', headerName: 'ID', width: 100 },
     {
       field: 'moduleName',
@@ -26,5 +26,20 @@ export const moduleColumns =
       field: 'description',
       headerName: 'Description',
       width: 350
+    }
+  ];
+
+export const questionColumns = 
+  [
+    { field: 'id', headerName: 'ID', width: 100 },
+    {
+      field: 'questionText',
+      headerName: 'Question Text',
+      width: 300
+    },
+    {
+      field: 'options',
+      headerName: 'Options',
+      width: 300
     }
   ];

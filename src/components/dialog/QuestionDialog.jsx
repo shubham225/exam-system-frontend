@@ -1,21 +1,24 @@
 import React from 'react';
 
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import QuestionForm from 'components/form/QuestionForm';
 
-export default function ExamDialog(props) {
+export default function QuestionDialog(props) {
     const {
         open,
         title,
+        mode,
         onCloseDialog
     } = props;
 
     return (
         <Dialog
+            fullWidth
+            maxWidth='lg'
             open={open}
             onClose={() => onCloseDialog({})}
             PaperProps={{
@@ -24,38 +27,18 @@ export default function ExamDialog(props) {
                 event.preventDefault();
                 const formData = new FormData(event.currentTarget);
                 const data = Object.fromEntries(formData.entries());
+                console.log(data);
                 onCloseDialog(data);
             },
             }}
         >
             <DialogTitle>{title}</DialogTitle>
             <DialogContent>
-            <TextField
-                autoFocus
-                required
-                margin="dense"
-                id="name"
-                name="examName"
-                label="Exam Name"
-                type="input"
-                fullWidth
-                variant="standard"
-            />
-            <TextField
-                autoFocus
-                required
-                margin="dense"
-                id="name"
-                name="description"
-                label="Description"
-                type="input"
-                fullWidth
-                variant="standard"
-            />
+                <QuestionForm mode={mode} />
             </DialogContent>
             <DialogActions>
-            <Button type="submit">Create</Button>
-            <Button onClick={() => onCloseDialog({})}>Cancel</Button>
+            <Button type="submit" variant='contained' size='medium'>Create</Button>
+            <Button variant='outlined' size='medium' onClick={() => onCloseDialog({})}>Cancel</Button>
             </DialogActions>
         </Dialog>
     )

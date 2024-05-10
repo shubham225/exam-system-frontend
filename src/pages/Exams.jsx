@@ -11,20 +11,40 @@ import { examColumns } from 'data/columnDefinitions';
 import { Box, Button, Divider, Grid, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { createNewExam, getAllExams } from 'services/examService';
+import { useNavigate } from 'react-router-dom';
 
 function Exams() {
     const {auth} = React.useContext(AuthContext);
     const [open, setOpen] = React.useState(false);
     const [rows, setRows] = React.useState([]);
+    const navigateTo = useNavigate();
+
+    const handleView = (e, params) => {
+        e.preventDefault();
+        navigateTo("/exam/" + params.id)
+    }
+    
+    const handleEdit = (e, params) => {
+        e.preventDefault();
+        console.log('Edit Clicked...');
+    }
+    
+    const handleDelete = (e, params) => {
+        e.preventDefault();
+        console.log('Delete Clicked for id : ' + params.id);
+        console.log(params);
+    }
 
     const handleClickOpen = () => {
       setOpen(true);
     };
   
     const handleClose = (newExam) => {
-        let data = createNewExam(newExam);
-        setOpen(false);
-        setRows([...rows, data]);
+        if (newExam) {
+            let data = createNewExam(newExam);
+            setOpen(false);
+            setRows([...rows, data]);
+        }
     };
 
     const columns = [...examColumns, 
@@ -34,7 +54,7 @@ function Exams() {
                     type: 'action',
                     width: 200,
                     renderCell: (params)=> (
-                        <EditActions {...{params}}/>
+                        <EditActions {...{params, handleView, handleEdit, handleDelete}}/>
                     )
                     }];
                     
@@ -65,6 +85,7 @@ function Exams() {
             </Grid>
             <NewExam 
                 open= {open}
+                title='Create New Exam'
                 onCloseDialog= {handleClose}
             /> 
         </LargeWindow>

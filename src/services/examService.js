@@ -1,3 +1,4 @@
+import { Description } from '@mui/icons-material';
 import { examList } from 'data/dummyData'
 
 export function getAllExams() {
@@ -6,14 +7,12 @@ export function getAllExams() {
 }
 
 export function getExamById(id) {
-    console.log(examList);
     let exam = examList.find((exam) => exam.id == id); 
-    console.log(exam);
-    return exam;
+    return exam ? exam : {id : 0, examName: "Not Found", Description: "not found"};
 }
 
 export function createNewExam(exam) {
     // TODO : Call API and add the exam then return new exam with id
-    exam = {...exam, id: Math.random()}
+    exam = {...exam, id: ((Math.floor(Math.random() * 101))+ 11)}
     return exam;
 }
