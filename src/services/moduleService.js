@@ -13,5 +13,5 @@ export function createNewModule(module) {
 
 export function getModuleById(id) {
     let module = moduleList.find((module) => module.id == id); 
-    return module ? module : {id : 0, moduleName: "Not Found", description: "not found"};
+    return module ? module : {};
 }

@@ -5,19 +5,14 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import QuestionForm from 'components/form/QuestionForm';
-import { getQuestionById } from 'services/questionService';
-import { getOptionById, getOptionsByQuestion } from 'services/optionService';
-import { createNewQuestion } from 'services/questionService';
-import OptionForm from 'components/form/OptionForm';
-import objectHelper from 'utils/objectHelper';
-import Mode, { Action } from 'utils/Enums';
-import useForm from 'hooks/useForm';
+import { getOptionById } from 'services/optionService';
+import { Action } from 'utils/Enums';
+
 import {
-    FormControlLabel,
-    Checkbox,
-    TextField,
-    FormGroup} from '@mui/material';
+        FormControlLabel,
+        Checkbox,
+        TextField,
+        FormGroup} from '@mui/material';
 
 export default function QuestionDialog(props) {
     const {
@@ -27,24 +22,34 @@ export default function QuestionDialog(props) {
         onCloseDialog
     } = props;
 
-    const [option, setOption] = useState(objectHelper.getDefaultOption());
+    const [option, setOption] = useState({});
 
     useEffect(() => {
         if (action === Action.NEW_RECORD) {
-            setOption(objectHelper.getDefaultOption())
+            setOption({})
         } else {
             setOption(getOptionById(optionId));
         }
-    },[optionId,action]);
-
+    },[optionId, action]);
     
     const handleSubmit = (event) => {
-        event.preventDefault();  
-    
-        //TODO: call API and perform action based on mode
-        let newOption = option;
-        setOption({});
-        onCloseDialog(option);
+        event.preventDefault();
+        const optionN = {...option, id : 333}  
+        onCloseDialog(optionN);
+    }
+
+    const getDescription = (action) => {
+        switch(action) {
+            case (Action.NEW_RECORD) : {
+                return "Create New Option";
+            }
+            case (Action.MODIFY_RECORD) : {
+                return "Modify Option";
+            }
+            default : {
+                return "View Option";
+            }
+        }
     }
 
     return (
@@ -55,7 +60,7 @@ export default function QuestionDialog(props) {
             onClose={() => onCloseDialog({})} 
         >
             <DialogTitle>
-                Create New Option  
+                {getDescription(action)}
             </DialogTitle>
             <DialogContent dividers>
                 <FormGroup>
@@ -69,7 +74,7 @@ export default function QuestionDialog(props) {
                     <FormControlLabel 
                         control={<Checkbox name="isAnswer" 
                                     checked={option.isAnswer} 
-                                    onClick={(e) => {e.preventDefault(); setOption({...option, isAnswer: e.target.checked})}}/>} 
+                                    onChange={(e) => {e.preventDefault(); setOption({...option, isAnswer: e.target.checked})}}/>} 
                         label="Answer" />
                 </FormGroup>
             </DialogContent>

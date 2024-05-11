@@ -6,13 +6,13 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Grid, Button, Box, Checkbox, TextField } from '@mui/material';
+import { Grid, Button, Box, Checkbox } from '@mui/material';
 
 import { Delete, Edit} from '@mui/icons-material';
 import { IconButton, Tooltip } from '@mui/material'
 
 import OptionDialog from 'components/dialog/OptionDialog';
-import Mode, { Action } from 'utils/Enums';
+import { Action } from 'utils/Enums';
 import AddIcon from '@mui/icons-material/Add';
 
 export default function OptionsTable(props) {
@@ -20,61 +20,57 @@ export default function OptionsTable(props) {
         options,
         setOptions,
         action,
+        question,
+        setQuestion
     } = props;
 
     const [openOptionDlg, setOpenOptionDlg] = React.useState(false);
     const [optionAction, setOptionAction] = React.useState(Action.NEW_RECORD);
     const [optionId, setOptionId] = React.useState(0);
+    
+    const handleEditOptionRecord = (e, selectedRow) => {
+    e.preventDefault();
 
-    console.log(options)
+    setOptionAction(Action.MODIFY_RECORD);
+    setOpenOptionDlg(true);
+    setOptionId(selectedRow.id);
+    }
 
-    const handleViewOptionRecord = (e, selectedRow) => {
-        e.preventDefault();
-    
-        setOptionAction(Action.DISPLAY_RECORD);
-        setOpenOptionDlg(true);
-        setOptionId(selectedRow.id);
-      }
-    
-      const handleEditOptionRecord = (e, selectedRow) => {
-        e.preventDefault();
-    
-        setOptionAction(Action.MODIFY_RECORD);
-        setOpenOptionDlg(true);
-        setOptionId(selectedRow.id);
-      }
-    
-      const handleDeleteOptionRecord = (e, selectedRow) => {
-        e.preventDefault();
-        console.log('Delete Clicked for id : ' + selectedRow.id);
-        setOptions(options.filter((option) => option.id !== selectedRow.id));
-      }
-    
-    
-      const handleNewOptionRecord = (e) => {
-        e.preventDefault();
-    
-        setOptionAction(Action.NEW_RECORD);
-        setOpenOptionDlg(true);
-        setOptionId(-1);
-      };
+    const handleDeleteOptionRecord = (e, selectedRow) => {
+    e.preventDefault();
+    let optionsNew = options.filter((option) => option.id !== selectedRow.id);
+    setOptions(optionsNew);
+    setQuestion({...question, options: optionsNew});
+    }
 
-      const handleCloseOptionDlg = (updatedRow) => {
-        if (updatedRow) {
+
+    const handleNewOptionRecord = (e) => {
+    e.preventDefault();
+
+    setOptionAction(Action.NEW_RECORD);
+    setOpenOptionDlg(true);
+    setOptionId(0);
+    };
+
+    const handleCloseOptionDlg = (updatedRow) => {
+        if (Object.keys(updatedRow).length > 0) {
             switch(optionAction) {
                 case (Action.NEW_RECORD) : {
                     setOptions([...options, updatedRow]);
+                    setQuestion({...question, options: [...options, updatedRow]});
                     break;
                 }
                 case (Action.MODIFY_RECORD) : {
                     let filteredOption = options.filter((option) => option.id !== updatedRow.id)
                     setOptions([...filteredOption, updatedRow])
+                    setQuestion({...question, options: [...filteredOption, updatedRow]});
                     break;
                 }
             }
         }
         setOpenOptionDlg(false);
-      }
+    }
+
 
     return (
         <Grid containner >

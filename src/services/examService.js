@@ -8,7 +8,7 @@ export function getAllExams() {
 
 export function getExamById(id) {
     let exam = examList.find((exam) => exam.id == id); 
-    return exam ? exam : {id : 0, examName: "Not Found", Description: "not found"};
+    return exam ? exam : {};
 }
 
 export function createNewExam(exam) {

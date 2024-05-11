@@ -13,5 +13,5 @@ export function createNewOption(option) {
 
 export function getOptionById(id) {
     let option = optionList.find((option) => option.id == id); 
-    return option ? option : {id : 0, optionText: "temp", isAnswer: false};
+    return option ? option : {};
 }

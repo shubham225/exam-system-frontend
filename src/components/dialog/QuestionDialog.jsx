@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -6,9 +6,6 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import QuestionForm from 'components/form/QuestionForm';
-import { getQuestionById } from 'services/questionService';
-import { getOptionsByQuestion } from 'services/optionService';
-import { createNewQuestion } from 'services/questionService';
 import { Action } from 'utils/Enums';
 
 
@@ -29,6 +26,8 @@ export default function QuestionDialog(props) {
         */
         
         //TODO: call API and perform action based on mode
+        console.log("Final Question :");
+        console.log(question)
 
         onCloseDialog(question);
     }

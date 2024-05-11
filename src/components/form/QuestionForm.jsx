@@ -1,35 +1,8 @@
 import React, { useEffect, useState } from "react";
 
-import {Box, 
-        Grid,
-        InputLabel,
-        FormControl, 
-        FormLabel,
-        FormControlLabel,
-        RadioGroup,
-        Radio,
-        Select,
-        MenuItem,
-        Button, 
-        List,
-        ListItem,
-        Checkbox,
-        ListItemButton,
-        ListItemAvatar,
-        Avatar,
-        ListItemText,
-        TextField,
-        Typography,
-        FormGroup} from '@mui/material';
-import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import useForm from "../../utils/FormHelper.jsx";
+import {Grid} from '@mui/material';
 import Input  from "components/ui/Input";
 import OptionsTable from 'components/form/OptionsTable.jsx'
-import { CheckBox } from "@mui/icons-material";
-import AddIcon from '@mui/icons-material/Add';
-import { createNewOption, getOptionsByQuestion } from "services/optionService.js";
-import OptionForm from "./OptionForm.jsx";
 import { Action } from "utils/Enums.js";
 
 
@@ -44,16 +17,7 @@ const QuestionForm = (props) => {
 
     useEffect(() => {
         setOptions(question.options);
-        //setOptions(getOptionsByQuestion(question.id));
     },[question]);
-
-    // useEffect(() => {
-    //     setQuestion(
-    //             {
-    //                 ...question,
-    //                 options: options
-    //             });
-    // },[options]);
 
     return (
         <Grid container spacing={2}>
@@ -68,7 +32,7 @@ const QuestionForm = (props) => {
                     required />
             </Grid>
             <Grid item xs={12}>
-                <OptionsTable options={options} setOptions={setOptions} action={action}/>
+                <OptionsTable options={options} setOptions={setOptions} action={action} question={question} setQuestion={setQuestion}/>
             </Grid>
         </Grid>
     )
