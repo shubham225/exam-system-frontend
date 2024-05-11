@@ -7,11 +7,11 @@ export function getOptionsByQuestion(id) {
 
 export function createNewOption(option) {
     // TODO : Call API and add the exam then return new module with id
-    option = {...option, id: ((Math.floor(Math.random() * 101)) + 11)}
+    option = {...option, id: (Math.random().toString(36).slice(-6))}
     return option;
 }
 
 export function getOptionById(id) {
-    let question = optionList.find((question) => question.id == id); 
-    return question ? question : {id : 0, optionText: "Not Found", isAnswer: false};
+    let option = optionList.find((option) => option.id == id); 
+    return option ? option : {id : 0, optionText: "temp", isAnswer: false};
 }

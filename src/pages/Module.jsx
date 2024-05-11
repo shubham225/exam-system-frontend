@@ -14,45 +14,56 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { createNewQuestion, getQuestionsByModule } from 'services/questionService';
 import { getModuleById } from 'services/moduleService';
 import QuestionDialog  from 'components/dialog/QuestionDialog'
+import { optionList } from 'data/dummyData';
+import { Action } from 'utils/Enums';
+import { getQuestionById } from 'services/questionService';
 
 function Module() {
   const { id } = useParams();
   const {auth} = React.useContext(AuthContext);
-  const [open, setOpen] = React.useState(false);
+  const [openQuestionDlg, setOpenQuestionDlg] = React.useState(false);
   const [rows, setRows] = React.useState([]);
+  const [question, setQuestion] = React.useState({options: []});
+  const [action, setAction] = React.useState(Action.NEW_RECORD);
 
   const navigateTo = useNavigate();
 
-  const handleView = (e, params) => {
+  const handleViewRecord = (e, selectedRow) => {
     e.preventDefault();
-    setOpen(true);
-    // navigateTo("/question/" + params.id)
+
+    setAction(Action.DISPLAY_RECORD);
+    setQuestion(getQuestionById(selectedRow.id));
+    setOpenQuestionDlg(true);
   }
 
-  const handleEdit = (e, params) => {
+  const handleEditRecord = (e, selectedRow) => {
     e.preventDefault();
-    setOpen(true);
-    console.log('Edit Clicked...' + params.id);
+
+    setAction(Action.MODIFY_RECORD);
+    setQuestion(getQuestionById(selectedRow.id));
+    setOpenQuestionDlg(true);
   }
 
-  const handleDelete = (e, params) => {
+  const handleDeleteRecord = (e, selectedRow) => {
     e.preventDefault();
-    console.log('Delete Clicked for id : ' + params.id);
-    setOpen(true);
+    console.log('Delete Clicked for id : ' + selectedRow.id);
   }
 
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleNewRecord = (e) => {
+    e.preventDefault();
+
+    setAction(Action.NEW_RECORD);
+    setOpenQuestionDlg(true);
+    setQuestion({options: []});
   };
 
-  const handleClose = (newQuestion) => {
-    console.log(newQuestion)
-    if (newQuestion) {
-      let data = createNewQuestion(newQuestion);
-      setOpen(false);
-      setRows([...rows, data]);
+  const handleCloseQuestionDlg = (updatedRow) => {
+    if (action == Action.NEW_RECORD && updatedRow) {
+      updatedRow = {...updatedRow, id:999}
+      setRows([...rows, updatedRow]);
     }
+    setOpenQuestionDlg(false);
   };
 
     
@@ -63,7 +74,7 @@ function Module() {
                     type: 'action',
                     width: 200,
                     renderCell: (params)=> (
-                      <EditActions {...{params, handleView, handleEdit, handleDelete}}/>
+                      <EditActions {...{params, handleView: handleViewRecord, handleEdit: handleEditRecord, handleDelete: handleDeleteRecord}}/>
                     )
                   }];
                
@@ -72,7 +83,7 @@ function Module() {
 
   useEffect(() => {
       setRows(questionList);
-  },[])
+  },[id])
 
   //if (!auth) return (<div>No Auth</div>);
 
@@ -82,7 +93,7 @@ function Module() {
               <Grid item pb={2}>
                   <Box display='flex' justifyContent='space-between'>
                       <Typography variant='h3'>{ module.moduleName + " [ #" + module.id + " ]"} </Typography>
-                      <Button variant='outlined' startIcon={<AddIcon/>} onClick={handleClickOpen}>New Question</Button>
+                      <Button variant='outlined' startIcon={<AddIcon/>} onClick={(e) => handleNewRecord(e)}>New Question</Button>
                   </Box>
               </Grid>
               <Divider />
@@ -94,9 +105,11 @@ function Module() {
               </Grid>
           </Grid>
           <QuestionDialog
-              open= {open}
-              title='Create New Module'
-              onCloseDialog= {handleClose}
+              open={openQuestionDlg}
+              action={action}
+              question={question}
+              setQuestion={setQuestion}
+              onCloseDialog= {handleCloseQuestionDlg}
           /> 
       </LargeWindow>
   )

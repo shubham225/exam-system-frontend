@@ -24,14 +24,55 @@ export const moduleList =
 
 export const questionList = 
 [
-    { "id": 1, "questionText": "Question - Snow", "options": ["Option 1", "Option 2", "Option 3", "Option 4"] },
-    { "id": 2, "questionText": "Question - Lannister", "options": ["Option 1", "Option 2", "Option 3", "Option 4"] },
-    { "id": 3, "questionText": "Question - Lannister", "options": ["Option 1", "Option 2", "Option 3", "Option 4"] },
-    { "id": 4, "questionText": "Question - Stark", "options": ["Option 1", "Option 2", "Option 3", "Option 4"] },
-    { "id": 5, "questionText": "Question - Targaryen", "options": ["Option 1", "Option 2", "Option 3", "Option 4"] },
-    { "id": 6, "questionText": "Question - Melisandre", "options": ["Option 1", "Option 2", "Option 3", "Option 4"] },
-    { "id": 7, "questionText": "Question - Clifford", "options": ["Option 1", "Option 2", "Option 3", "Option 4"] },
-    { "id": 8, "questionText": "Question - Frances", "options": ["Option 1", "Option 2", "Option 3", "Option 4"] },
+    { 
+        "id": 1, "questionText": "Question - Snow", 
+        "options": [
+                { "id": 1, "optionText": "Option 1", "isAnswer": false },
+                { "id": 2, "optionText": "Option 2", "isAnswer": true },
+                { "id": 3, "optionText": "Option 3", "isAnswer": false }] 
+    },
+    { 
+        "id": 2, "questionText": "Question - Lannister", 
+        "options": [
+            { "id": 1, "optionText": "Option 1", "isAnswer": false },
+            { "id": 2, "optionText": "Option 2", "isAnswer": true },
+            { "id": 3, "optionText": "Option 3", "isAnswer": false }] },
+    { 
+        "id": 3, "questionText": "Question - Lannister", 
+        "options": [
+            { "id": 1, "optionText": "Option 1", "isAnswer": false },
+            { "id": 2, "optionText": "Option 2", "isAnswer": true },
+            { "id": 3, "optionText": "Option 3", "isAnswer": false }] },
+    { 
+        "id": 4, "questionText": "Question - Stark", 
+        "options": [
+            { "id": 1, "optionText": "Option 1", "isAnswer": false },
+            { "id": 2, "optionText": "Option 2", "isAnswer": true },
+            { "id": 3, "optionText": "Option 3", "isAnswer": false }] },
+    { 
+        "id": 5, "questionText": "Question - Targaryen", 
+        "options": [
+            { "id": 1, "optionText": "Option 1", "isAnswer": false },
+            { "id": 2, "optionText": "Option 2", "isAnswer": true },
+            { "id": 3, "optionText": "Option 3", "isAnswer": false }] },
+    { 
+        "id": 6, "questionText": "Question - Melisandre", 
+        "options": [
+            { "id": 1, "optionText": "Option 1", "isAnswer": false },
+            { "id": 2, "optionText": "Option 2", "isAnswer": true },
+            { "id": 3, "optionText": "Option 3", "isAnswer": false }] },
+    { 
+        "id": 7, "questionText": "Question - Clifford", 
+        "options": [
+            { "id": 1, "optionText": "Option 1", "isAnswer": false },
+            { "id": 2, "optionText": "Option 2", "isAnswer": false },
+            { "id": 4, "optionText": "Option 4", "isAnswer": true }] },
+    { 
+        "id": 8, "questionText": "Question - Frances", 
+        "options": [
+            { "id": 1, "optionText": "Option 1", "isAnswer": false },
+            { "id": 2, "optionText": "Option 2", "isAnswer": true },
+            { "id": 5, "optionText": "Option 5", "isAnswer": false }] },
 ]
 
 export const optionList = 

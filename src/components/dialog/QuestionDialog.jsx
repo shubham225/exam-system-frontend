@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -6,39 +6,54 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import QuestionForm from 'components/form/QuestionForm';
+import { getQuestionById } from 'services/questionService';
+import { getOptionsByQuestion } from 'services/optionService';
+import { createNewQuestion } from 'services/questionService';
+import { Action } from 'utils/Enums';
+
 
 export default function QuestionDialog(props) {
     const {
         open,
-        title,
-        mode,
+        action,
+        question,
+        setQuestion,
         onCloseDialog
     } = props;
+
+    const handleSubmitForm = (e) => {
+        e.preventDefault();  
+
+        /*
+            question = {id : '', questionText : 'text', options : [{id: , optionText: '', isAnswer:false}, ...]}
+        */
+        
+        //TODO: call API and perform action based on mode
+
+        onCloseDialog(question);
+    }
 
     return (
         <Dialog
             fullWidth
             maxWidth='lg'
             open={open}
-            onClose={() => onCloseDialog({})}
+            onClose={() => onCloseDialog({options: []})}
             PaperProps={{
-            component: 'form',
-            onSubmit: (event) => {
-                event.preventDefault();
-                const formData = new FormData(event.currentTarget);
-                const data = Object.fromEntries(formData.entries());
-                console.log(data);
-                onCloseDialog(data);
-            },
+                component: 'form',
+                onSubmit: (e) => {handleSubmitForm(e)},
             }}
         >
-            <DialogTitle>{title}</DialogTitle>
-            <DialogContent>
-                <QuestionForm mode={mode} />
+            <DialogTitle>Create New Question</DialogTitle>
+            <DialogContent dividers>
+                <QuestionForm 
+                    action={action}
+                    question={question}
+                    setQuestion={setQuestion} />
             </DialogContent>
             <DialogActions>
-            <Button type="submit" variant='contained' size='medium'>Create</Button>
-            <Button variant='outlined' size='medium' onClick={() => onCloseDialog({})}>Cancel</Button>
+                <Button type="submit" variant='contained' size='medium' >{(action === Action.DISPLAY_RECORD) ? "Ok" : "Create"}</Button>
+                {(action !== Action.DISPLAY_RECORD) && <Button variant='outlined' size='medium' onClick={() => onCloseDialog({options: []})}>Cancel</Button>}
             </DialogActions>
         </Dialog>
     )
