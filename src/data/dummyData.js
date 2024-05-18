@@ -12,14 +12,14 @@ export const examList =
 
 export const moduleList = 
 [
-    { "id": 1, "moduleName": "Module - Snow", "description": "Description for Jon" },
-    { "id": 2, "moduleName": "Module - Lannister", "description": "Description for Cersei" },
-    { "id": 3, "moduleName": "Module - Lannister", "description": "Description for Jaime" },
-    { "id": 4, "moduleName": "Module - Stark", "description": "Description for Arya" },
-    { "id": 5, "moduleName": "Module - Targaryen", "description": "Description for Daenerys" },
-    { "id": 6, "moduleName": "Module - Melisandre", "description": "Description for Melisandre" },
-    { "id": 7, "moduleName": "Module - Clifford", "description": "Description for Ferrara" },
-    { "id": 8, "moduleName": "Module - Frances", "description": "Description for Rossini" },
+    { "id": 1, "moduleName": "Module - 1", "description": "Description for 1" },
+    { "id": 2, "moduleName": "Module - 2", "description": "Description for 2" },
+    { "id": 3, "moduleName": "Module - 3", "description": "Description for 3" },
+    { "id": 4, "moduleName": "Module - 4", "description": "Description for 4" },
+    { "id": 5, "moduleName": "Module - 5", "description": "Description for 5" },
+    { "id": 6, "moduleName": "Module - 6", "description": "Description for 6" },
+    { "id": 7, "moduleName": "Module - 7", "description": "Description for 7" },
+    { "id": 8, "moduleName": "Module - 8", "description": "Description for 8" },
 ]
 
 export const questionList = 

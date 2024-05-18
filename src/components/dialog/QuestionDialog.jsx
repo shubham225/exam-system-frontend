@@ -26,8 +26,10 @@ export default function QuestionDialog(props) {
         */
         
         //TODO: call API and perform action based on mode
-        console.log("Final Question :");
-        console.log(question)
+        if(action == Action.MODIFY_RECORD) {
+            console.log("Final Question :");
+            console.log(question);
+        }
 
         onCloseDialog(question);
     }

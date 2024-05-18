@@ -74,11 +74,12 @@ export default function OptionsTable(props) {
 
     return (
         <Grid containner >
-            <Grid item sx={12} textAlign='end' mb={2}>
+            { (action !== Action.DISPLAY_RECORD) &&
+            (<Grid item sx={12} textAlign='end' mb={2}>
                 <Button variant='contained' size='medium'
                     onClick={(e) => handleNewOptionRecord(e)} 
                     startIcon={<AddIcon />}>New</Button>
-            </Grid>
+            </Grid>)}
             <Grid item sx={12} >
                 <TableContainer component={Paper} sx={{ minWidth: 500, maxHeight: 350, overflow: 'auto' }}>
                     <Table stickyHeader >
@@ -100,6 +101,7 @@ export default function OptionsTable(props) {
                                 <TableCell >{row.optionText}</TableCell>
                                 <TableCell align="right"> <Checkbox disabled checked={row.isAnswer} /> </TableCell>
                                 <TableCell align="right"> 
+                                { (action !== Action.DISPLAY_RECORD) &&
                                     <Box>
                                         <Tooltip title="Edit Record">
                                             <IconButton onClick={(e) => {e.preventDefault(); handleEditOptionRecord(e, row)}} >
@@ -113,6 +115,7 @@ export default function OptionsTable(props) {
                                             </IconButton>
                                         </Tooltip>
                                     </Box>
+                                }
                                 </TableCell>
                                 </TableRow>
                             ))}
