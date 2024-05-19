@@ -6,7 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { getOptionById } from 'services/optionService';
-import { Action } from 'utils/Enums';
+import { Action, Click } from 'utils/Enums';
 
 import {
         FormControlLabel,
@@ -18,25 +18,10 @@ export default function QuestionDialog(props) {
     const {
         open,
         action,
-        optionId,
+        option,
+        setOption,
         onCloseDialog
     } = props;
-
-    const [option, setOption] = useState({});
-
-    useEffect(() => {
-        if (action === Action.NEW_RECORD) {
-            setOption({})
-        } else {
-            setOption(getOptionById(optionId));
-        }
-    },[optionId, action]);
-    
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const optionN = {...option, id : 333}  
-        onCloseDialog(optionN);
-    }
 
     const getDescription = (action) => {
         switch(action) {
@@ -57,7 +42,7 @@ export default function QuestionDialog(props) {
             fullWidth
             maxWidth='md'
             open={open}
-            onClose={() => onCloseDialog({})} 
+            onClose={() => onCloseDialog({click: Click.CLOSE})} 
         >
             <DialogTitle>
                 {getDescription(action)}
@@ -79,8 +64,23 @@ export default function QuestionDialog(props) {
                 </FormGroup>
             </DialogContent>
             <DialogActions>
-                <Button onClick={(event) => {handleSubmit(event)}} variant='contained' size='medium' >{(action === Action.DISPLAY_RECORD) ? "Ok" : "Create"}</Button>
-                {(action !== Action.DISPLAY_RECORD) && <Button variant='outlined' size='medium' onClick={() => onCloseDialog({})}>Cancel</Button>}
+                <Button 
+                    variant='contained' size='medium' 
+                    onClick={(event) => {
+                        event.preventDefault();
+                        onCloseDialog({click: Click.SUBMIT});
+                    }} > 
+                        {(action === Action.DISPLAY_RECORD) ? "Ok" : "Create"}
+                </Button>
+                {(action !== Action.DISPLAY_RECORD) && 
+                 <Button 
+                    variant='outlined' size='medium' 
+                    onClick={(event) => {
+                        event.preventDefault();
+                        onCloseDialog({click: Click.SUBMIT});
+                    }} >
+                        Cancel
+                 </Button>}
             </DialogActions>
         </Dialog>
     )

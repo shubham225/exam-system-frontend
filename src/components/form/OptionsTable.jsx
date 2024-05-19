@@ -12,7 +12,7 @@ import { Delete, Edit} from '@mui/icons-material';
 import { IconButton, Tooltip } from '@mui/material'
 
 import OptionDialog from 'components/dialog/OptionDialog';
-import { Action } from 'utils/Enums';
+import { Action, Click } from 'utils/Enums';
 import AddIcon from '@mui/icons-material/Add';
 
 export default function OptionsTable(props) {
@@ -26,44 +26,52 @@ export default function OptionsTable(props) {
 
     const [openOptionDlg, setOpenOptionDlg] = React.useState(false);
     const [optionAction, setOptionAction] = React.useState(Action.NEW_RECORD);
-    const [optionId, setOptionId] = React.useState(0);
+    const [option, setOption] = React.useState({});
     
     const handleEditOptionRecord = (e, selectedRow) => {
-    e.preventDefault();
+        e.preventDefault();
 
-    setOptionAction(Action.MODIFY_RECORD);
-    setOpenOptionDlg(true);
-    setOptionId(selectedRow.id);
+        setOptionAction(Action.MODIFY_RECORD);
+        setOption(selectedRow);
+        setOpenOptionDlg(true);
     }
 
     const handleDeleteOptionRecord = (e, selectedRow) => {
-    e.preventDefault();
-    let optionsNew = options.filter((option) => option.id !== selectedRow.id);
-    setOptions(optionsNew);
-    setQuestion({...question, options: optionsNew});
+        e.preventDefault();
+
+        let optionsNew = options.filter((option) => option.id !== selectedRow.id);
+        setOptions(optionsNew);
+        setQuestion({...question, options: optionsNew});
     }
 
 
     const handleNewOptionRecord = (e) => {
-    e.preventDefault();
+        e.preventDefault();
 
-    setOptionAction(Action.NEW_RECORD);
-    setOpenOptionDlg(true);
-    setOptionId(0);
+        setOptionAction(Action.NEW_RECORD);
+        setOption({});
+        setOpenOptionDlg(true);
     };
 
-    const handleCloseOptionDlg = (updatedRow) => {
-        if (Object.keys(updatedRow).length > 0) {
+    const handleCloseOptionDlg = (callback) => {
+        if (callback.click === Click.SUBMIT) {
             switch(optionAction) {
                 case (Action.NEW_RECORD) : {
-                    setOptions([...options, updatedRow]);
-                    setQuestion({...question, options: [...options, updatedRow]});
+                    let newOption = {...option, id : 0};
+                    setOptions([...options, newOption]);
+                    setQuestion({...question, options: [...options, newOption]});
                     break;
                 }
                 case (Action.MODIFY_RECORD) : {
-                    let filteredOption = options.filter((option) => option.id !== updatedRow.id)
-                    setOptions([...filteredOption, updatedRow])
-                    setQuestion({...question, options: [...filteredOption, updatedRow]});
+                    //TODO : Call API to modify Record
+                    let filteredOption = options.filter((row) => row.id !== option.id)
+                    let data = [...filteredOption, option];
+                    data.sort((a, b) => {return a.id - b.id});
+                    setOptions(data)
+                    setQuestion({...question, options: data});
+                    break;
+                }
+                default : {
                     break;
                 }
             }
@@ -122,7 +130,12 @@ export default function OptionsTable(props) {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <OptionDialog open={openOptionDlg} action={action} optionId={optionId} onCloseDialog={handleCloseOptionDlg} />
+                <OptionDialog 
+                    open={openOptionDlg} 
+                    action={action} 
+                    option={option} 
+                    setOption={setOption}
+                    onCloseDialog={handleCloseOptionDlg} />
             </Grid>
         </Grid>
     );

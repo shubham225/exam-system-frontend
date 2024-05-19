@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { AuthContext } from 'context/AuthContext';
 
 import LargeWindow from 'layouts/LargeWindow';
-import NewExam from 'components/dialog/NewExam';
+import ExamDialog from 'components/dialog/ExamDialog';
 import DataTable from 'components/form/DataTable';
 import EditActions from 'components/ui/EditActions';
 import { examColumns } from 'data/columnDefinitions';
@@ -11,40 +11,68 @@ import { examColumns } from 'data/columnDefinitions';
 import { Box, Button, Divider, Grid, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { createNewExam, getAllExams } from 'services/examService';
+import { Action, Click } from 'utils/Enums';
 import { useNavigate } from 'react-router-dom';
 
 function Exams() {
     const {auth} = React.useContext(AuthContext);
     const [open, setOpen] = React.useState(false);
     const [rows, setRows] = React.useState([]);
+    const [action, setAction] = React.useState(Action.NEW_RECORD);
+    const [exam, setExam] = React.useState({});
+
     const navigateTo = useNavigate();
 
     const handleView = (e, params) => {
         e.preventDefault();
+        setAction(Action.DISPLAY_RECORD);
         navigateTo("/exam/" + params.id)
     }
     
     const handleEdit = (e, params) => {
         e.preventDefault();
-        console.log('Edit Clicked...');
+        setAction(Action.MODIFY_RECORD);
+        setExam(params.row);
+        setOpen(true);
     }
     
     const handleDelete = (e, params) => {
         e.preventDefault();
-        console.log('Delete Clicked for id : ' + params.id);
-        console.log(params);
+        //TODO : Call API to Delete Record
+        setAction(Action.DELETE_RECORD);
+        let newRows = rows.filter((row) => row.id !== params.id);
+        setRows(newRows);
     }
 
     const handleClickOpen = () => {
-      setOpen(true);
+        setAction(Action.NEW_RECORD);
+        setExam({});
+        setOpen(true);
     };
   
-    const handleClose = (newExam) => {
-        if (newExam) {
-            let data = createNewExam(newExam);
-            setOpen(false);
-            setRows([...rows, data]);
+    const handleClose = (callback) => {
+        if (callback.click === Click.SUBMIT) {
+            switch(action) {
+                case (Action.NEW_RECORD) : {
+                    //TODO : Call API to create Record
+                    let data = createNewExam(exam);
+                    setRows([...rows, data]);
+                    break;
+                }
+                case (Action.MODIFY_RECORD) : {
+                    //TODO : Call API to modify Record
+                    let filteredRows = rows.filter((row) => row.id !== exam.id);
+                    let data = [...filteredRows, exam];
+                    data.sort((a, b) => {return a.id - b.id});
+                    setRows(data);
+                    break;
+                }
+                default : {
+                    break;
+                }
+            }
         }
+        setOpen(false);
     };
 
     const columns = [...examColumns, 
@@ -58,9 +86,9 @@ function Exams() {
                     )
                     }];
                     
-    const examList = getAllExams();
 
     useEffect(() => {
+        const examList = getAllExams();
         setRows(examList);
     },[])
 
@@ -83,9 +111,11 @@ function Exams() {
                     />
                 </Grid>
             </Grid>
-            <NewExam 
+            <ExamDialog 
                 open= {open}
-                title='Create New Exam'
+                action={action}
+                exam={exam}
+                setExam={setExam}
                 onCloseDialog= {handleClose}
             /> 
         </LargeWindow>

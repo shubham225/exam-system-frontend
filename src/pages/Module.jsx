@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import { AuthContext } from 'context/AuthContext';
 
 import LargeWindow from 'layouts/LargeWindow';
-import NewModule from 'components/dialog/NewModule';
 import DataTable from 'components/form/DataTable';
 import EditActions from 'components/ui/EditActions';
 import { questionColumns } from 'data/columnDefinitions';
@@ -11,62 +10,24 @@ import { questionColumns } from 'data/columnDefinitions';
 import { Box, Button, Divider, Grid, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate, useParams } from 'react-router-dom';
-import { createNewQuestion, getQuestionsByModule } from 'services/questionService';
+import { getQuestionsByModule } from 'services/questionService';
 import { getModuleById } from 'services/moduleService';
 import QuestionDialog  from 'components/dialog/QuestionDialog'
-import { optionList } from 'data/dummyData';
-import { Action } from 'utils/Enums';
-import { getQuestionById } from 'services/questionService';
+import { Action, Click } from 'utils/Enums';
 
 function Module() {
   const { id } = useParams();
   const {auth} = React.useContext(AuthContext);
   const [openQuestionDlg, setOpenQuestionDlg] = React.useState(false);
   const [rows, setRows] = React.useState([]);
+  const [module, setModule] = React.useState({});
   const [question, setQuestion] = React.useState({options: []});
   const [action, setAction] = React.useState(Action.NEW_RECORD);
 
   const navigateTo = useNavigate();
 
-  const handleViewRecord = (e, selectedRow) => {
-    e.preventDefault();
+  //if (!auth) return (<div>No Auth</div>);
 
-    setAction(Action.DISPLAY_RECORD);
-    setQuestion(getQuestionById(selectedRow.id));
-    setOpenQuestionDlg(true);
-  }
-
-  const handleEditRecord = (e, selectedRow) => {
-    e.preventDefault();
-
-    setAction(Action.MODIFY_RECORD);
-    setQuestion(getQuestionById(selectedRow.id));
-    setOpenQuestionDlg(true);
-  }
-
-  const handleDeleteRecord = (e, selectedRow) => {
-    e.preventDefault();
-    console.log('Delete Clicked for id : ' + selectedRow.id);
-  }
-
-
-  const handleNewRecord = (e) => {
-    e.preventDefault();
-
-    setAction(Action.NEW_RECORD);
-    setOpenQuestionDlg(true);
-    setQuestion({options: []});
-  };
-
-  const handleCloseQuestionDlg = (updatedRow) => {
-    if (action == Action.NEW_RECORD && updatedRow) {
-      updatedRow = {...updatedRow, id:999}
-      setRows([...rows, updatedRow]);
-    }
-    setOpenQuestionDlg(false);
-  };
-
-    
   const columns = [...questionColumns, 
                   {
                     field: 'action',
@@ -74,18 +35,76 @@ function Module() {
                     type: 'action',
                     width: 200,
                     renderCell: (params)=> (
-                      <EditActions {...{params, handleView: handleViewRecord, handleEdit: handleEditRecord, handleDelete: handleDeleteRecord}}/>
+                      <EditActions {...{ params, 
+                                         handleView: handleViewRecord, 
+                                         handleEdit: handleEditRecord, 
+                                         handleDelete: handleDeleteRecord}}/>
                     )
                   }];
                
-  const module = getModuleById(id); 
-  const questionList = getQuestionsByModule(id);
-
   useEffect(() => {
-      setRows(questionList);
+    const moduleDetail = getModuleById(id); 
+    const questionList = getQuestionsByModule(id);
+    setModule(moduleDetail);
+    setRows(questionList);
   },[id])
 
-  //if (!auth) return (<div>No Auth</div>);
+  const handleViewRecord = (e, selectedRow) => {
+    e.preventDefault();
+
+    setAction(Action.DISPLAY_RECORD);
+    setQuestion(selectedRow.row);
+    setOpenQuestionDlg(true);
+  }
+
+  const handleEditRecord = (e, selectedRow) => {
+    e.preventDefault();
+
+    setAction(Action.MODIFY_RECORD);
+    setQuestion(selectedRow.row);
+    setOpenQuestionDlg(true);
+  }
+
+  const handleDeleteRecord = (e, params) => {
+    e.preventDefault();
+    //TODO : Call API to Delete Record
+    let newRows = rows.filter((row) => row.id !== params.id);
+    setRows(newRows);
+  }
+
+
+  const handleNewRecord = (e) => {
+    e.preventDefault();
+
+    setAction(Action.NEW_RECORD);
+    setQuestion({options: []});
+    setOpenQuestionDlg(true);
+  };
+
+  const handleCloseQuestionDlg = (callback) => {
+    if (callback.click === Click.SUBMIT) {
+        switch(action) {
+            case (Action.NEW_RECORD) : {
+                //TODO : Call API to create Record
+                let data = {...question, id:999};
+                setRows([...rows, data]);
+                break;
+            }
+            case (Action.MODIFY_RECORD) : {
+                //TODO : Call API to modify Record
+                let filteredRows = rows.filter((row) => row.id !== question.id);
+                let data = [...filteredRows, question];
+                data.sort((a, b) => {return a.id - b.id});
+                setRows(data);
+                break;
+            }
+            default : {
+                break;
+            }
+        }
+    }
+    setOpenQuestionDlg(false);
+  };
 
   return (
       <LargeWindow>

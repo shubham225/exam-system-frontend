@@ -5,5 +5,9 @@ export const Action = Object.freeze({
     DELETE_RECORD : 'delete'
 })
 
+export const Click = Object.freeze({
+    CLOSE : 'close',
+    SUBMIT : 'submit'
+})
 
 export default {Action};

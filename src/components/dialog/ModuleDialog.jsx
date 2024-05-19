@@ -6,29 +6,30 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import { Action, Click } from 'utils/Enums';
 
 export default function ModuleDialog(props) {
     const {
         open,
-        title,
+        action,
+        module,
+        setModule,
         onCloseDialog
     } = props;
 
     return (
         <Dialog
             open={open}
-            onClose={() => onCloseDialog({})}
+            onClose={() => onCloseDialog({click: Click.CLOSE})}
             PaperProps={{
             component: 'form',
             onSubmit: (event) => {
                 event.preventDefault();
-                const formData = new FormData(event.currentTarget);
-                const data = Object.fromEntries(formData.entries());
-                onCloseDialog(data);
+                onCloseDialog({click: Click.SUBMIT});
             },
             }}
         >
-            <DialogTitle>{title}</DialogTitle>
+            <DialogTitle>{(action == Action.NEW_RECORD) ? "Create New Module" : "Modify Module"}</DialogTitle>
             <DialogContent>
             <TextField
                 autoFocus
@@ -36,8 +37,10 @@ export default function ModuleDialog(props) {
                 margin="dense"
                 id="name"
                 name="moduleName"
-                label="Exam Name"
+                label="Module Name"
                 type="input"
+                value={module.moduleName}
+                onChange={(e) => {e.preventDefault(); setModule({...module, moduleName: e.target.value});}}
                 fullWidth
                 variant="standard"
             />
@@ -49,13 +52,15 @@ export default function ModuleDialog(props) {
                 name="description"
                 label="Description"
                 type="input"
+                value={module.description}
+                onChange={(e) => {e.preventDefault(); setModule({...module, description: e.target.value});}}
                 fullWidth
                 variant="standard"
             />
             </DialogContent>
             <DialogActions>
             <Button type="submit">Create</Button>
-            <Button onClick={() => onCloseDialog({})}>Cancel</Button>
+            <Button onClick={() => onCloseDialog({click: Click.CLOSE})}>Cancel</Button>
             </DialogActions>
         </Dialog>
     )

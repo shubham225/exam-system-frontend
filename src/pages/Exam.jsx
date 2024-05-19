@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { AuthContext } from 'context/AuthContext';
 
 import LargeWindow from 'layouts/LargeWindow';
-import NewModule from 'components/dialog/NewModule';
+import ModuleDialog from 'components/dialog/ModuleDialog';
 import DataTable from 'components/form/DataTable';
 import EditActions from 'components/ui/EditActions';
 import { moduleColumns } from 'data/columnDefinitions';
@@ -13,42 +13,69 @@ import { Box, Button, Divider, Grid, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { createNewModule, getAllModules } from 'services/moduleService';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Action, Click } from 'utils/Enums';
 
 function Exam() {
   const { id } = useParams();
   const {auth} = React.useContext(AuthContext);
   const [open, setOpen] = React.useState(false);
   const [rows, setRows] = React.useState([]);
+  const [action, setAction] = React.useState(Action.NEW_RECORD);
+  const [exam, setExam] = React.useState({});
+  const [module, setModule] = React.useState({});
 
   const navigateTo = useNavigate();
 
   const handleView = (e, params) => {
     e.preventDefault();
+    setAction(Action.DISPLAY_RECORD);
     navigateTo("/module/" + params.id)
   }
 
   const handleEdit = (e, params) => {
     e.preventDefault();
-    console.log('Edit Clicked...');
+    setAction(Action.MODIFY_RECORD);
+    setModule(params.row);
+    setOpen(true);
   }
 
   const handleDelete = (e, params) => {
     e.preventDefault();
-    console.log('Delete Clicked for id : ' + params.id);
-    console.log(params);
+    //TODO : Call API to Delete Record
+    let newRows = rows.filter((row) => row.id !== params.id);
+    setRows(newRows);
   }
 
 
   const handleClickOpen = () => {
+    setAction(Action.NEW_RECORD);
+    setModule({});
     setOpen(true);
   };
 
-  const handleClose = (newModule) => {
-    if (newModule) {
-      let data = createNewModule(newModule);
-      setOpen(false);
-      setRows([...rows, data]);
+  const handleClose = (callback) => {
+    if (callback.click === Click.SUBMIT) {
+        switch(action) {
+            case (Action.NEW_RECORD) : {
+                //TODO : Call API to create Record
+                let data = createNewModule(module);
+                setRows([...rows, data]);
+                break;
+            }
+            case (Action.MODIFY_RECORD) : {
+                //TODO : Call API to modify Record
+                let filteredRows = rows.filter((row) => row.id !== module.id);
+                let data = [...filteredRows, module];
+                data.sort((a, b) => {return a.id - b.id});
+                setRows(data);
+                break;
+            }
+            default : {
+                break;
+            }
+        }
     }
+    setOpen(false);
   };
 
     
@@ -63,12 +90,13 @@ function Exam() {
                     )
                   }];
                
-  const exam = getExamById(id); 
-  const moduleList = getAllModules();
-
+  
   useEffect(() => {
+      const examDetail = getExamById(id); 
+      const moduleList = getAllModules();
+      setExam(examDetail);
       setRows(moduleList);
-  },[])
+  },[id])
 
   //if (!auth) return (<div>No Auth</div>);
 
@@ -89,9 +117,11 @@ function Exam() {
                   />
               </Grid>
           </Grid>
-          <NewModule 
+          <ModuleDialog 
               open= {open}
-              title='Create New Module'
+              action={action}
+              module={module}
+              setModule={setModule}
               onCloseDialog= {handleClose}
           /> 
       </LargeWindow>
