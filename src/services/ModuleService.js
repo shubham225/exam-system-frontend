@@ -16,7 +16,7 @@ function getModuleById(id) {
     });
 }
 
-function getAllModules() {
+function getModulesByExamId(id) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             if(moduleList) {
@@ -41,7 +41,6 @@ function createNewModule(module) {
         },1000)
     });
 }
-
 
 function modifyModule(module) {
     return new Promise((resolve, reject) => {
@@ -71,7 +70,7 @@ function deleteModuleById(id) {
 
 const ModuleService = {
     getModuleById,
-    getAllModules,
+    getModulesByExamId,
     createNewModule,
     modifyModule,
     deleteModuleById

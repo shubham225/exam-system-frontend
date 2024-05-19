@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 
 import { AuthContext } from 'context/AuthContext';
 
@@ -7,10 +7,10 @@ import DataTable from 'components/form/DataTable';
 import EditActions from 'components/ui/EditActions';
 import { questionColumns } from 'data/columnDefinitions';
 
-import { Box, Button, Divider, Grid, Typography } from '@mui/material';
+import { Backdrop, Box, Button, CircularProgress, Divider, Grid, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getQuestionsByModule } from 'services/questionService';
+import QuestionService from 'services/QuestionService';
 import ModuleService from 'services/ModuleService';
 import QuestionDialog  from 'components/dialog/QuestionDialog'
 import { Action, Click } from 'utils/Enums';
@@ -23,6 +23,7 @@ function Module() {
   const [module, setModule] = React.useState({});
   const [question, setQuestion] = React.useState({options: []});
   const [action, setAction] = React.useState(Action.NEW_RECORD);
+  const [loading, setLoading] = React.useState(false);
 
   const navigateTo = useNavigate();
 
@@ -41,12 +42,55 @@ function Module() {
                                          handleDelete: handleDeleteRecord}}/>
                     )
                   }];
-               
-  useEffect(() => {
-    const moduleDetail = ModuleService.getModuleById(id); 
-    const questionList = getQuestionsByModule(id);
+        
+  const getModuleById = useCallback(async (id) => {
+    setLoading(true);
+    const moduleDetail = await ModuleService.getModuleById(id); 
     setModule(moduleDetail);
+    setLoading(false);
+  }, [id]);
+    
+  const getQuestionsByModuleId = useCallback(async (id) => {
+    setLoading(true);
+    const questionList = await QuestionService.getQuestionsByModuleId(id);
     setRows(questionList);
+    setLoading(false);
+  }, [id]);
+
+  const createNewQuestion = useCallback(async () => {
+    setLoading(true);
+    let data = await QuestionService.createNewQuestion(question);
+    setRows([...rows, data]);
+    setLoading(false);
+  }, [question]);
+
+  const modifyQuestion = useCallback(async () => {
+      setLoading(true);
+      let modifiedQuestion = await QuestionService.modifyQuestion(question);
+      let filteredRows = rows.filter((row) => row.id !== modifiedQuestion.id);
+      let data = [...filteredRows, modifiedQuestion];
+      data.sort((a, b) => {return a.id - b.id});
+      setRows(data);
+      setLoading(false);
+  }, [question]);
+
+  const deleteQuestionById = useCallback(async (id) => {
+      setLoading(true);
+      console.log(rows)
+      let deletedQuestion = await QuestionService.deleteQuestionById(id);
+      let filteredRows = rows.filter((row) => row.id !== deletedQuestion.id);
+      setRows(filteredRows);
+      setLoading(false);
+  });
+
+  const stopLoading = () => {
+      setLoading(false);
+  }
+
+
+  useEffect(() => {
+    getModuleById(id);
+    getQuestionsByModuleId(id);
   },[id])
 
   const handleViewRecord = (e, selectedRow) => {
@@ -67,9 +111,7 @@ function Module() {
 
   const handleDeleteRecord = (e, params) => {
     e.preventDefault();
-    //TODO : Call API to Delete Record
-    let newRows = rows.filter((row) => row.id !== params.id);
-    setRows(newRows);
+    deleteQuestionById(params.id);
   }
 
 
@@ -85,17 +127,11 @@ function Module() {
     if (callback.click === Click.SUBMIT) {
         switch(action) {
             case (Action.NEW_RECORD) : {
-                //TODO : Call API to create Record
-                let data = {...question, id:999};
-                setRows([...rows, data]);
+                createNewQuestion();
                 break;
             }
             case (Action.MODIFY_RECORD) : {
-                //TODO : Call API to modify Record
-                let filteredRows = rows.filter((row) => row.id !== question.id);
-                let data = [...filteredRows, question];
-                data.sort((a, b) => {return a.id - b.id});
-                setRows(data);
+                modifyQuestion();
                 break;
             }
             default : {
@@ -130,6 +166,13 @@ function Module() {
               setQuestion={setQuestion}
               onCloseDialog= {handleCloseQuestionDlg}
           /> 
+          <Backdrop
+              sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+              open={loading}
+              onClick={stopLoading}
+          >
+              <CircularProgress color="inherit" />
+          </Backdrop>
       </LargeWindow>
   )
 }

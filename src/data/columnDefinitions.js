@@ -40,6 +40,9 @@ export const questionColumns =
     {
       field: 'options',
       headerName: 'Options',
+      valueGetter: (params) => {
+        return params.row.options.map((option) => option.optionText);
+      },
       width: 300
     }
   ];

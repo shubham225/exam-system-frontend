@@ -47,9 +47,9 @@ function Exam() {
     setLoading(false);
   });
     
-  const getAllModules = useCallback(async () => {
+  const getModulesByExamId = useCallback(async (id) => {
     setLoading(true);
-    const moduleList = await ModuleService.getAllModules();
+    const moduleList = await ModuleService.getModulesByExamId(id);
     setRows(moduleList);
     setLoading(false);
   });
@@ -81,7 +81,7 @@ function Exam() {
 
   useEffect(() => {
       getExamById(id); 
-      getAllModules();
+      getModulesByExamId(id);
   },[id])
 
 
@@ -100,7 +100,7 @@ function Exam() {
 
   const handleDelete = (e, params) => {
     e.preventDefault();
-    deleteModule();
+    deleteModule(params.id);
   }
 
 
