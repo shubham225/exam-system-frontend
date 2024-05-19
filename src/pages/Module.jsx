@@ -11,7 +11,7 @@ import { Box, Button, Divider, Grid, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getQuestionsByModule } from 'services/questionService';
-import { getModuleById } from 'services/moduleService';
+import ModuleService from 'services/ModuleService';
 import QuestionDialog  from 'components/dialog/QuestionDialog'
 import { Action, Click } from 'utils/Enums';
 
@@ -43,7 +43,7 @@ function Module() {
                   }];
                
   useEffect(() => {
-    const moduleDetail = getModuleById(id); 
+    const moduleDetail = ModuleService.getModuleById(id); 
     const questionList = getQuestionsByModule(id);
     setModule(moduleDetail);
     setRows(questionList);

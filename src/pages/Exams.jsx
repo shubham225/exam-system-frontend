@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import { AuthContext } from 'context/AuthContext';
 
@@ -8,9 +8,9 @@ import DataTable from 'components/form/DataTable';
 import EditActions from 'components/ui/EditActions';
 import { examColumns } from 'data/columnDefinitions';
 
-import { Box, Button, Divider, Grid, Typography } from '@mui/material';
+import { Backdrop, Box, Button, CircularProgress, Divider, Grid, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { createNewExam, getAllExams } from 'services/examService';
+import ExamService from 'services/ExamService';
 import { Action, Click } from 'utils/Enums';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,8 +20,58 @@ function Exams() {
     const [rows, setRows] = React.useState([]);
     const [action, setAction] = React.useState(Action.NEW_RECORD);
     const [exam, setExam] = React.useState({});
+    const [loading, setLoading] = React.useState(false);
 
     const navigateTo = useNavigate();
+
+    const columns = [...examColumns, 
+        {
+        field: 'action',
+        headerName: 'Action',
+        type: 'action',
+        width: 200,
+        renderCell: (params)=> (
+            <EditActions {...{params, handleView, handleEdit, handleDelete}}/>
+        )
+        }];
+
+    //if (!auth) return (<div>No Auth</div>);
+        
+    const fetchAllExams = useCallback(async () => {
+        setLoading(true);
+        const examList = await ExamService.getAllExams();
+        setRows(examList);
+        setLoading(false);
+    });
+
+    const createNewExam = useCallback(async () => {
+        setLoading(true);
+        let data = await ExamService.createNewExam(exam);
+        setRows([...rows, data]);
+        setLoading(false);
+    });
+
+    const modifyExam = useCallback(async () => {
+        setLoading(true);
+        let modifiedExam = await ExamService.modifyExam(exam);
+        let filteredRows = rows.filter((row) => row.id !== modifiedExam.id);
+        let data = [...filteredRows, modifiedExam];
+        data.sort((a, b) => {return a.id - b.id});
+        setRows(data);
+        setLoading(false);
+    });
+
+    const deleteExam = useCallback(async (id) => {
+        setLoading(true);
+        let deletedExam = await ExamService.deleteExamById(id);
+        let newRows = rows.filter((row) => row.id !== deletedExam.id);
+        setRows(newRows);
+        setLoading(false);
+    });
+
+    useEffect(() => {
+        fetchAllExams();
+    }, [])
 
     const handleView = (e, params) => {
         e.preventDefault();
@@ -31,6 +81,7 @@ function Exams() {
     
     const handleEdit = (e, params) => {
         e.preventDefault();
+
         setAction(Action.MODIFY_RECORD);
         setExam(params.row);
         setOpen(true);
@@ -38,10 +89,9 @@ function Exams() {
     
     const handleDelete = (e, params) => {
         e.preventDefault();
-        //TODO : Call API to Delete Record
+        
         setAction(Action.DELETE_RECORD);
-        let newRows = rows.filter((row) => row.id !== params.id);
-        setRows(newRows);
+        deleteExam(params.id);
     }
 
     const handleClickOpen = () => {
@@ -49,22 +99,20 @@ function Exams() {
         setExam({});
         setOpen(true);
     };
+
+    const stopLoading = () => {
+        setLoading(false);
+    }
   
     const handleClose = (callback) => {
         if (callback.click === Click.SUBMIT) {
             switch(action) {
                 case (Action.NEW_RECORD) : {
-                    //TODO : Call API to create Record
-                    let data = createNewExam(exam);
-                    setRows([...rows, data]);
+                    createNewExam();
                     break;
                 }
                 case (Action.MODIFY_RECORD) : {
-                    //TODO : Call API to modify Record
-                    let filteredRows = rows.filter((row) => row.id !== exam.id);
-                    let data = [...filteredRows, exam];
-                    data.sort((a, b) => {return a.id - b.id});
-                    setRows(data);
+                    modifyExam();
                     break;
                 }
                 default : {
@@ -74,25 +122,6 @@ function Exams() {
         }
         setOpen(false);
     };
-
-    const columns = [...examColumns, 
-                    {
-                    field: 'action',
-                    headerName: 'Action',
-                    type: 'action',
-                    width: 200,
-                    renderCell: (params)=> (
-                        <EditActions {...{params, handleView, handleEdit, handleDelete}}/>
-                    )
-                    }];
-                    
-
-    useEffect(() => {
-        const examList = getAllExams();
-        setRows(examList);
-    },[])
-
-    //if (!auth) return (<div>No Auth</div>);
 
     return (
         <LargeWindow>
@@ -118,6 +147,13 @@ function Exams() {
                 setExam={setExam}
                 onCloseDialog= {handleClose}
             /> 
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={loading}
+                onClick={stopLoading}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
         </LargeWindow>
     )
 }
