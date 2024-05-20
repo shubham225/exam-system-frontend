@@ -10,9 +10,10 @@ import {Box, Button, Typography, Stack} from '@mui/material';
 import LoginIcon from '@mui/icons-material/Login';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
+import useAuth from 'hooks/useAuth';
 
 function Home() {
-    const { auth } = React.useContext(AuthContext);
+    const {token, setToken} = useAuth();
     const navigateTo = useNavigate();
 
     return (
@@ -20,10 +21,10 @@ function Home() {
             <Stack spacing={2}>
                 <Typography variant="h2"> Exam-Portal Home Page </Typography>
                 <Typography variant="h5">
-                    {(!auth) ? "You are not Logged-in, Login or Register to continue" : "you are logged in"}
+                    {(!token) ? "You are not Logged-in, Login or Register to continue" : "you are logged in"}
                 </Typography>
                 {
-                    (auth) ? 
+                    (token) ? 
                         <Button 
                             variant="outlined" 
                             endIcon={<ArrowForwardIosIcon/>}

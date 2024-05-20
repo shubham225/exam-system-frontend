@@ -5,7 +5,7 @@ function loginWithEmailIdPassword(credentials) {
         console.log("Logging in.. : " + JSON.stringify(credentials));
         try {
             const response = await request( "POST", "/auth/login", credentials);
-            setAuthToken(response.data.token);
+            // setAuthToken(response.data.token);
             resolve(response.data);
         }catch(error) {
             if(error.response) {
@@ -35,13 +35,12 @@ function logout(userId) {
 
 function registerNewUser(userData) {
     return new Promise(async (resolve, reject) => {
-        console.log("Registering user.. : " + JSON.stringify(userData));
-        
+        console.log("Registering user... : " + userData);
+
         try {
             const response = await request( "POST", "/auth/register", userData);
             resolve(response.data);
         }catch(error) {
-            console.log(error);
             if(error.response) {
                 reject(error.response.data);
             }else {

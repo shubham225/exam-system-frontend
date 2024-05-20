@@ -2,7 +2,7 @@ import { Alert, AlertTitle, Snackbar } from '@mui/material';
 import React from 'react'
 
 function AlertSnackBar(props) {
-    const {open, handleClose, severity, title, message,...other} = props;
+    const {open, handleClose, severity, message,...other} = props;
 
     return (
         <div>
@@ -14,7 +14,7 @@ function AlertSnackBar(props) {
                 >
                 <Alert
                 onClose={handleClose}
-                severity="error"
+                severity= {severity ? severity : 'error'}
                 variant="filled"
                 sx={{ width: '100%' }}
                 >

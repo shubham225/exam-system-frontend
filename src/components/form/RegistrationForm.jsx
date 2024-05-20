@@ -13,11 +13,11 @@ import {Box,
         Button } from '@mui/material';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import useForm from "../../utils/FormHelper.jsx";
 import Input  from "components/ui/Input";
 import AuthService from "services/AuthService.js";
 import { useNavigate } from "react-router-dom";
 import { AlertContext } from "context/AlertContext.jsx";
+import useForm from "hooks/useForm";
 
 const initialFormValues = {
     fullName: '',
@@ -40,7 +40,7 @@ const RegisterationForm = (props) => {
         values,
         setValues,
         resetForm,
-        handleFormInputChange
+        handleChange
     } = useForm(initialFormValues);
 
     const {alert, setAlert} = React.useContext(AlertContext);
@@ -49,8 +49,7 @@ const RegisterationForm = (props) => {
     const registerNewUser = useCallback(async (userData) => {
         try {
             const data = await AuthService.registerNewUser(userData); 
-            setAlert({...alert, open : true, message : 'User Registered Sucesssfully'});
-            // navigateTo("/login");
+            setAlert({...alert, open : true, severity : 'success', message : 'User Registered Sucesssfully'});
             resetForm();
         }catch(error) {
             setAlert({...alert, open : true, message : error.message});
@@ -71,7 +70,7 @@ const RegisterationForm = (props) => {
                             name="fullName"
                             required
                             value={values.fullName}
-                            onChange={handleFormInputChange}
+                            onChange={handleChange}
                             label="Full Name"
                             type="input"/>
                     </Grid>
@@ -81,7 +80,7 @@ const RegisterationForm = (props) => {
                             <RadioGroup
                                 name="gender"
                                 value={values.gender}
-                                onChange={handleFormInputChange}
+                                onChange={handleChange}
                                 row
                                 aria-labelledby="row-radio-buttons-group-label"
                             >{
@@ -98,7 +97,7 @@ const RegisterationForm = (props) => {
                             name="email"
                             required
                             value={values.email}
-                            onChange={handleFormInputChange}
+                            onChange={handleChange}
                             label="Email"
                             type="input"
                             variant="outlined"
@@ -110,7 +109,7 @@ const RegisterationForm = (props) => {
                             name="password"
                             required
                             value={values.password}
-                            onChange={handleFormInputChange}
+                            onChange={handleChange}
                             label="Password"
                             type="password"
                             variant="outlined"
@@ -122,7 +121,7 @@ const RegisterationForm = (props) => {
                             name="institute"
                             required
                             value={values.institute}
-                            onChange={handleFormInputChange}
+                            onChange={handleChange}
                             label="Institute"
                             type="input"
                             variant="outlined"
@@ -135,7 +134,7 @@ const RegisterationForm = (props) => {
                             <Select
                                 name="degree"
                                 value={values.degree}
-                                onChange={handleFormInputChange}
+                                onChange={handleChange}
                                 labelId="simple-select-label"
                                 id="simple-select"
                                 label="Age"
@@ -150,7 +149,7 @@ const RegisterationForm = (props) => {
                         <Input
                             name="address"
                             value={values.address}
-                            onChange={handleFormInputChange}
+                            onChange={handleChange}
                             label="Address"
                             type="search"
                             variant="outlined"
@@ -175,6 +174,7 @@ const RegisterationForm = (props) => {
                             fullWidth
                             type='reset'
                             variant="contained"
+                            onClick={(e) => {e.preventDefault(); resetForm()}}
                             sx={{
                                 height: '100%'
                             }}

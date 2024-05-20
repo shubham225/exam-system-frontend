@@ -36,8 +36,6 @@ function Exams() {
             <EditActions {...{params, handleView, handleEdit, handleDelete}}/>
         )
         }];
-
-    //if (!auth) return (<div>No Auth</div>);
         
     const fetchAllExams = useCallback(async () => {
         setLoading(true);

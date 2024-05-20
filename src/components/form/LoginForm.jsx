@@ -1,8 +1,6 @@
 import React, { useCallback } from 'react'
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 
-import { AuthContext } from "context/AuthContext";
-
 import {Box, 
         TextField,
         Typography,
@@ -13,23 +11,23 @@ import {Box,
 import LoginIcon from '@mui/icons-material/Login';
 import { AlertContext } from 'context/AlertContext';
 import AuthService from 'services/AuthService';
+import useAuth from 'hooks/useAuth'; 
 
-function Login() {
+function LoginForm() {
     const {alert, setAlert} = React.useContext(AlertContext);
-    const {setAuth} = React.useContext(AuthContext);
 
     const [username, setUsername] = React.useState('');
     const [password, setPassowrd] = React.useState('');
+    const {token, setToken} = useAuth();
 
     const navigateTo = useNavigate();
 
     const loginWithCredentials = useCallback(async (creds) => {
         try {
             const data = await AuthService.loginWithEmailIdPassword(creds); 
-            setAuth(data);
-            navigateTo("/dashboard");
+            setToken(data);
         }catch(error) {
-            setAuth(null);
+            setToken({});
             setAlert({...alert, open : true, message : error.message});
         }
     }, []);
@@ -38,6 +36,12 @@ function Login() {
         e.preventDefault();
         const creds = {username : username, password : password};
         loginWithCredentials(creds);
+        console.log("Token ", token)
+        if(token) {
+            console.log("Token ", token)
+            navigateTo('/dashboard');
+            navigateTo(0);
+        }
     };
 
     return (
@@ -73,4 +77,4 @@ function Login() {
     );
 }
 
-export default Login;
+export default LoginForm;

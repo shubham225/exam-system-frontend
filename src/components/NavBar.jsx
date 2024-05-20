@@ -7,15 +7,16 @@ import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import useAuth from "hooks/useAuth";
 
 const NavBar = () => {
-    const { auth, setAuth } = React.useContext(AuthContext);
+    // const { auth, setAuth } = React.useContext(AuthContext);
     const navigateTo = useNavigate();
+    const {token, setToken} = useAuth();
 
     const handleLogout = (e) => {
         e.preventDefault();
-        setAuth(null);
-        window.localStorage.removeItem("auth_token");
+        setToken({});
         navigateTo('/');
     }
 
@@ -30,7 +31,7 @@ const NavBar = () => {
                     
                 </Typography>
                 {
-                    (auth) && 
+                    (token) && 
                     <Button 
                         color="inherit"
                         onClick={handleLogout}

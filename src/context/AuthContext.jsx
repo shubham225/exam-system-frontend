@@ -1,9 +1,12 @@
+import useAuth from "hooks/useAuth";
 import React from "react";
 
 export const AuthContext = React.createContext("");
 
 const AuthContextProvider = ({children}) => {
-    const [auth, setAuth] = React.useState(null);
+    const {token, setToken} = useAuth();
+
+    const [auth, setAuth] = React.useState(token);
     
     return(
         <AuthContext.Provider value={{auth, setAuth}}>

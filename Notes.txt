@@ -1,0 +1,17 @@
+
+Registering user.. : {"fullName":"shubham shinde","gender":"male","email":"admin","password":"WEyu","institute":"SKNCOE","degree":10,"address":"Warje"}
+
+Fetching all exams
+Creating New Exam : {"examName":"Exam - 13","description":"sdasd"}
+Modifying Exam : {"id":1,"examName":"Exam - 13","description":"Description for 13"}
+Deleting Exam by Id : 1
+
+Fetching Modules By Exam Id : 2
+Creating New Module : {"moduleName":"dfgdfsgsdf","description":"pqr"}
+Modifying Module : {"id":1,"moduleName":"Module - 1r","description":"Description for 1y"}
+Deleting Module by Id : 1
+
+Fetching Questions By Module Id : 2
+Creating New Question : {"options":[{"optionText":"Yes","id":0},{"optionText":"No","isAnswer":true,"id":0}],"questionText":"is this valid?"}
+Modifying Question : {"id":1,"questionText":"Question - Snow Laport","options":[{"id":1,"optionText":"Option 1","isAnswer":false},{"id":2,"optionText":"Option 2","isAnswer":true},{"optionText":"Option 4","id":0},{"optionText":"OPtion 3","id":0}]}
+Deleting Question by Id : 3

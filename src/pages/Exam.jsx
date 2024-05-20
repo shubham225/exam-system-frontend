@@ -15,6 +15,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Action, Click } from 'utils/Enums';
 import { AlertContext } from 'context/AlertContext';
+import Login from './Login';
 
 function Exam() {
   const { id } = useParams();
@@ -38,8 +39,6 @@ function Exam() {
                       <EditActions {...{params, handleView, handleEdit, handleDelete}}/>
                     )
                   }];
-               
-  //if (!auth) return (<div>No Auth</div>);
           
   const getExamById = useCallback(async (id) => {
     setLoading(true);
@@ -164,7 +163,7 @@ function Exam() {
     }
     setOpen(false);
   };
-
+          
   return (
       <LargeWindow>
           <Grid container direction='column' p={2}>

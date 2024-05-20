@@ -9,7 +9,7 @@ import Exams from "./Exams";
 import Register from "./Register";
 import Exam from "./Exam";
 import Module from "./Module";
-import Question from "./Question";
+import ProtectedRoutes from "./ProtectedRoutes";
 
 const router = createBrowserRouter(
     [
@@ -31,24 +31,29 @@ const router = createBrowserRouter(
                     element: <Register />
                 },
                 {
-                    path: "/dashboard",
-                    element: <Dashboard />
+                    element: <ProtectedRoutes />,
+                    children: [
+                        {
+                            path: "/dashboard",
+                            element: <Dashboard />
+                        },
+                        {
+                            path: "/exam",
+                            element: <Exams />
+                        },
+                        {
+                            path: "exam/:id",
+                            element: <Exam />
+                        },
+                        {
+                            path: "module/:id",
+                            element: <Module />
+                        }
+                    ]
                 },
                 {
-                    path: "/exam",
-                    element: <Exams />
-                },
-                {
-                    path: "exam/:id",
-                    element: <Exam />
-                },
-                {
-                    path: "module/:id",
-                    element: <Module />
-                },
-                {
-                    path: "question/:id",
-                    element: <Question />
+                    path: "*",
+                    element: <Login />
                 }
             ]
         }
