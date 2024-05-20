@@ -5,9 +5,9 @@ import { examList } from 'data/dummyData'
 function getExamById(id) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
+            console.log("Fetching Exam by Id : " + id);
             let exam = examList.find((exam) => exam.id == id); 
-            
-            console.log("function " + id + ": " + JSON.stringify(exam) );
+        
             if(exam) {
                 resolve(exam);
             }else {
@@ -18,9 +18,9 @@ function getExamById(id) {
 }
 
 function getAllExams() {
-    // TODO : call api to fetch data
     return new Promise((resolve, reject) => {
         setTimeout(() => {
+            console.log("Fetching All Exams");
             resolve(examList);
         },2000)
     });
@@ -32,6 +32,7 @@ function createNewExam(exam) {
     // TODO : Call API and add the exam then return new exam with id
     return new Promise((resolve, reject) => {
         setTimeout(() => {
+            console.log("Creating New Exam : " + JSON.stringify(exam));
             exam = {...exam, id: ((Math.floor(Math.random() * 101))+ 11)}
 
             if(exam) {
@@ -46,6 +47,7 @@ function createNewExam(exam) {
 function modifyExam(exam) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
+            console.log("Modifying Exam : " + JSON.stringify(exam));
             if(exam) {
                 resolve(exam);
             }else {
@@ -58,6 +60,7 @@ function modifyExam(exam) {
 function deleteExamById(id) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
+            console.log("Deleting Exam by Id : " + id);
             const exam = examList.find((exam) => exam.id == id);
 
             if(exam) {

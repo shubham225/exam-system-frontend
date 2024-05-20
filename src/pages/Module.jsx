@@ -7,24 +7,26 @@ import DataTable from 'components/form/DataTable';
 import EditActions from 'components/ui/EditActions';
 import { questionColumns } from 'data/columnDefinitions';
 
-import { Backdrop, Box, Button, CircularProgress, Divider, Grid, Typography } from '@mui/material';
+import { Alert, AlertTitle, Backdrop, Box, Button, CircularProgress, Divider, Grid, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate, useParams } from 'react-router-dom';
 import QuestionService from 'services/QuestionService';
 import ModuleService from 'services/ModuleService';
 import QuestionDialog  from 'components/dialog/QuestionDialog'
 import { Action, Click } from 'utils/Enums';
+import AlertSnackBar from 'components/ui/AlertSnackBar';
+import { AlertContext } from 'context/AlertContext';
 
 function Module() {
   const { id } = useParams();
   const {auth} = React.useContext(AuthContext);
+  const {alert, setAlert} = React.useContext(AlertContext);
   const [openQuestionDlg, setOpenQuestionDlg] = React.useState(false);
   const [rows, setRows] = React.useState([]);
   const [module, setModule] = React.useState({});
   const [question, setQuestion] = React.useState({options: []});
   const [action, setAction] = React.useState(Action.NEW_RECORD);
   const [loading, setLoading] = React.useState(false);
-
   const navigateTo = useNavigate();
 
   //if (!auth) return (<div>No Auth</div>);
@@ -45,41 +47,70 @@ function Module() {
         
   const getModuleById = useCallback(async (id) => {
     setLoading(true);
-    const moduleDetail = await ModuleService.getModuleById(id); 
-    setModule(moduleDetail);
+
+    try {
+      const moduleDetail = await ModuleService.getModuleById(id); 
+      setModule(moduleDetail);
+    } catch (error) {
+      setAlert({...alert, open : true, message : error.message});
+    }
+
     setLoading(false);
   }, [id]);
     
   const getQuestionsByModuleId = useCallback(async (id) => {
     setLoading(true);
-    const questionList = await QuestionService.getQuestionsByModuleId(id);
-    setRows(questionList);
+
+    try{
+      const questionList = await QuestionService.getQuestionsByModuleId(id);
+      setRows(questionList);
+    } catch (error) {
+      setAlert({...alert, open : true, message : error.message});
+    }
+  
     setLoading(false);
   }, [id]);
 
   const createNewQuestion = useCallback(async () => {
     setLoading(true);
-    let data = await QuestionService.createNewQuestion(question);
-    setRows([...rows, data]);
+
+    try {
+      let data = await QuestionService.createNewQuestion(question);
+      setRows([...rows, data]);
+    } catch (error) {
+      setAlert({...alert, open : true, message : error.message});
+    }
+
     setLoading(false);
   }, [question]);
 
   const modifyQuestion = useCallback(async () => {
       setLoading(true);
-      let modifiedQuestion = await QuestionService.modifyQuestion(question);
-      let filteredRows = rows.filter((row) => row.id !== modifiedQuestion.id);
-      let data = [...filteredRows, modifiedQuestion];
-      data.sort((a, b) => {return a.id - b.id});
-      setRows(data);
+
+      try {
+        let modifiedQuestion = await QuestionService.modifyQuestion(question);
+        let filteredRows = rows.filter((row) => row.id !== modifiedQuestion.id);
+        let data = [...filteredRows, modifiedQuestion];
+        data.sort((a, b) => {return a.id - b.id});
+        setRows(data);
+      }catch(error) {
+        setAlert({...alert, open : true, message : error.message});
+      }
+
       setLoading(false);
   }, [question]);
 
   const deleteQuestionById = useCallback(async (id) => {
       setLoading(true);
-      console.log(rows)
-      let deletedQuestion = await QuestionService.deleteQuestionById(id);
-      let filteredRows = rows.filter((row) => row.id !== deletedQuestion.id);
-      setRows(filteredRows);
+
+      try {
+        let deletedQuestion = await QuestionService.deleteQuestionById(id);
+        let filteredRows = rows.filter((row) => row.id !== deletedQuestion.id);
+        setRows(filteredRows);
+      } catch (error) {
+        setAlert({...alert, open : true, message : error.message});
+      }
+
       setLoading(false);
   });
 

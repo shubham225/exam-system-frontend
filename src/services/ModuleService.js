@@ -5,6 +5,7 @@ import { moduleList } from 'data/dummyData'
 function getModuleById(id) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
+            console.log("Fetching Modules By Id : " + id);
             let module = moduleList.find((module) => module.id == id); 
 
             if(module) {
@@ -18,6 +19,7 @@ function getModuleById(id) {
 
 function getModulesByExamId(id) {
     return new Promise((resolve, reject) => {
+        console.log("Fetching Modules By Exam Id : " + id);
         setTimeout(() => {
             if(moduleList) {
                 resolve(moduleList);
@@ -31,6 +33,7 @@ function getModulesByExamId(id) {
 function createNewModule(module) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
+            console.log("Creating New Module : " + JSON.stringify(module));
             module = {...module, id: ((Math.floor(Math.random() * 101)) + 11)}
 
             if(module) {
@@ -45,6 +48,7 @@ function createNewModule(module) {
 function modifyModule(module) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
+            console.log("Modifying Module : " + JSON.stringify(module));
             if(module) {
                 resolve(module);
             }else {
@@ -57,6 +61,7 @@ function modifyModule(module) {
 function deleteModuleById(id) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
+            console.log("Deleting Module by Id : " + id);
             let module = moduleList.find((module) => module.id == id); 
 
             if(module) {

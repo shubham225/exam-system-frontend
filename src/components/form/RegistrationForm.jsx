@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 
 import {Box, 
         Grid,
@@ -15,6 +15,9 @@ import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import useForm from "../../utils/FormHelper.jsx";
 import Input  from "components/ui/Input";
+import AuthService from "services/AuthService.js";
+import { useNavigate } from "react-router-dom";
+import { AlertContext } from "context/AlertContext.jsx";
 
 const initialFormValues = {
     fullName: '',
@@ -36,12 +39,27 @@ const RegisterationForm = (props) => {
     const {
         values,
         setValues,
+        resetForm,
         handleFormInputChange
     } = useForm(initialFormValues);
 
+    const {alert, setAlert} = React.useContext(AlertContext);
+    const navigateTo = useNavigate();
+
+    const registerNewUser = useCallback(async (userData) => {
+        try {
+            const data = await AuthService.registerNewUser(userData); 
+            setAlert({...alert, open : true, message : 'User Registered Sucesssfully'});
+            // navigateTo("/login");
+            resetForm();
+        }catch(error) {
+            setAlert({...alert, open : true, message : error.message});
+        }
+    }, []);
+
     const doRegisterUser = (e) => {
         e.preventDefault();
-        console.log(values);
+        registerNewUser(values);
     }
 
     return (

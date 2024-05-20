@@ -13,9 +13,11 @@ import AddIcon from '@mui/icons-material/Add';
 import ExamService from 'services/ExamService';
 import { Action, Click } from 'utils/Enums';
 import { useNavigate } from 'react-router-dom';
+import { AlertContext } from 'context/AlertContext';
 
 function Exams() {
     const {auth} = React.useContext(AuthContext);
+    const {alert, setAlert} = React.useContext(AlertContext);
     const [open, setOpen] = React.useState(false);
     const [rows, setRows] = React.useState([]);
     const [action, setAction] = React.useState(Action.NEW_RECORD);
@@ -39,33 +41,55 @@ function Exams() {
         
     const fetchAllExams = useCallback(async () => {
         setLoading(true);
-        const examList = await ExamService.getAllExams();
-        setRows(examList);
+        
+        try {
+            const examList = await ExamService.getAllExams();
+            setRows(examList);
+        }catch(error) {
+            setAlert({...alert, open : true, message : error.message});
+        }
+
         setLoading(false);
     });
 
     const createNewExam = useCallback(async () => {
         setLoading(true);
-        let data = await ExamService.createNewExam(exam);
-        setRows([...rows, data]);
+
+        try {
+            let data = await ExamService.createNewExam(exam);
+            setRows([...rows, data]);
+        }catch(error) {
+            setAlert({...alert, open : true, message : error.message});
+        }
+
         setLoading(false);
     });
 
     const modifyExam = useCallback(async () => {
         setLoading(true);
-        let modifiedExam = await ExamService.modifyExam(exam);
-        let filteredRows = rows.filter((row) => row.id !== modifiedExam.id);
-        let data = [...filteredRows, modifiedExam];
-        data.sort((a, b) => {return a.id - b.id});
-        setRows(data);
+        
+        try {
+            let modifiedExam = await ExamService.modifyExam(exam);
+            let filteredRows = rows.filter((row) => row.id !== modifiedExam.id);
+            let data = [...filteredRows, modifiedExam];
+            data.sort((a, b) => {return a.id - b.id});
+            setRows(data);
+        }catch(error) {
+            setAlert({...alert, open : true, message : error.message});
+        }
         setLoading(false);
     });
 
     const deleteExam = useCallback(async (id) => {
         setLoading(true);
-        let deletedExam = await ExamService.deleteExamById(id);
-        let newRows = rows.filter((row) => row.id !== deletedExam.id);
-        setRows(newRows);
+
+        try {
+            let deletedExam = await ExamService.deleteExamById(id);
+            let newRows = rows.filter((row) => row.id !== deletedExam.id);
+            setRows(newRows);
+        }catch(error) {
+            setAlert({...alert, open : true, message : error.message});
+        }
         setLoading(false);
     });
 

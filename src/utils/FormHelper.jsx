@@ -10,12 +10,17 @@ export default function useForm(initialFormValues) {
         setValues({
             ...values,
             [name]: value
-        })
+        });
+    }
+
+    const resetForm = () => {
+        setValues(initialFormValues);
     }
 
     return ({
         values,
         setValues,
+        resetForm,
         handleFormInputChange
     })
 }

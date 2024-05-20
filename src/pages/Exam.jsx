@@ -14,10 +14,12 @@ import { Backdrop, Box, Button, CircularProgress, Divider, Grid, Typography } fr
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Action, Click } from 'utils/Enums';
+import { AlertContext } from 'context/AlertContext';
 
 function Exam() {
   const { id } = useParams();
   const {auth} = React.useContext(AuthContext);
+  const {alert, setAlert} = React.useContext(AlertContext);
   const [open, setOpen] = React.useState(false);
   const [rows, setRows] = React.useState([]);
   const [action, setAction] = React.useState(Action.NEW_RECORD);
@@ -41,42 +43,71 @@ function Exam() {
           
   const getExamById = useCallback(async (id) => {
     setLoading(true);
-    const examDetail = await ExamService.getExamById(id);
-    setExam(examDetail);
-    console.log("detail : " + JSON.stringify(examDetail));
+
+    try {
+      const examDetail = await ExamService.getExamById(id);
+      setExam(examDetail);
+    }catch(error) {
+      setAlert({...alert, open : true, message : error.message});
+    }
+
     setLoading(false);
   });
     
   const getModulesByExamId = useCallback(async (id) => {
     setLoading(true);
-    const moduleList = await ModuleService.getModulesByExamId(id);
-    setRows(moduleList);
+
+    try {
+      const moduleList = await ModuleService.getModulesByExamId(id);
+      setRows(moduleList);
+    }catch(error) {
+      setAlert({...alert, open : true, message : error.message});
+    }
+
     setLoading(false);
   });
 
   const createNewModule = useCallback(async () => {
     setLoading(true);
-    let data = await ModuleService.createNewModule(module);
-    setRows([...rows, data]);
+
+    try {
+      let data = await ModuleService.createNewModule(module);
+      setRows([...rows, data]);
+    }catch(error) {
+      setAlert({...alert, open : true, message : error.message});
+    }
+
     setLoading(false);
   });
 
   const modifyModule = useCallback(async () => {
-      setLoading(true);
+    setLoading(true);
+
+    try {
       let modifiedModule = await ModuleService.modifyModule(module);
       let filteredRows = rows.filter((row) => row.id !== modifiedModule.id);
       let data = [...filteredRows, modifiedModule];
       data.sort((a, b) => {return a.id - b.id});
       setRows(data);
-      setLoading(false);
+    }catch(error) {
+      setAlert({...alert, open : true, message : error.message});
+    }
+
+    setLoading(false);
   });
 
   const deleteModule = useCallback(async (id) => {
-      setLoading(true);
+    setLoading(true);
+
+    try {
       let deletedModule = await ModuleService.deleteModuleById(id);
       let newRows = rows.filter((row) => row.id !== deletedModule.id);
       setRows(newRows);
-      setLoading(false);
+    }catch(error) {
+      setAlert({...alert, open : true, message : error.message});
+    }
+
+    setLoading(false);
   });
 
   useEffect(() => {
