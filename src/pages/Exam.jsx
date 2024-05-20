@@ -44,6 +44,7 @@ function Exam() {
     try {
       const examDetail = await ExamService.getExamById(id);
       setExam(examDetail);
+      setModule({...module, examId : examDetail.id});
     }catch(error) {
       setAlert(error, 'error');
     }
@@ -134,7 +135,7 @@ function Exam() {
 
   const handleClickOpen = () => {
     setAction(Action.NEW_RECORD);
-    setModule({});
+    setModule({...module, examId : exam.id});
     setOpen(true);
   };
 

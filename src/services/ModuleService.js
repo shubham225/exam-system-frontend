@@ -1,75 +1,82 @@
-import { moduleList } from 'data/dummyData'
+import request from "utils/AxiosHelper";
 
-// TODO : Implement API Calls
-
-function getModuleById(id) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            console.log("Fetching Modules By Id : " + id);
-            let module = moduleList.find((module) => module.id == id); 
-
-            if(module) {
-                resolve(module);
+function getModulesByExamId(id) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await request( "GET", ("/admin/exam/" + id + "/module"), {});
+            resolve(response.data);
+        }catch(error) {
+            if(error.response) {
+                reject(error.response.data);
             }else {
-                reject({});
+                const message = error.code + " : " + error.message;
+                reject({message : message});
             }
-        },1000)
+        }
     });
 }
 
-function getModulesByExamId(id) {
-    return new Promise((resolve, reject) => {
-        console.log("Fetching Modules By Exam Id : " + id);
-        setTimeout(() => {
-            if(moduleList) {
-                resolve(moduleList);
+function getModuleById(id) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await request( "GET", ("/admin/module/" + id), {});
+            resolve(response.data);
+        }catch(error) {
+            if(error.response) {
+                reject(error.response.data);
             }else {
-                reject({});
+                const message = error.code + " : " + error.message;
+                reject({message : message});
             }
-        },1000)
+        }
     });
 }
 
 function createNewModule(module) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            console.log("Creating New Module : " + JSON.stringify(module));
-            module = {...module, id: ((Math.floor(Math.random() * 101)) + 11)}
-
-            if(module) {
-                resolve(module);
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await request( "POST", "/admin/module", module);
+            resolve(response.data);
+        }catch(error) {
+            if(error.response) {
+                reject(error.response.data);
             }else {
-                reject({});
+                const message = error.code + " : " + error.message;
+                reject({message : message});
             }
-        },1000)
+        }
     });
 }
 
 function modifyModule(module) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            console.log("Modifying Module : " + JSON.stringify(module));
-            if(module) {
-                resolve(module);
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await request( "PUT", ("/admin/module/" + module.id), module);
+            resolve(response.data);
+        }catch(error) {
+            if(error.response) {
+                reject(error.response.data);
             }else {
-                reject({});
+                const message = error.code + " : " + error.message;
+                reject({message : message});
             }
-        },1000)
+        }
     });
 }
 
 function deleteModuleById(id) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            console.log("Deleting Module by Id : " + id);
-            let module = moduleList.find((module) => module.id == id); 
-
-            if(module) {
-                resolve(module);
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await request( "DELETE", ("/admin/module/" + id), {});
+            resolve(response.data);
+        }catch(error) {
+            if(error.response) {
+                reject(error.response.data);
             }else {
-                reject({});
+                const message = error.code + " : " + error.message;
+                reject({message : message});
             }
-        },1000)
+        }
     });
 }
 

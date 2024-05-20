@@ -1,11 +1,10 @@
-import request, { setAuthToken } from "utils/AxiosHelper";
+import request from "utils/AxiosHelper";
 
 function loginWithEmailIdPassword(credentials) {
     return new Promise(async (resolve, reject) => {
-        console.log("Logging in.. : " + JSON.stringify(credentials));
+
         try {
             const response = await request( "POST", "/auth/login", credentials);
-            // setAuthToken(response.data.token);
             resolve(response.data);
         }catch(error) {
             if(error.response) {
@@ -14,13 +13,13 @@ function loginWithEmailIdPassword(credentials) {
                 const message = error.code + " : " + error.message;
                 reject({message : message});
             }
-            window.localStorage.removeItem("auth_token");
         }
     });
 }
 
 function logout(userId) {
     return new Promise((resolve, reject) => {
+        // TODO : IMPLEMENT LOGOUT AT BACKEND
         setTimeout(() => {
             console.log("Logging out... : " + userId);
 
@@ -35,7 +34,6 @@ function logout(userId) {
 
 function registerNewUser(userData) {
     return new Promise(async (resolve, reject) => {
-        console.log("Registering user... : " + userData);
 
         try {
             const response = await request( "POST", "/auth/register", userData);

@@ -140,7 +140,7 @@ function Module() {
     e.preventDefault();
 
     setAction(Action.NEW_RECORD);
-    setQuestion({options: []});
+    setQuestion({moduleId: module.id, options: []});
     setOpenQuestionDlg(true);
   };
 

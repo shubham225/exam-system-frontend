@@ -84,7 +84,6 @@ function Exams() {
 
         try {
             let deletedExam = await ExamService.deleteExamById(id);
-            throw Error("Testing")
             let newRows = rows.filter((row) => row.id !== deletedExam.id);
             setRows(newRows);
         }catch(error) {

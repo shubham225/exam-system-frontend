@@ -1,74 +1,83 @@
-import { examList } from 'data/dummyData'
-
-// TODO : Implement API Calls
-
-function getExamById(id) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            console.log("Fetching Exam by Id : " + id);
-            let exam = examList.find((exam) => exam.id == id); 
-        
-            if(exam) {
-                resolve(exam);
-            }else {
-                reject({});
-            }
-        },1000)
-    });
-}
+import request from "utils/AxiosHelper";
 
 function getAllExams() {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            console.log("Fetching All Exams");
-            resolve(examList);
-        },2000)
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await request( "GET", "/admin/exam", {});
+            resolve(response.data);
+        }catch(error) {
+            if(error.response) {
+                reject(error.response.data);
+            }else {
+                const message = error.code + " : " + error.message;
+                reject({message : message});
+            }
+        }
     });
-    // return examList;
 }
 
+function getExamById(id) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await request( "GET", ("/admin/exam/" + id), {});
+            resolve(response.data);
+        }catch(error) {
+            if(error.response) {
+                reject(error.response.data);
+            }else {
+                const message = error.code + " : " + error.message;
+                reject({message : message});
+            }
+        }
+    });
+}
 
 function createNewExam(exam) {
-    // TODO : Call API and add the exam then return new exam with id
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            console.log("Creating New Exam : " + JSON.stringify(exam));
-            exam = {...exam, id: ((Math.floor(Math.random() * 101))+ 11)}
-
-            if(exam) {
-                resolve(exam);
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await request( "POST", "/admin/exam", exam);
+            resolve(response.data);
+        }catch(error) {
+            if(error.response) {
+                reject(error.response.data);
             }else {
-                reject({});
+                const message = error.code + " : " + error.message;
+                reject({message : message});
             }
-        },1000)
+        }
     });
 }
 
 function modifyExam(exam) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            console.log("Modifying Exam : " + JSON.stringify(exam));
-            if(exam) {
-                resolve(exam);
+    return new Promise(async (resolve, reject) => {
+        console.log("Modify Exam : " + JSON.stringify(exam));
+        try {
+            const response = await request( "PUT", ("/admin/exam/" + exam.id), exam);
+            resolve(response.data);
+        }catch(error) {
+            if(error.response) {
+                reject(error.response.data);
             }else {
-                reject({});
+                const message = error.code + " : " + error.message;
+                reject({message : message});
             }
-        },1000)
+        }
     });
 }
 
 function deleteExamById(id) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            console.log("Deleting Exam by Id : " + id);
-            const exam = examList.find((exam) => exam.id == id);
-
-            if(exam) {
-                resolve(exam);
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await request( "DELETE", ("/admin/exam/" + id), {});
+            resolve(response.data);
+        }catch(error) {
+            if(error.response) {
+                reject(error.response.data);
             }else {
-                reject({});
+                const message = error.code + " : " + error.message;
+                reject({message : message});
             }
-        },1000)
+        }
     });
 }
 

@@ -1,73 +1,82 @@
-import { questionList } from 'data/dummyData'
+import request from "utils/AxiosHelper";
 
-export function getQuestionById(id) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            console.log("Fetching Questions By Id : " + id);
-            let question = questionList.find((question) => question.id == id); 
-
-            if(question) {
-                resolve(question);
+export function getQuestionsByModuleId(id) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await request( "GET", ("/admin/module/" + id + "/question"), {});
+            resolve(response.data);
+        }catch(error) {
+            if(error.response) {
+                reject(error.response.data);
             }else {
-                reject({});
+                const message = error.code + " : " + error.message;
+                reject({message : message});
             }
-        },1000)
+        }
     });
 }
 
-export function getQuestionsByModuleId(id) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            console.log("Fetching Questions By Module Id : " + id);
-            if(questionList) {
-                resolve(questionList);
+export function getQuestionById(id) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await request( "GET", ("/admin/question/" + id), {});
+            resolve(response.data);
+        }catch(error) {
+            if(error.response) {
+                reject(error.response.data);
             }else {
-                reject({});
+                const message = error.code + " : " + error.message;
+                reject({message : message});
             }
-        },1000)
+        }
     });
 }
 
 export function createNewQuestion(question) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            console.log("Creating New Question : " + JSON.stringify(question));
-            question = {...question, id: ((Math.floor(Math.random() * 101)) + 11)}
-
-            if(module) {
-                resolve(question);
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await request( "POST", "/admin/question", question);
+            resolve(response.data);
+        }catch(error) {
+            if(error.response) {
+                reject(error.response.data);
             }else {
-                reject({});
+                const message = error.code + " : " + error.message;
+                reject({message : message});
             }
-        },1000)
+        }
     });
 }
 
 function modifyQuestion(question) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            console.log("Modifying Question : " + JSON.stringify(question));
-            if(question) {
-                resolve(question);
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await request( "PUT", ("/admin/question/" + question.id), question);
+            resolve(response.data);
+        }catch(error) {
+            if(error.response) {
+                reject(error.response.data);
             }else {
-                reject({});
+                const message = error.code + " : " + error.message;
+                reject({message : message});
             }
-        },1000)
+        }
     });
 }
 
 function deleteQuestionById(id) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            console.log("Deleting Question by Id : " + id);
-            let question = questionList.find((question) => question.id == id); 
-            
-            if(question) {
-                resolve(question);
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await request( "DELETE", ("/admin/question/" + id), {});
+            resolve(response.data);
+        }catch(error) {
+            if(error.response) {
+                reject(error.response.data);
             }else {
-                reject({message : "Question not found in backend"});
+                const message = error.code + " : " + error.message;
+                reject({message : message});
             }
-        },1000)
+        }
     });
 }
 
