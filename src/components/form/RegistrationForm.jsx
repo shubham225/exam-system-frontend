@@ -15,9 +15,8 @@ import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import Input  from "components/ui/Input";
 import AuthService from "services/AuthService.js";
-import { useNavigate } from "react-router-dom";
-import { AlertContext } from "context/AlertContext.jsx";
 import useForm from "hooks/useForm";
+import useAlert from "hooks/useAlert";
 
 const initialFormValues = {
     fullName: '',
@@ -43,16 +42,15 @@ const RegisterationForm = (props) => {
         handleChange
     } = useForm(initialFormValues);
 
-    const {alert, setAlert} = React.useContext(AlertContext);
-    const navigateTo = useNavigate();
+    const {setAlert} = useAlert();
 
     const registerNewUser = useCallback(async (userData) => {
         try {
             const data = await AuthService.registerNewUser(userData); 
-            setAlert({...alert, open : true, severity : 'success', message : 'User Registered Sucesssfully'});
+            setAlert({message : 'User Registered Sucesssfully'}, 'success');
             resetForm();
         }catch(error) {
-            setAlert({...alert, open : true, message : error.message});
+            setAlert(error, 'error');
         }
     }, []);
 

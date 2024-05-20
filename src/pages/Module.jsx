@@ -1,35 +1,30 @@
 import React, { useEffect, useCallback } from 'react';
 
-import { AuthContext } from 'context/AuthContext';
-
 import LargeWindow from 'layouts/LargeWindow';
 import DataTable from 'components/form/DataTable';
 import EditActions from 'components/ui/EditActions';
 import { questionColumns } from 'data/columnDefinitions';
 
-import { Alert, AlertTitle, Backdrop, Box, Button, CircularProgress, Divider, Grid, Typography } from '@mui/material';
+import { Box, Button, Divider, Grid, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import QuestionService from 'services/QuestionService';
 import ModuleService from 'services/ModuleService';
 import QuestionDialog  from 'components/dialog/QuestionDialog'
 import { Action, Click } from 'utils/Enums';
-import AlertSnackBar from 'components/ui/AlertSnackBar';
-import { AlertContext } from 'context/AlertContext';
+import useAlert from 'hooks/useAlert';
+import useLoading from 'hooks/useLoading';
 
 function Module() {
   const { id } = useParams();
-  const {auth} = React.useContext(AuthContext);
-  const {alert, setAlert} = React.useContext(AlertContext);
   const [openQuestionDlg, setOpenQuestionDlg] = React.useState(false);
   const [rows, setRows] = React.useState([]);
   const [module, setModule] = React.useState({});
   const [question, setQuestion] = React.useState({options: []});
   const [action, setAction] = React.useState(Action.NEW_RECORD);
-  const [loading, setLoading] = React.useState(false);
-  const navigateTo = useNavigate();
 
-  //if (!auth) return (<div>No Auth</div>);
+  const {startLoading, stopLoading} = useLoading();
+  const {setAlert} = useAlert();
 
   const columns = [...questionColumns, 
                   {
@@ -46,46 +41,46 @@ function Module() {
                   }];
         
   const getModuleById = useCallback(async (id) => {
-    setLoading(true);
+    startLoading();
 
     try {
       const moduleDetail = await ModuleService.getModuleById(id); 
       setModule(moduleDetail);
     } catch (error) {
-      setAlert({...alert, open : true, message : error.message});
+      setAlert(error, 'error');
     }
 
-    setLoading(false);
+    stopLoading();
   }, [id]);
     
   const getQuestionsByModuleId = useCallback(async (id) => {
-    setLoading(true);
+    startLoading();
 
     try{
       const questionList = await QuestionService.getQuestionsByModuleId(id);
       setRows(questionList);
     } catch (error) {
-      setAlert({...alert, open : true, message : error.message});
+      setAlert(error, 'error');
     }
   
-    setLoading(false);
+    stopLoading();
   }, [id]);
 
   const createNewQuestion = useCallback(async () => {
-    setLoading(true);
+    startLoading();
 
     try {
       let data = await QuestionService.createNewQuestion(question);
       setRows([...rows, data]);
     } catch (error) {
-      setAlert({...alert, open : true, message : error.message});
+      setAlert(error, 'error');
     }
 
-    setLoading(false);
+    stopLoading();
   }, [question]);
 
   const modifyQuestion = useCallback(async () => {
-      setLoading(true);
+    startLoading();
 
       try {
         let modifiedQuestion = await QuestionService.modifyQuestion(question);
@@ -94,30 +89,25 @@ function Module() {
         data.sort((a, b) => {return a.id - b.id});
         setRows(data);
       }catch(error) {
-        setAlert({...alert, open : true, message : error.message});
+        setAlert(error, 'error');
       }
 
-      setLoading(false);
+    stopLoading();
   }, [question]);
 
   const deleteQuestionById = useCallback(async (id) => {
-      setLoading(true);
+    startLoading();
 
-      try {
-        let deletedQuestion = await QuestionService.deleteQuestionById(id);
-        let filteredRows = rows.filter((row) => row.id !== deletedQuestion.id);
-        setRows(filteredRows);
-      } catch (error) {
-        setAlert({...alert, open : true, message : error.message});
-      }
+    try {
+      let deletedQuestion = await QuestionService.deleteQuestionById(id);
+      let filteredRows = rows.filter((row) => row.id !== deletedQuestion.id);
+      setRows(filteredRows);
+    } catch (error) {
+      setAlert(error, 'error');
+    }
 
-      setLoading(false);
+    stopLoading();
   });
-
-  const stopLoading = () => {
-      setLoading(false);
-  }
-
 
   useEffect(() => {
     getModuleById(id);
@@ -197,13 +187,6 @@ function Module() {
               setQuestion={setQuestion}
               onCloseDialog= {handleCloseQuestionDlg}
           /> 
-          <Backdrop
-              sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-              open={loading}
-              onClick={stopLoading}
-          >
-              <CircularProgress color="inherit" />
-          </Backdrop>
       </LargeWindow>
   )
 }

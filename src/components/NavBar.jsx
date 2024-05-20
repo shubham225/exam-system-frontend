@@ -1,22 +1,22 @@
 import React from "react";
 import { useNavigate } from 'react-router-dom'
 
-import { AuthContext } from 'context/AuthContext';
-
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import useAuth from "hooks/useAuth";
+import useAlert from "hooks/useAlert";
 
 const NavBar = () => {
-    // const { auth, setAuth } = React.useContext(AuthContext);
     const navigateTo = useNavigate();
     const {token, setToken} = useAuth();
+    const {setAlert} = useAlert();
 
     const handleLogout = (e) => {
         e.preventDefault();
         setToken({});
+        setAlert({message : 'Logout Successfully'}, 'success');
         navigateTo('/');
     }
 

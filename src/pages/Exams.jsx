@@ -1,28 +1,28 @@
 import React, { useCallback, useEffect } from 'react';
 
-import { AuthContext } from 'context/AuthContext';
-
 import LargeWindow from 'layouts/LargeWindow';
 import ExamDialog from 'components/dialog/ExamDialog';
 import DataTable from 'components/form/DataTable';
 import EditActions from 'components/ui/EditActions';
 import { examColumns } from 'data/columnDefinitions';
 
-import { Backdrop, Box, Button, CircularProgress, Divider, Grid, Typography } from '@mui/material';
+import { Box, Button, Divider, Grid, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import ExamService from 'services/ExamService';
 import { Action, Click } from 'utils/Enums';
 import { useNavigate } from 'react-router-dom';
-import { AlertContext } from 'context/AlertContext';
+import useLoading from 'hooks/useLoading';
+import useAlert from 'hooks/useAlert';
 
 function Exams() {
-    const {auth} = React.useContext(AuthContext);
-    const {alert, setAlert} = React.useContext(AlertContext);
+    // const {alert, setAlert} = React.useContext(AlertContext);
     const [open, setOpen] = React.useState(false);
     const [rows, setRows] = React.useState([]);
     const [action, setAction] = React.useState(Action.NEW_RECORD);
     const [exam, setExam] = React.useState({});
-    const [loading, setLoading] = React.useState(false);
+
+    const {startLoading, stopLoading} = useLoading();
+    const {setAlert} = useAlert();
 
     const navigateTo = useNavigate();
 
@@ -38,33 +38,33 @@ function Exams() {
         }];
         
     const fetchAllExams = useCallback(async () => {
-        setLoading(true);
+        startLoading();
         
         try {
             const examList = await ExamService.getAllExams();
             setRows(examList);
         }catch(error) {
-            setAlert({...alert, open : true, message : error.message});
+            setAlert(error, 'error');
         }
 
-        setLoading(false);
+        stopLoading();
     });
 
     const createNewExam = useCallback(async () => {
-        setLoading(true);
+        startLoading();
 
         try {
             let data = await ExamService.createNewExam(exam);
             setRows([...rows, data]);
         }catch(error) {
-            setAlert({...alert, open : true, message : error.message});
+            setAlert(error, 'error');
         }
 
-        setLoading(false);
+        stopLoading();
     });
 
     const modifyExam = useCallback(async () => {
-        setLoading(true);
+        startLoading();
         
         try {
             let modifiedExam = await ExamService.modifyExam(exam);
@@ -73,22 +73,25 @@ function Exams() {
             data.sort((a, b) => {return a.id - b.id});
             setRows(data);
         }catch(error) {
-            setAlert({...alert, open : true, message : error.message});
+            setAlert(error, 'error');
         }
-        setLoading(false);
+
+        stopLoading();
     });
 
     const deleteExam = useCallback(async (id) => {
-        setLoading(true);
+        startLoading();
 
         try {
             let deletedExam = await ExamService.deleteExamById(id);
+            throw Error("Testing")
             let newRows = rows.filter((row) => row.id !== deletedExam.id);
             setRows(newRows);
         }catch(error) {
-            setAlert({...alert, open : true, message : error.message});
+            setAlert(error, 'error');
         }
-        setLoading(false);
+
+        stopLoading();
     });
 
     useEffect(() => {
@@ -121,10 +124,6 @@ function Exams() {
         setExam({});
         setOpen(true);
     };
-
-    const stopLoading = () => {
-        setLoading(false);
-    }
   
     const handleClose = (callback) => {
         if (callback.click === Click.SUBMIT) {
@@ -169,13 +168,6 @@ function Exams() {
                 setExam={setExam}
                 onCloseDialog= {handleClose}
             /> 
-            <Backdrop
-                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={loading}
-                onClick={stopLoading}
-            >
-                <CircularProgress color="inherit" />
-            </Backdrop>
         </LargeWindow>
     )
 }

@@ -3,12 +3,13 @@ import React from 'react'
 
 function AlertSnackBar(props) {
     const {open, handleClose, severity, message,...other} = props;
-
+    
     return (
         <div>
             <Snackbar 
-                open={open} 
-                autoHideDuration={3000} onClose={handleClose} 
+                open={open?open:false} 
+                autoHideDuration={3000} 
+                onClose={handleClose} 
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                 sx={{mt : 7}}
                 >

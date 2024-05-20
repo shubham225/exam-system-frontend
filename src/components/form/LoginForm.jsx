@@ -5,20 +5,20 @@ import {Box,
         TextField,
         Typography,
         Button,
-        Alert,
         Stack} from '@mui/material';
 
 import LoginIcon from '@mui/icons-material/Login';
-import { AlertContext } from 'context/AlertContext';
 import AuthService from 'services/AuthService';
 import useAuth from 'hooks/useAuth'; 
+import useAlert from 'hooks/useAlert';
 
 function LoginForm() {
-    const {alert, setAlert} = React.useContext(AlertContext);
 
     const [username, setUsername] = React.useState('');
     const [password, setPassowrd] = React.useState('');
+
     const {token, setToken} = useAuth();
+    const {setAlert} = useAlert();
 
     const navigateTo = useNavigate();
 
@@ -28,7 +28,7 @@ function LoginForm() {
             setToken(data);
         }catch(error) {
             setToken({});
-            setAlert({...alert, open : true, message : error.message});
+            setAlert(error, 'error');
         }
     }, []);
 

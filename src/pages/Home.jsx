@@ -1,10 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { AuthContext } from 'context/AuthContext';
-
-import LargeWindow from 'layouts/LargeWindow'
-
 import {Box, Button, Typography, Stack} from '@mui/material';
 
 import LoginIcon from '@mui/icons-material/Login';
