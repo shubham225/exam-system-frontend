@@ -5,12 +5,13 @@ axios.defaults.headers.post["Content-type"] = 'application/json'
 
 function request(method, url, data) {
     const tokenString = sessionStorage.getItem('auth_token');
-    const userToken = JSON.parse(tokenString);
-    const token = userToken.token;
-    
-    let headers = {};
 
-    if(token) {
+    let headers = {};
+    
+    if(tokenString){
+        const userToken = JSON.parse(tokenString);
+        const token = userToken.token;
+
         headers = {"Authorization" : ("Bearer " + token)};
     }
 

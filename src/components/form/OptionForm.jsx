@@ -17,13 +17,13 @@ export default function OptionForm(params) {
                 fullWidth
                 name="optionText"
                 value={option.optionText}
-                onChange={(e) => {e.preventDefault(); setOption({...option, [e.target.name]: e.target.value})}}
+                onChange={(e) => {e.preventDefault(); setOption({...option, optionText: e.target.value})}}
                 label="New Option"
                 type="input"/>
             <FormControlLabel 
-                control={<Checkbox name="isAnswer" 
-                            checked={option.isAnswer} 
-                            onClick={(e) => {e.preventDefault(); setOption({...option, [e.target.name]: e.target.checked})}}/>} 
+                control={<Checkbox name="answer" 
+                            checked={option.answer} 
+                            onClick={(e) => {e.preventDefault(); setOption({...option, answer : e.target.checked})}}/>} 
                 label="Answer" />
         </FormGroup>
     )

@@ -20,7 +20,7 @@ import useAlert from "hooks/useAlert";
 
 const initialFormValues = {
     fullName: '',
-    gender: "male",
+    gender: "MALE",
     email: "",
     password: "",
     institute: "",
@@ -28,9 +28,9 @@ const initialFormValues = {
 }
 
 const genderItems = [
-    { id: 'male', label: 'Male' },
-    { id: 'female', label: 'Female' },
-    { id: 'other', label: 'Other' }
+    { id: 'MALE', label: 'Male' },
+    { id: 'FEMALE', label: 'Female' },
+    { id: 'OTHER', label: 'Other' }
 ]
 
 const RegisterationForm = (props) => {

@@ -10,6 +10,7 @@ import Register from "./Register";
 import Exam from "./Exam";
 import Module from "./Module";
 import ProtectedRoutes from "./ProtectedRoutes";
+import Results from "./Results";
 
 const router = createBrowserRouter(
     [
@@ -48,6 +49,10 @@ const router = createBrowserRouter(
                         {
                             path: "module/:id",
                             element: <Module />
+                        },
+                        {
+                            path: "results",
+                            element: <Results />
                         }
                     ]
                 },

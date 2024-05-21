@@ -11,6 +11,7 @@ import ModuleService from 'services/ModuleService';
 import { Box, Button, Divider, Grid, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate, useParams } from 'react-router-dom';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { Action, Click } from 'utils/Enums';
 import useAlert from 'hooks/useAlert';
 import useLoading from 'hooks/useLoading';
@@ -163,9 +164,12 @@ function Exam() {
       <LargeWindow>
           <Grid container direction='column' p={2}>
               <Grid item pb={2}>
-                  <Box display='flex' justifyContent='space-between'>
+                  <Box display='flex' justifyContent='space-between'> 
+                    <Box display='flex'>
+                      <Button startIcon={<ArrowBackIosNewIcon />} onClick={() => navigateTo(-1)} />
                       <Typography variant='h3'>{ exam.examName + " [ #" + exam.id + " ]"} </Typography>
-                      <Button variant='outlined' startIcon={<AddIcon/>} onClick={handleClickOpen}>New Module</Button>
+                    </Box>
+                    <Button variant='outlined' startIcon={<AddIcon/>} onClick={handleClickOpen}>New Module</Button>
                   </Box>
               </Grid>
               <Divider />

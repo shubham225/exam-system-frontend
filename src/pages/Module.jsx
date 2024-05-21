@@ -7,10 +7,11 @@ import { questionColumns } from 'data/columnDefinitions';
 
 import { Box, Button, Divider, Grid, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import QuestionService from 'services/QuestionService';
 import ModuleService from 'services/ModuleService';
-import QuestionDialog  from 'components/dialog/QuestionDialog'
+import QuestionDialog  from 'components/dialog/QuestionDialog';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { Action, Click } from 'utils/Enums';
 import useAlert from 'hooks/useAlert';
 import useLoading from 'hooks/useLoading';
@@ -25,6 +26,7 @@ function Module() {
 
   const {startLoading, stopLoading} = useLoading();
   const {setAlert} = useAlert();
+  const navigateTo = useNavigate();
 
   const columns = [...questionColumns, 
                   {
@@ -68,10 +70,10 @@ function Module() {
 
   const createNewQuestion = useCallback(async () => {
     startLoading();
-
     try {
       let data = await QuestionService.createNewQuestion(question);
       setRows([...rows, data]);
+      console.log(data);
     } catch (error) {
       setAlert(error, 'error');
     }
@@ -140,7 +142,7 @@ function Module() {
     e.preventDefault();
 
     setAction(Action.NEW_RECORD);
-    setQuestion({moduleId: module.id, options: []});
+    setQuestion({moduleId : module.id, type : "MULTIPLE_CHOICE", options: []});
     setOpenQuestionDlg(true);
   };
 
@@ -168,8 +170,11 @@ function Module() {
           <Grid container direction='column' p={2}>
               <Grid item pb={2}>
                   <Box display='flex' justifyContent='space-between'>
+                    <Box display='flex'>
+                      <Button startIcon={<ArrowBackIosNewIcon />} onClick={() => navigateTo(-1)} />
                       <Typography variant='h3'>{ module.moduleName + " [ #" + module.id + " ]"} </Typography>
-                      <Button variant='outlined' startIcon={<AddIcon/>} onClick={(e) => handleNewRecord(e)}>New Question</Button>
+                    </Box>
+                    <Button variant='outlined' startIcon={<AddIcon/>} onClick={(e) => handleNewRecord(e)}>New Question</Button>
                   </Box>
               </Grid>
               <Divider />

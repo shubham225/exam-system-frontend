@@ -33,6 +33,7 @@ export default function Admin() {
                 <Grid item xs={6} textAlign='center'>
                     <Button fullWidth variant="outlined" 
                         startIcon={<AssessmentIcon/>} 
+                        onClick={() => navigateTo("/results")} 
                         sx={{height:'-webkit-fill-available'}}>
                             View Results
                     </Button>

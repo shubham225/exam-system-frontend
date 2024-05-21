@@ -56,9 +56,9 @@ export default function QuestionDialog(props) {
                         label="New Option"
                         type="input"/>
                     <FormControlLabel 
-                        control={<Checkbox name="isAnswer" 
+                        control={<Checkbox name="answer" 
                                     checked={option.isAnswer} 
-                                    onChange={(e) => {e.preventDefault(); setOption({...option, isAnswer: e.target.checked})}}/>} 
+                                    onChange={(e) => {e.preventDefault(); setOption({...option, answer: e.target.checked})}}/>} 
                         label="Answer" />
                 </FormGroup>
             </DialogContent>

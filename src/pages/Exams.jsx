@@ -11,6 +11,7 @@ import AddIcon from '@mui/icons-material/Add';
 import ExamService from 'services/ExamService';
 import { Action, Click } from 'utils/Enums';
 import { useNavigate } from 'react-router-dom';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import useLoading from 'hooks/useLoading';
 import useAlert from 'hooks/useAlert';
 
@@ -148,7 +149,10 @@ function Exams() {
             <Grid container direction='column' p={2}>
                 <Grid item pb={2}>
                     <Box display='flex' justifyContent='space-between'>
-                        <Typography variant='h3'>Exams</Typography>
+                        <Box display='flex'>
+                            <Button startIcon={<ArrowBackIosNewIcon />} onClick={() => navigateTo(-1)} />
+                            <Typography variant='h3'>Exams</Typography>
+                        </Box>
                         <Button variant='outlined' startIcon={<AddIcon/>} onClick={handleClickOpen}>New Exam</Button>
                     </Box>
                 </Grid>

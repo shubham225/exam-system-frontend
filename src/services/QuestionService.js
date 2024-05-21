@@ -34,6 +34,7 @@ export function getQuestionById(id) {
 
 export function createNewQuestion(question) {
     return new Promise(async (resolve, reject) => {
+
         try {
             const response = await request( "POST", "/admin/question", question);
             resolve(response.data);
@@ -50,6 +51,8 @@ export function createNewQuestion(question) {
 
 function modifyQuestion(question) {
     return new Promise(async (resolve, reject) => {
+        console.log("Modify Question : " + JSON.stringify(question));
+
         try {
             const response = await request( "PUT", ("/admin/question/" + question.id), question);
             resolve(response.data);

@@ -96,7 +96,7 @@ export default function OptionsTable(props) {
                             <TableCell >ID</TableCell>
                             <TableCell >Option</TableCell>
                             <TableCell align="right">Answer</TableCell>
-                            <TableCell align="right"> Action</TableCell>
+                            <TableCell align="right">Action</TableCell>
                         </TableRow>
                         </TableHead>
                         <TableBody>
@@ -107,7 +107,7 @@ export default function OptionsTable(props) {
                                 >
                                 <TableCell component="th" scope="row">{row.id}</TableCell>
                                 <TableCell >{row.optionText}</TableCell>
-                                <TableCell align="right"> <Checkbox disabled checked={row.isAnswer} /> </TableCell>
+                                <TableCell align="right"> <Checkbox disabled checked={row.answer} /> </TableCell>
                                 <TableCell align="right"> 
                                 { (action !== Action.DISPLAY_RECORD) &&
                                     <Box>
