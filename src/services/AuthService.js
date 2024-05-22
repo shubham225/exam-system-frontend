@@ -49,10 +49,28 @@ function registerNewUser(userData) {
     });
 }
 
+function getUserRoles() {
+    const tokenString = sessionStorage.getItem('auth_token');
+    const userToken = JSON.parse(tokenString);
+    const roles = userToken?.roles;
+    return roles;
+}
+
+function isUserAdmin() {
+    const roles = getUserRoles();
+    if(roles.find((role) => role == 'ADMIN')) {
+        return true;
+    }else {
+        return false;
+    }
+}
+
 const AuthService = {
     loginWithEmailIdPassword,
     registerNewUser,
-    logout
+    logout,
+    isUserAdmin,
+    getUserRoles
 }
 
 export default AuthService;

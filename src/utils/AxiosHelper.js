@@ -10,9 +10,8 @@ function request(method, url, data) {
     
     if(tokenString){
         const userToken = JSON.parse(tokenString);
-        const token = userToken.token;
-
-        headers = {"Authorization" : ("Bearer " + token)};
+        const token = userToken?.token;
+        if(token) headers = {"Authorization" : ("Bearer " + token)};
     }
 
     return axios(

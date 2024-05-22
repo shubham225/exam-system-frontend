@@ -70,10 +70,11 @@ function Module() {
 
   const createNewQuestion = useCallback(async () => {
     startLoading();
+
     try {
       let data = await QuestionService.createNewQuestion(question);
       setRows([...rows, data]);
-      console.log(data);
+      setOpenQuestionDlg(false);
     } catch (error) {
       setAlert(error, 'error');
     }
@@ -84,15 +85,16 @@ function Module() {
   const modifyQuestion = useCallback(async () => {
     startLoading();
 
-      try {
-        let modifiedQuestion = await QuestionService.modifyQuestion(question);
-        let filteredRows = rows.filter((row) => row.id !== modifiedQuestion.id);
-        let data = [...filteredRows, modifiedQuestion];
-        data.sort((a, b) => {return a.id - b.id});
-        setRows(data);
-      }catch(error) {
-        setAlert(error, 'error');
-      }
+    try {
+      let modifiedQuestion = await QuestionService.modifyQuestion(question);
+      let filteredRows = rows.filter((row) => row.id !== modifiedQuestion.id);
+      let data = [...filteredRows, modifiedQuestion];
+      data.sort((a, b) => {return a.id - b.id});
+      setRows(data);
+      setOpenQuestionDlg(false);
+    }catch(error) {
+      setAlert(error, 'error');
+    }
 
     stopLoading();
   }, [question]);
@@ -150,19 +152,19 @@ function Module() {
     if (callback.click === Click.SUBMIT) {
         switch(action) {
             case (Action.NEW_RECORD) : {
-                createNewQuestion();
-                break;
+              createNewQuestion();
+              break;
             }
             case (Action.MODIFY_RECORD) : {
-                modifyQuestion();
-                break;
+              modifyQuestion();
+              break;
             }
             default : {
-                break;
+              setOpenQuestionDlg(false);
+              break;
             }
         }
     }
-    setOpenQuestionDlg(false);
   };
 
   return (

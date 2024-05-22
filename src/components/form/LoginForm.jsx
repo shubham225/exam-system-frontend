@@ -36,9 +36,7 @@ function LoginForm() {
         e.preventDefault();
         const creds = {username : username, password : password};
         loginWithCredentials(creds);
-        console.log("Token ", token)
         if(token) {
-            console.log("Token ", token)
             navigateTo('/dashboard');
             navigateTo(0);
         }

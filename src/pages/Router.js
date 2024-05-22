@@ -11,6 +11,7 @@ import Exam from "./Exam";
 import Module from "./Module";
 import ProtectedRoutes from "./ProtectedRoutes";
 import Results from "./Results";
+import Test from "./Test";
 
 const router = createBrowserRouter(
     [
@@ -53,6 +54,10 @@ const router = createBrowserRouter(
                         {
                             path: "results",
                             element: <Results />
+                        },
+                        {
+                            path: "test/:id",
+                            element: <Test />
                         }
                     ]
                 },
