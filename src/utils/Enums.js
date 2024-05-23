@@ -10,4 +10,10 @@ export const Click = Object.freeze({
     SUBMIT : 'submit'
 })
 
+export const QuestionStatus = Object.freeze({
+    ANSWERED : 'answered',
+    NOT_ANSWERED : 'not_answered',
+    MARKED : 'marked'
+})
+
 export default {Action};
