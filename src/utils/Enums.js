@@ -11,6 +11,7 @@ export const Click = Object.freeze({
 })
 
 export const QuestionStatus = Object.freeze({
+    NOT_VISITED : 'not_visited',
     ANSWERED : 'answered',
     NOT_ANSWERED : 'not_answered',
     MARKED : 'marked'

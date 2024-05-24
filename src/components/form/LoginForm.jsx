@@ -16,6 +16,7 @@ function LoginForm() {
 
     const [username, setUsername] = React.useState('');
     const [password, setPassowrd] = React.useState('');
+    const [disableLogin, setDisableLogin] = React.useState(false);
 
     const {token, setToken} = useAuth();
     const {setAlert} = useAlert();
@@ -34,8 +35,10 @@ function LoginForm() {
 
     const handleLogin = (e) => {
         e.preventDefault();
+        setDisableLogin(true);
         const creds = {username : username, password : password};
         loginWithCredentials(creds);
+        setDisableLogin(false);
         if(token) {
             navigateTo('/dashboard');
             navigateTo(0);
@@ -64,7 +67,7 @@ function LoginForm() {
                     value={password}
                     onChange={(e) => setPassowrd(e.target.value)}
                 />
-                <Button variant="contained" type='submit' endIcon={<LoginIcon />} >
+                <Button disabled={disableLogin} variant="contained" type='submit' endIcon={<LoginIcon />} >
                     Sign In
                 </Button>
                 <Typography variant='h9' padding={1}>

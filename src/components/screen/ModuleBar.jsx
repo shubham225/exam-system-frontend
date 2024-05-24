@@ -1,23 +1,26 @@
-import { Button, Grid, Paper, Typography } from '@mui/material'
+import { Button, ButtonGroup, Grid, Paper, Typography } from '@mui/material'
 import LargeWindow from 'layouts/LargeWindow'
 import React from 'react'
 
 function ModuleBar(props) {
   const {
     list,
-    module,
-    setModule
+    moduleId,
+    setModuleId
   } = props;
 
   return (
     <LargeWindow >
-      <Grid container direction='column'>
+        <ButtonGroup
+          fullWidth
+          orientation="vertical"
+          aria-label="Vertical button group"
+          variant="text"
+        >
         {list.map((row) => (
-          <Grid item >
-            <Button fullWidth sx={{height : '60px'}} onClick={() => setModule(row.id)}>{row.moduleName}</Button>
-          </Grid>
+            <Button fullWidth sx={{height : '60px'}} onClick={() => setModuleId(row.id)}>{row.moduleName}</Button>
         ))}
-      </Grid>
+        </ButtonGroup>
     </LargeWindow>
   )
 }

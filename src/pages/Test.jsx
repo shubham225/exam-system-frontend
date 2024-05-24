@@ -8,8 +8,8 @@ import { QuestionStatus } from 'utils/Enums'
 
 function Test() {
   // const examId = useParams();
-  const [module, setModule] = React.useState(0);
-  const [question, setQuestion] = React.useState(0);
+  const [moduleId, setModuleId] = React.useState(0);
+  const [questionId, setQuestionId] = React.useState(0);
   const [moduleList, setModuleList] = React.useState([]);
   const [questionList, setQuestionList] = React.useState([]);
   let moduleListS = [];
@@ -22,44 +22,51 @@ function Test() {
 
   useEffect(() => {
     const currModule = moduleList[0]?.id;
-    setModule(currModule);
+    setModuleId(currModule);
   }, [moduleList])
 
   useEffect(() => {
-    if(module == 1){
-      questionListS = [
-                      {id : 1, status : QuestionStatus.ANSWERED}, 
-                      {id : 2, status : QuestionStatus.NOT_ANSWERED},
-                      {id : 3, status : QuestionStatus.NOT_ANSWERED},
-                      {id : 4, status : QuestionStatus.NOT_ANSWERED},
-                      {id : 5, status : QuestionStatus.NOT_ANSWERED},
-                      {id : 6, status : QuestionStatus.NOT_ANSWERED},
-                      {id : 7, status : QuestionStatus.NOT_ANSWERED},
-                    ];
+    if(moduleId == 1){
+      // questionListS = [
+      //                 {id : 112, seq : 1, status : QuestionStatus.ANSWERED}, 
+      //                 {id : 213, seq : 2, status : QuestionStatus.NOT_VISITED},
+      //                 {id : 321, seq : 3, status : QuestionStatus.NOT_ANSWERED},
+      //                 {id : 423, seq : 4, status : QuestionStatus.NOT_VISITED},
+      //                 {id : 523, seq : 5, status : QuestionStatus.NOT_ANSWERED},
+      //                 {id : 612, seq : 6, status : QuestionStatus.MARKED},
+      //                 {id : 712, seq : 7, status : QuestionStatus.NOT_VISITED},
+      //                 {id : 523, seq : 5, status : QuestionStatus.NOT_ANSWERED},
+      //                 {id : 612, seq : 6, status : QuestionStatus.MARKED},
+      //                 {id : 712, seq : 7, status : QuestionStatus.NOT_VISITED},
+      //               ];
+      for (let i = 0; i < 100; i++) {
+        questionListS = [...questionListS, {id : i, seq : i, status : QuestionStatus.NOT_VISITED}];
+        
+      }
     }else {
       questionListS = [
-        {id : 8, status : QuestionStatus.NOT_ANSWERED}, 
-        {id : 9, status : QuestionStatus.NOT_ANSWERED},
-        {id : 10, status : QuestionStatus.NOT_ANSWERED}
+        {id : 823, seq : 1, status : QuestionStatus.NOT_ANSWERED}, 
+        {id : 9221, seq : 2, status : QuestionStatus.NOT_ANSWERED},
+        {id : 1220, seq : 3, status : QuestionStatus.NOT_ANSWERED}
       ];
     }
 
     setQuestionList(questionListS);
 
     const currQuestion = questionListS[0]?.id;
-    setQuestion(currQuestion);
-  },[module]);
+    setQuestionId(currQuestion);
+  },[moduleId]);
 
   return (
     <Grid container height='100%'>
         <Grid item width={300} >
-            <ModuleBar list={moduleList} module={module} setModule={setModule} />
+            <ModuleBar list={moduleList} moduleId={moduleId} setModuleId={setModuleId} />
         </Grid>
         <Grid item flexGrow={1} mx={2} >
-            <MainTest module={module} question={question} setQuestion={setQuestion} />
+            <MainTest moduleId={moduleId} questionId={questionId} setQuestionId={setQuestionId} />
         </Grid>
         <Grid item width={300} >
-            <QuestionBar list={questionList} question={question} setQuestion={setQuestion} />
+            <QuestionBar list={questionList} questionId={questionId} setQuestionId={setQuestionId} />
         </Grid>
     </Grid>
   )
