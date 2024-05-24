@@ -7,17 +7,26 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import useAuth from "hooks/useAuth";
 import useAlert from "hooks/useAlert";
+import { AppContext } from "context/AppContext";
 
 const NavBar = () => {
     const navigateTo = useNavigate();
     const {token, setToken} = useAuth();
     const {setAlert} = useAlert();
+    const {appContext, setAppContext} = React.useContext(AppContext);
 
     const handleLogout = (e) => {
         e.preventDefault();
         setToken({});
         setAlert({message : 'Logout Successfully'}, 'success');
         navigateTo('/');
+    }
+
+    const handleEndExam = (e) => {
+        e.preventDefault();
+        setAppContext({...appContext, examStarted : false})
+        setAlert({message : 'Exam Ended Successfully'}, 'success');
+        navigateTo('/dashboard');
     }
 
     return (
@@ -27,17 +36,26 @@ const NavBar = () => {
                     Exam-Portal
                 </Typography>
                 
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                    
-                </Typography>
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}></Typography>
+                {(appContext.examStarted) && <Typography variant='outlined'>TIME REMAINING : 00:01:59</Typography>}
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}></Typography>
                 {
                     (token) && 
-                    <Button 
-                        color="inherit"
-                        onClick={handleLogout}
-                    >
-                        Logout
-                    </Button>
+                    (appContext.examStarted) ? 
+                        (
+                            <Button 
+                            color="inherit"
+                            onClick={handleEndExam}
+                        >
+                            End Exam
+                        </Button>
+                        ) :
+                        (<Button 
+                            color="inherit"
+                            onClick={handleLogout}
+                        >
+                            Logout
+                        </Button>)
                 }
             </Toolbar>
         </Paper>

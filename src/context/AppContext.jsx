@@ -10,7 +10,8 @@ const AppContextProvider = ({children}) => {
             open : false, 
             message : '', 
             severity : 'error'
-        }
+        },
+        examStarted : false
     };
 
     const [appContext, setAppContext] = React.useState(initialAppContext);

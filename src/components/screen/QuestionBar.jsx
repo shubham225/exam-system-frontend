@@ -24,6 +24,10 @@ function QuestionBar(props) {
         return {variant : 'contained', color : 'secondary'}; 
         break;
 
+      case QuestionStatus.VISITED:
+        return {variant : 'contained', color : 'primary'};
+        break;
+
       default:
         return {variant : 'outlined', color : 'primary'};
         break;
@@ -34,36 +38,37 @@ function QuestionBar(props) {
   return (
     <LargeWindow >
       <Box sx={{height : '100%', display : 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
-      <Grid container justifyContent='center' p={2} sx={{maxHeight : '70vh', overflow: 'auto'}}>
+      <Grid container justifyContent='center' p={2} sx={{maxHeight : '60vh', overflow: 'auto'}}>
         {list.map((row) => (
           <Grid item >
             <Button {...getButtonFormatting(row.status)} 
+              ac
               sx={{height : '60px', width : '60px', m : 1}} 
-              onClick={() => setQuestionId(row.id)}>{row.seq}</Button>
+              onClick={() => setQuestionId(row.id)}><Typography variant={(questionId == row.id) ? 'h6' : 'h7'}>{row.seq}</Typography></Button>
           </Grid>
         ))}
       </Grid>
-      <Grid container p={2} direction='column'>
+      <Grid container p={2} direction='column' pb={3} >
       <table>
         <tr>
-            <td>
-              <Button {...getButtonFormatting(QuestionStatus.NOT_VISITED)} sx={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px', m: 1}}>1</Button>
-              <Typography variant='caption' >Not Visited</Typography>
-            </td>
-            <td>
-              <Button {...getButtonFormatting(QuestionStatus.ANSWERED)} sx={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px', m: 1 }}>1</Button>
-              <Typography variant='caption' >Answered</Typography>
-            </td>
+          <td>
+            <Button {...getButtonFormatting(QuestionStatus.MARKED)} sx={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px', m: 1}}>1</Button>
+            <Typography variant='caption' >Marked</Typography>
+          </td>
+          <td>
+            <Button {...getButtonFormatting(QuestionStatus.NOT_VISITED)}  sx={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px', m: 1}}>1</Button>
+            <Typography variant='caption' >Not Visited</Typography>
+          </td>
         </tr>
         <tr>
-            <td>
+          <td>
+            <Button {...getButtonFormatting(QuestionStatus.ANSWERED)} sx={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px', mt: 1, mx : 1 }}>1</Button>
+            <Typography variant='caption' >Answered</Typography>
+          </td>
+          <td>
             <Button {...getButtonFormatting(QuestionStatus.NOT_ANSWERED)} sx={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px', mt: 1, mx : 1}}>1</Button>
             <Typography variant='caption' >Not Answered</Typography>
-            </td>
-            <td>
-            <Button {...getButtonFormatting(QuestionStatus.MARKED)} sx={{maxWidth: '30px', maxHeight: '30px', minWidth: '30px', minHeight: '30px', mt: 1, mx : 1}}>1</Button>
-            <Typography variant='caption' >Marked</Typography>
-            </td>
+          </td>
         </tr>
       </table>
       </Grid>

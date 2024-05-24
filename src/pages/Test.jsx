@@ -26,6 +26,7 @@ function Test() {
   }, [moduleList])
 
   useEffect(() => {
+    // Fetch list of Questions if module changes
     if(moduleId == 1){
       // questionListS = [
       //                 {id : 112, seq : 1, status : QuestionStatus.ANSWERED}, 
@@ -63,7 +64,10 @@ function Test() {
             <ModuleBar list={moduleList} moduleId={moduleId} setModuleId={setModuleId} />
         </Grid>
         <Grid item flexGrow={1} mx={2} >
-            <MainTest moduleId={moduleId} questionId={questionId} setQuestionId={setQuestionId} />
+            <MainTest 
+              moduleId={moduleId} setModuleId={setModuleId}
+              questionId={questionId} setQuestionId={setQuestionId}
+              questionList={questionList} setQuestionList={setQuestionList} />
         </Grid>
         <Grid item width={300} >
             <QuestionBar list={questionList} questionId={questionId} setQuestionId={setQuestionId} />
