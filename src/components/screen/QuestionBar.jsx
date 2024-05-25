@@ -38,7 +38,7 @@ function QuestionBar(props) {
   return (
     <LargeWindow >
       <Box sx={{height : '100%', display : 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
-      <Grid container justifyContent='center' p={2} sx={{maxHeight : '60vh', overflow: 'auto'}}>
+      <Grid container justifyContent='center' p={2} sx={{maxHeight : '63vh', overflow: 'auto'}}>
         {list.map((row) => (
           <Grid item >
             <Button {...getButtonFormatting(row.status)} 

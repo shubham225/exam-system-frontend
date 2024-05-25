@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
+import { Box, Button, Divider, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
 import React from 'react'
 import StartIcon from '@mui/icons-material/Start';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
@@ -18,11 +18,14 @@ function Examination() {
   const {appContext, setAppContext} = React.useContext(AppContext);
 
   return (
-    <Grid container direction='column' height='100%' alignItems='center' justifyContent='center'>
+    <Grid container direction='column' height='100%' alignItems='center' >
         <Grid item >
-          <Typography variant='h2'>Start Examination</Typography>
+          <Typography variant='h3' px={1}>Start Examination</Typography>
         </Grid>
-        <Grid item >
+        <Grid item width='100%'>
+          <Divider />
+        </Grid>
+        <Grid item mt={3}>
           <Table>
             <TableHead>
               <TableRow>

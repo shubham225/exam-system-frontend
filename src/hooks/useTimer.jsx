@@ -5,18 +5,18 @@ import React from 'react'
 const useTimer = () => {
     const {appContext, setAppContext} = React.useContext(AppContext);
 
-    const setTimer = (error, type) => {
+    const setExamTimer = (time) => {
         let alertCtx = { open : true, message : error.message, severity : type};
-        setAppContext((context) => {return {...context, alert : alertCtx}});
+        setAppContext((context) => {return {...context, startTime : alertCtx}});
     } 
 
-    const endTimer = () => {
+    const endExamTimer = () => {
         setAppContext((context) => { return {...context, alert : {...appContext.alert, open : false, message : ''}}});
     } 
 
     return {
-        setTimer,
-        endTimer
+        setExamTimer,
+        endExamTimer
     };
 }
 

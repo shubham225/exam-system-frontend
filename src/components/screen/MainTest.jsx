@@ -19,17 +19,45 @@ function MainTest(props) {
 
   } = props;
 
-  const [questionText, setQuestionText] = React.useState("");
-  const [options, setOptions] = React.useState([]);
   const {appContext, setAppContext} = React.useContext(AppContext);
 
-  useEffect(() => {
-    // This is added just for testing will remove afterwards
-    setAppContext({...appContext, examStarted : true})
-  }, [])
+  const [questionText, setQuestionText] = React.useState("");
+  const [answer, setAnswer] = React.useState(null);
+  const [question, setQuestion] = React.useState({options : []});
+
+  // useEffect(() => {
+  //   // This is added just for testing will remove afterwards
+  //   setAppContext({...appContext, examStarted : true});
+  // }, [])
 
   useEffect(() => {
     // fetch question object here from backend
+
+    let questionObject = {
+        id : questionId, 
+        questionText : "This is a test question - " + questionId + "?",
+        status : QuestionStatus.NOT_VISITED,
+        answer : '',
+        options : [
+          {
+            id : 1,
+            optionText : "Option 1"
+          },
+          {
+            id : 2,
+            optionText : "Option 2"
+          },
+          {
+            id : 3,
+            optionText : "Option 3"
+          },
+          {
+            id : 4,
+            optionText : "Option 4"
+          }
+        ]
+    }
+
     setQuestionText("This is a test question - " + questionId + "?");
     let optionList = [];
     for (let i = 0; i < 4; i++) {
@@ -41,12 +69,17 @@ function MainTest(props) {
       (ques.id == questionId && ques.status == QuestionStatus.NOT_VISITED)? {...ques, status : QuestionStatus.NOT_ANSWERED} : ques 
     );
 
+    setQuestion(questionObject);
     setQuestionList(newList);
-
-    setOptions(optionList);
+    setAnswer('');
   },[questionId]);
 
   const markAndNextQuestion = useCallback(() => {
+    //Save the question
+    let newQuestion = {...question, answer : answer, status : QuestionStatus.MARKED};
+    setQuestion(newQuestion);
+
+    console.log("Marking question... ", newQuestion);
 
     const newList = questionList.map( ques => 
       ques.id == questionId ? {...ques, status : QuestionStatus.MARKED} : ques 
@@ -58,9 +91,14 @@ function MainTest(props) {
     setQuestionList(newList);
     setQuestionId(newQuestionId)
 
-  }, [questionList, questionId]);
+  }, [questionList, questionId, answer]);
 
   const saveAndNextQuestion = useCallback(() => {
+    //Save the Question
+    let newQuestion = {...question, answer : answer, status : QuestionStatus.ANSWERED};
+    setQuestion(newQuestion);
+
+    console.log("Saving question... ", newQuestion);
 
     const newList = questionList.map( ques => 
       ques.id == questionId ? {...ques, status : QuestionStatus.ANSWERED} : ques 
@@ -72,16 +110,22 @@ function MainTest(props) {
     setQuestionList(newList);
     setQuestionId(newQuestionId)
 
-  }, [questionList, questionId]);
+  }, [questionList, questionId, answer]);
 
   const resetQuestion = useCallback(() => {
+    //Save the Question
+    let newQuestion = {...question, status : QuestionStatus.NOT_ANSWERED, answer : null};
+    setQuestion(newQuestion);
+
+    console.log("Saving question... ", newQuestion);
 
     const newList = questionList.map( ques => 
       ques.id == questionId ? {...ques, status : QuestionStatus.NOT_ANSWERED} : ques 
     );
     setQuestionList(newList);
+    setAnswer('');
 
-  }, [questionList, questionId]);
+  }, [questionList, questionId, answer]);
 
   return (
     <LargeWindow>
@@ -93,20 +137,20 @@ function MainTest(props) {
           <Grid container direction='column' justifyContent='space-between'>
             <Grid item my={3}>
               <Typography variant='overline'>Question : {questionId}</Typography> 
-              <Typography variant='h4'>{questionText}</Typography> 
+              <Typography variant='h4'>{question.questionText}</Typography> 
             </Grid>
             <Grid item m={3}> 
               <FormControl >
                 <FormLabel id="row-radio-buttons-group-label">Options</FormLabel>
                 <RadioGroup
                     name="option"
-                    // value={values.gender}
-                    // onChange={handleChange}
+                    value={answer}
+                    onChange={(e) => {setAnswer(e.target.value)}}
                     column
                     aria-labelledby="row-radio-buttons-group-label"
                 >   
-                  {options.map((option) => (
-                      <FormControlLabel key={option.id} value={option.id} control={<Radio />} label={option.text} />
+                  {question.options.map((option) => (
+                      <FormControlLabel key={option.id} value={option.id} control={<Radio />} label={option.optionText} />
                     ))
                   }
                 </RadioGroup>
