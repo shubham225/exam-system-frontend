@@ -22,10 +22,15 @@ To get a local copy up and running, follow these simple steps:
 
 
 ## UI Screenshot
-
 ![Login Page](./screenshots/LoginPage.png)
 ![Registration Page](./screenshots/RegistrationPage.png)
+
+### Admin Login
 ![Exam Page](./screenshots/ExamsPage.png)
+
+### Student Login
+![Student Page](./screenshots/StudentDashBoard.png)
+![Exam Page](./screenshots/ExamPage.png)
 
 ## License
 
