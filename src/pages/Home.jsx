@@ -13,35 +13,36 @@ function Home() {
     const navigateTo = useNavigate();
 
     return (
-        // <LargeWindow>
-            <Stack spacing={2}>
-                <Typography variant="h2"> Exam-Portal Home Page </Typography>
-                <Typography variant="h5">
-                    {(!token) ? "You are not Logged-in, Login or Register to continue" : "you are logged in"}
+            <Stack spacing={2} sx={{display: 'flex', alignItems : 'center'}}>
+                <Typography variant="h4"> Welcome to Exam-Portal Home Page </Typography>
+                <Typography variant="h7">
+                    {(!token) ? "You are not Logged-in" : "You are logged in"}
                 </Typography>
                 {
                     (token) ? 
                         <Button 
-                            variant="outlined" 
+                            variant="contained" 
+                            size='large'
                             endIcon={<ArrowForwardIosIcon/>}
                             onClick={() => navigateTo('/dashboard')}
                         >
-                            Go to Dashboard
+                           Dashboard
                         </Button> : 
                         <Stack direction='row'>
-                            <Button variant="outlined" endIcon={<LoginIcon/>} onClick={() => navigateTo('/login')} >
+                            <Button variant="contained" 
+                                size='large' 
+                                endIcon={<LoginIcon/>}
+                                sx={{mr : 2}} 
+                                onClick={() => navigateTo('/login')} >
                                 Sign in
                             </Button>
 
-                            <Typography variant="h5" paddingX={3} paddingY={2}>OR</Typography>
-
-                            <Button variant="outlined" endIcon={<AssignmentIndIcon />} onClick={() => navigateTo('/register')} >
+                            <Button variant="outlined" size='large' endIcon={<AssignmentIndIcon />} onClick={() => navigateTo('/register')} >
                                 Register
                             </Button>
                         </Stack>
                 }
             </Stack>
-        // </LargeWindow>
     )
 }
 

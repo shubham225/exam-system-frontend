@@ -36,6 +36,7 @@ function MainTest(props) {
     let questionObject = {
         id : questionId, 
         questionText : "This is a test question - " + questionId + "?",
+        moduleId : moduleId,
         status : QuestionStatus.NOT_VISITED,
         answer : '',
         options : [

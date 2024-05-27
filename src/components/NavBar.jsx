@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from 'react-router-dom'
 
 import Button from '@mui/material/Button';
@@ -38,43 +38,41 @@ const NavBar = () => {
     const [time, setTime] = React.useState(5);
     const [timerOn, setTimerOn] = React.useState(false);
 
-    const interval = null;
+    // React.useEffect(() => {
+    //     // NOT WORKING GOING IN INFINITE LOOP
+    //     // if(appContext.examStarted) {
+    //     //     interval = setInterval(() => {
+    //     //         setTime(prevTime => prevTime - 1);
+    //     //     }, 1000)
+    //     // }else {
+    //     //     clearInterval(interval);
+    //     // }
+    // }, [appContext.examStarted]);
 
-    React.useEffect(() => {
-        // NOT WORKING GOING IN INFINITE LOOP
-        // if(appContext.examStarted) {
-        //     interval = setInterval(() => {
-        //         setTime(prevTime => prevTime - 1);
-        //     }, 1000)
-        // }else {
-        //     clearInterval(interval);
-        // }
-    }, [appContext.examStarted]);
-
-    React.useEffect( () => {
-        let object = secondsToTime();
-        let calcHours = Math.floor(time / (60 * 60));
+    // React.useEffect( () => {
+    //     let object = secondsToTime();
+    //     let calcHours = Math.floor(time / (60 * 60));
     
-        let divisor_for_minutes = time % (60 * 60);
-        let calcMinutes = Math.floor(divisor_for_minutes / 60);
+    //     let divisor_for_minutes = time % (60 * 60);
+    //     let calcMinutes = Math.floor(divisor_for_minutes / 60);
     
-        let divisor_for_seconds = divisor_for_minutes % 60;
-        let calcSeconds = Math.ceil(divisor_for_seconds);
+    //     let divisor_for_seconds = divisor_for_minutes % 60;
+    //     let calcSeconds = Math.ceil(divisor_for_seconds);
 
-        if (calcHours !== hours)
-            setHours(calcHours);
+    //     if (calcHours !== hours)
+    //         setHours(calcHours);
 
-        if (calcMinutes !== minutes)
-            setMinutes(calcMinutes);
+    //     if (calcMinutes !== minutes)
+    //         setMinutes(calcMinutes);
 
-        setSeconds(calcSeconds);
+    //     setSeconds(calcSeconds);
 
-        if(time <= 0) {
-            console.log("here")
-            setTimerOn(false);
-            handleEndExam();
-        }
-    }, [time]);
+    //     if(time <= 0) {
+    //         console.log("here")
+    //         setTimerOn(false);
+    //         handleEndExam();
+    //     }
+    // }, [time]);
 
     // React.useEffect( () => {
     //     //save last remaining time every minute
@@ -83,6 +81,33 @@ const NavBar = () => {
 
     // React.useEffect( () => {
     //     setTimerOn(true);
+    // }, [])
+    let timer = 10;
+    let timerCount = () => {
+        let interval = setInterval(() => {
+            console.log(getTimeLeft(timer));
+            timer--;
+            if(timer == 0) {
+                clearInterval(interval);
+                console.log("No More Time");
+            }
+        }, 1000);
+
+    }
+
+    let getTimeLeft = (timeInSec) => {
+        let seconds = Math.floor(timeInSec % 60);
+        let minutes = Math.floor((timeInSec / 60) % 60);
+        let hours = Math.floor((timeInSec / 60 / 60));
+
+        return {
+            'hours' : hours,
+            'minutes' : minutes,
+            'seconds' : seconds
+        }
+    }
+    // React.useEffect(() => {
+    //  timerCount();
     // }, [])
 
     const handleLogout = () => {

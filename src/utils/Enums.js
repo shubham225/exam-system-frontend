@@ -18,4 +18,11 @@ export const QuestionStatus = Object.freeze({
     MARKED : 'marked'
 })
 
+export const ExamStatus = Object.freeze({
+    PENDING : 'PENDING',
+    IN_PROGRESS : 'IN_PROGRESS',
+    COMPLETED : 'COMPLETED',
+    BLOCKED : 'BLOCKED'
+})
+
 export default {Action};
