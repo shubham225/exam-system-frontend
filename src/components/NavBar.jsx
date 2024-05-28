@@ -8,6 +8,8 @@ import Typography from '@mui/material/Typography';
 import useAuth from "hooks/useAuth";
 import useAlert from "hooks/useAlert";
 import { AppContext } from "context/AppContext";
+import Timer from "./ui/Timer";
+import { useTimer } from "react-timer-hook";
 
 function secondsToTime(secs)
 {
@@ -32,83 +34,26 @@ const NavBar = () => {
     const {token, setToken} = useAuth();
     const {setAlert} = useAlert();
     const {appContext, setAppContext} = React.useContext(AppContext);
-    const [seconds, setSeconds] = React.useState(0);
-    const [minutes, setMinutes] = React.useState(0);
-    const [hours, setHours] = React.useState(0);
-    const [time, setTime] = React.useState(5);
-    const [timerOn, setTimerOn] = React.useState(false);
+    const time = new Date();
 
-    // React.useEffect(() => {
-    //     // NOT WORKING GOING IN INFINITE LOOP
-    //     // if(appContext.examStarted) {
-    //     //     interval = setInterval(() => {
-    //     //         setTime(prevTime => prevTime - 1);
-    //     //     }, 1000)
-    //     // }else {
-    //     //     clearInterval(interval);
-    //     // }
-    // }, [appContext.examStarted]);
+    const {
+        totalSeconds,
+        seconds,
+        minutes,
+        hours,
+        days,
+        isRunning,
+        start,
+        pause,
+        resume,
+        restart,
+      } = useTimer({ time, onExpire: () => handleEndExam() });
 
-    // React.useEffect( () => {
-    //     let object = secondsToTime();
-    //     let calcHours = Math.floor(time / (60 * 60));
-    
-    //     let divisor_for_minutes = time % (60 * 60);
-    //     let calcMinutes = Math.floor(divisor_for_minutes / 60);
-    
-    //     let divisor_for_seconds = divisor_for_minutes % 60;
-    //     let calcSeconds = Math.ceil(divisor_for_seconds);
-
-    //     if (calcHours !== hours)
-    //         setHours(calcHours);
-
-    //     if (calcMinutes !== minutes)
-    //         setMinutes(calcMinutes);
-
-    //     setSeconds(calcSeconds);
-
-    //     if(time <= 0) {
-    //         console.log("here")
-    //         setTimerOn(false);
-    //         handleEndExam();
-    //     }
-    // }, [time]);
-
-    // React.useEffect( () => {
-    //     //save last remaining time every minute
-    //     sessionStorage.setItem('lastRemainingTime', JSON.stringify(time));
-    // }, [minutes]);
-
-    // React.useEffect( () => {
-    //     setTimerOn(true);
-    // }, [])
-    let timer = 10;
-    let timerCount = () => {
-        let interval = setInterval(() => {
-            console.log(getTimeLeft(timer));
-            timer--;
-            if(timer == 0) {
-                clearInterval(interval);
-                console.log("No More Time");
-            }
-        }, 1000);
-
-    }
-
-    let getTimeLeft = (timeInSec) => {
-        let seconds = Math.floor(timeInSec % 60);
-        let minutes = Math.floor((timeInSec / 60) % 60);
-        let hours = Math.floor((timeInSec / 60 / 60));
-
-        return {
-            'hours' : hours,
-            'minutes' : minutes,
-            'seconds' : seconds
-        }
-    }
-    // React.useEffect(() => {
-    //  timerCount();
-    // }, [])
+    React.useEffect(() => {
+        const time = new Date();
+        time.setSeconds(time.getSeconds() + 3600);
+        restart(time)
+    },[appContext.examStartTime])
 
     const handleLogout = () => {
         setToken({});
@@ -116,8 +61,9 @@ const NavBar = () => {
         navigateTo('/');
     }
 
-    const handleEndExam = (e) => {
-        setAppContext({...appContext, examStarted : false})
+    const handleEndExam = () => {
+        pause();
+        setAppContext({...appContext, examStarted : false, examEnded : new Date()})
         setAlert({message : 'Exam Ended Successfully'}, 'success');
         navigateTo('/dashboard');
     }
@@ -140,14 +86,16 @@ const NavBar = () => {
                     (appContext.examStarted) ? 
                         (
                             <Button 
-                            color="inherit"
+                            variant="contained"
+                            color="error"
                             onClick={(e) => {
                                 e.preventDefault(); handleEndExam(); }} >
                             End Exam
                         </Button>
                         ) :
                         (<Button 
-                            color="inherit"
+                            variant="outlined"
+                            color="secondary"
                             onClick={(e) => {
                                 e.preventDefault(); handleLogout();}} >
                             Logout

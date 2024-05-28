@@ -6,6 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Action, Click } from 'utils/Enums';
+import DialogWindow from './DialogWindow';
 
 import {
         FormControlLabel,
@@ -36,32 +37,48 @@ export default function QuestionDialog(props) {
         }
     }
 
+    const onButtonClick = () => {
+        onCloseDialog({click: Click.SUBMIT})
+    };
+
+    const handleClose = () => {
+        onCloseDialog({click: Click.CLOSE})
+    };
+
     return (
-        <Dialog
-            fullWidth
-            maxWidth='md'
-            open={open}
-            onClose={() => onCloseDialog({click: Click.CLOSE})} 
-        >
-            <DialogTitle>
-                {getDescription(action)}
-            </DialogTitle>
-            <DialogContent dividers>
-                <FormGroup>
-                    <TextField
-                        fullWidth
-                        name="optionText"
-                        value={option.optionText}
-                        onChange={(e) => {e.preventDefault(); setOption({...option, optionText : e.target.value})}}
-                        label="New Option"
-                        type="input"/>
-                    <FormControlLabel 
-                        control={<Checkbox name="answer" 
-                                    checked={option.isAnswer} 
-                                    onChange={(e) => {e.preventDefault(); setOption({...option, answer: e.target.checked})}}/>} 
-                        label="Answer" />
-                </FormGroup>
-            </DialogContent>
+        // <Dialog
+        //     fullWidth
+        //     maxWidth='md'
+        //     open={open}
+        //     onClose={() => onCloseDialog({click: Click.CLOSE})} 
+        // >
+        //     <DialogTitle>
+        //         {getDescription(action)}
+        //     </DialogTitle>
+        //     <DialogContent dividers>
+
+        <DialogWindow
+            open={open} 
+            title={(action == Action.NEW_RECORD) ? "Create New Option" : (action == Action.DISPLAY_RECORD) ? "View Option" :"Modify Option"}
+            buttonLabel={(action == Action.NEW_RECORD) ? "Add" : (action == Action.DISPLAY_RECORD) ? "Ok" : "Modify"}
+            onButtonClick={onButtonClick}
+            handleClose={handleClose}
+            >
+            <FormGroup fullWidth>
+                <TextField
+                    fullWidth
+                    name="optionText"
+                    value={option.optionText}
+                    onChange={(e) => {e.preventDefault(); setOption({...option, optionText : e.target.value})}}
+                    label="New Option"
+                    type="input"/>
+                <FormControlLabel 
+                    control={<Checkbox name="answer" 
+                                checked={option.isAnswer} 
+                                onChange={(e) => {e.preventDefault(); setOption({...option, answer: e.target.checked})}}/>} 
+                    label="Answer" />
+            </FormGroup>
+            {/* </DialogContent>
             <DialogActions>
                 <Button 
                     variant='contained' size='medium' 
@@ -81,6 +98,7 @@ export default function QuestionDialog(props) {
                         Cancel
                  </Button>}
             </DialogActions>
-        </Dialog>
+        </Dialog> */}
+        </DialogWindow>
     )
 }

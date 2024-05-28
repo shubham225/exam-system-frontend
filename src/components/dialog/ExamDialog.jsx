@@ -7,6 +7,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Action, Click } from 'utils/Enums';
+import DialogFormWindow from './DialogFormWindow';
+import { Grid } from '@mui/material';
 
 export default function ExamDialog(props) {
     const {
@@ -17,24 +19,27 @@ export default function ExamDialog(props) {
         onCloseDialog
     } = props;
 
+    const onButtonClick = () => {
+        onCloseDialog({click: Click.SUBMIT})
+    };
+
+    const handleClose = () => {
+        onCloseDialog({click: Click.CLOSE})
+    };
+
     return (
-        <Dialog
-            open={open}
-            onClose={() => onCloseDialog({click: Click.CLOSE})}
-            PaperProps={{
-            component: 'form',
-            onSubmit: (event) => {
-                event.preventDefault();
-                onCloseDialog({click: Click.SUBMIT});
-            },
-            }}
-        >
-            <DialogTitle>{(action == Action.NEW_RECORD) ? "Create New Exam" : "Modify Exam"}</DialogTitle>
-            <DialogContent>
+        <DialogFormWindow
+            open={open} 
+            title={(action == Action.NEW_RECORD) ? "Create New Exam" : "Modify Exam"}
+            buttonLabel={(action == Action.NEW_RECORD) ? "Add" : "Modify"}
+            onButtonClick={onButtonClick}
+            handleClose={handleClose}
+            >
             <TextField
+                sx={{my : 1}}
                 autoFocus
                 required
-                margin="dense"
+                variant="outlined"
                 id="name"
                 name="examName"
                 label="Exam Name"
@@ -42,12 +47,12 @@ export default function ExamDialog(props) {
                 value={exam.examName}
                 onChange={(e) => {e.preventDefault(); setExam({...exam, examName: e.target.value});}}
                 fullWidth
-                variant="standard"
             />
             <TextField
+                sx={{my : 1}}
                 autoFocus
                 required
-                margin="dense"
+                variant="outlined"
                 id="name"
                 name="description"
                 label="Description"
@@ -55,13 +60,20 @@ export default function ExamDialog(props) {
                 value={exam.description}
                 onChange={(e) => {e.preventDefault(); setExam({...exam, description: e.target.value});}}
                 fullWidth
-                variant="standard"
             />
-            </DialogContent>
-            <DialogActions>
-                <Button type="submit">Create</Button>
-                <Button onClick={() => onCloseDialog({click: Click.CLOSE})}>Cancel</Button>
-            </DialogActions>
-        </Dialog>
+            <TextField
+                sx={{my : 1}}
+                autoFocus
+                required
+                variant="outlined"
+                id="duration"
+                name="examDuration"
+                label="Exam Duration (In Hours)"
+                type="number"
+                value={exam.examDuration}
+                onChange={(e) => {e.preventDefault(); setExam({...exam, examDuration: e.target.value});}}
+                fullWidth
+            />
+        </DialogFormWindow>
     )
 }

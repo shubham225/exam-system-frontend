@@ -15,6 +15,9 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { Action, Click } from 'utils/Enums';
 import useAlert from 'hooks/useAlert';
 import useLoading from 'hooks/useLoading';
+import BreadcrumbsPath from 'components/ui/BreadcrumbsPath';
+import HomeIcon from '@mui/icons-material/Home';
+import WhatshotIcon from '@mui/icons-material/Whatshot';
 
 function Module() {
   const { id } = useParams();
@@ -165,18 +168,26 @@ function Module() {
             }
         }
     }
+    if (callback.click === Click.CLOSE) {
+      setOpenQuestionDlg(false);
+    }
   };
+
+  const path = [{name : 'Home', path : '/dashboard', icon : <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />},
+                {name : 'Exams', path : '/exam', icon : <WhatshotIcon sx={{ mr: 0.5 }} fontSize="inherit" />}]
 
   return (
       <LargeWindow>
           <Grid container direction='column' p={2}>
               <Grid item pb={2}>
                   <Box display='flex' justifyContent='space-between'>
-                    <Box display='flex'>
-                      <Button startIcon={<ArrowBackIosNewIcon />} onClick={() => navigateTo(-1)} />
-                      <Typography variant='h3'>{ module.moduleName + " [ #" + module.id + " ]"} </Typography>
+                    <Box display='flex' flexDirection='column'>
+                        <Typography variant='h4'>{ module.moduleName + " [ #" + module.id + " ]"}</Typography> 
+                        <BreadcrumbsPath path={path} currLocation={module.moduleName}/>
                     </Box>
-                    <Button variant='outlined' startIcon={<AddIcon/>} onClick={(e) => handleNewRecord(e)}>New Question</Button>
+                    <Box alignSelf='center'>
+                        <Button size='medium' variant='contained'  startIcon={<AddIcon/>} onClick={(e) => handleNewRecord(e)}>New</Button>
+                    </Box>
                   </Box>
               </Grid>
               <Divider />

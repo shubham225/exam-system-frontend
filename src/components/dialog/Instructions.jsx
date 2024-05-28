@@ -10,6 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from 'context/AppContext';
+import DialogWindow from './DialogWindow';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -27,33 +28,44 @@ export default function Instructions(props) {
         handleClose
     } = props;
 
-    const navigateTo = useNavigate();
-    const {appContext, setAppContext} = React.useContext(AppContext);
+  const navigateTo = useNavigate();
+  const {appContext, setAppContext} = React.useContext(AppContext);
+  
+  const onButtonClick = () => {
+    setAppContext({...appContext, examStarted : true, examStartTime : new Date()});
+    handleClose();
+    navigateTo("/test/"+exam.id);
+  }
 
   return (
-    <React.Fragment>
-      <BootstrapDialog
-        onClose={handleClose}
-        aria-labelledby="customized-dialog-title"
-        open={open}
-        maxWidth='md'
-      >
-        <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-          Instructions
-        </DialogTitle>
-        <IconButton
-          aria-label="close"
-          onClick={handleClose}
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-        <DialogContent dividers>
+    // <React.Fragment>
+    //   <BootstrapDialog
+    //     onClose={handleClose}
+    //     aria-labelledby="customized-dialog-title"
+    //     open={open}
+    //     maxWidth='md'
+    //   >
+    //     <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+    //       Instructions
+    //     </DialogTitle>
+    //     <IconButton
+    //       aria-label="close"
+    //       onClick={handleClose}
+    //       sx={{
+    //         position: 'absolute',
+    //         right: 8,
+    //         top: 8,
+    //         color: (theme) => theme.palette.grey[500],
+    //       }}
+    //     >
+    //       <CloseIcon />
+    //     </IconButton>
+    //     <DialogContent dividers>
+        <DialogWindow open={open}
+          title="Instructions"
+          buttonLabel="Continue"
+          onButtonClick={onButtonClick}
+          handleClose={handleClose}>
           <ul>
             <li>
               <Typography gutterBottom>
@@ -101,23 +113,24 @@ export default function Instructions(props) {
               </Typography>
             </li>
           </ul>
-        </DialogContent>
-        <DialogActions>
-          <Button autoFocus 
-            variant='contained'
-            onClick={(e) => {
-                e.preventDefault(); 
-                setAppContext({...appContext, examStarted : true});
-                handleClose();
-                navigateTo("/test/"+exam.id);
-            }} >
-            Continue
-          </Button>
-          <Button onClick={handleClose}>
-            Close
-          </Button>
-        </DialogActions>
-      </BootstrapDialog>
-    </React.Fragment>
+        </DialogWindow>
+    //     </DialogContent>
+    //     <DialogActions>
+    //       <Button autoFocus 
+    //         variant='contained'
+    //         onClick={(e) => {
+    //             e.preventDefault(); 
+    //             setAppContext({...appContext, examStarted : true});
+    //             handleClose();
+    //             navigateTo("/test/"+exam.id);
+    //         }} >
+    //         Continue
+    //       </Button>
+    //       <Button onClick={handleClose}>
+    //         Close
+    //       </Button>
+    //     </DialogActions>
+    //   </BootstrapDialog>
+    // </React.Fragment>
   );
 }

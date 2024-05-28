@@ -15,6 +15,9 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { Action, Click } from 'utils/Enums';
 import useAlert from 'hooks/useAlert';
 import useLoading from 'hooks/useLoading';
+import BreadcrumbsPath from 'components/ui/BreadcrumbsPath';
+import HomeIcon from '@mui/icons-material/Home';
+import WhatshotIcon from '@mui/icons-material/Whatshot';
 
 function Exam() {
   const { id } = useParams();
@@ -159,17 +162,22 @@ function Exam() {
     }
     setOpen(false);
   };
+
+  const path = [{name : 'Home', path : '/dashboard', icon : <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />},
+                {name : 'Exams', path : '/exam', icon : <WhatshotIcon sx={{ mr: 0.5 }} fontSize="inherit" />}]
           
   return (
       <LargeWindow>
           <Grid container direction='column' p={2}>
               <Grid item pb={2}>
                   <Box display='flex' justifyContent='space-between'> 
-                    <Box display='flex'>
-                      <Button startIcon={<ArrowBackIosNewIcon />} onClick={() => navigateTo(-1)} />
-                      <Typography variant='h3'>{ exam.examName + " [ #" + exam.id + " ]"} </Typography>
+                    <Box display='flex' flexDirection='column'>
+                        <Typography variant='h4'>{ exam.examName + " [ #" + exam.id + " ]"}</Typography> 
+                        <BreadcrumbsPath path={path} currLocation={exam.examName}/>
                     </Box>
-                    <Button variant='outlined' startIcon={<AddIcon/>} onClick={handleClickOpen}>New Module</Button>
+                    <Box alignSelf='center'>
+                        <Button size='medium' variant='contained'  startIcon={<AddIcon/>} onClick={handleClickOpen}>New</Button>
+                    </Box>
                   </Box>
               </Grid>
               <Divider />

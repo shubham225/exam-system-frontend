@@ -14,6 +14,8 @@ import { useNavigate } from 'react-router-dom';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import useLoading from 'hooks/useLoading';
 import useAlert from 'hooks/useAlert';
+import BreadcrumbsPath from 'components/ui/BreadcrumbsPath';
+import HomeIcon from '@mui/icons-material/Home';
 
 function Exams() {
     // const {alert, setAlert} = React.useContext(AlertContext);
@@ -144,16 +146,20 @@ function Exams() {
         setOpen(false);
     };
 
+    const path = [{name : 'Home', path : '/dashboard', icon : <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />}]
+
     return (
         <LargeWindow>
             <Grid container direction='column' p={2}>
-                <Grid item pb={2}>
+                <Grid item pb={1}>
                     <Box display='flex' justifyContent='space-between'>
-                        <Box display='flex'>
-                            <Button startIcon={<ArrowBackIosNewIcon />} onClick={() => navigateTo(-1)} />
-                            <Typography variant='h3'>Exams</Typography>
+                        <Box display='flex' flexDirection='column'>
+                            <Typography variant='h4'>Exams</Typography> 
+                            <BreadcrumbsPath path={path} currLocation='Exams'/>
                         </Box>
-                        <Button variant='outlined' startIcon={<AddIcon/>} onClick={handleClickOpen}>New Exam</Button>
+                        <Box alignSelf='center'>
+                            <Button size='medium' variant='contained'  startIcon={<AddIcon/>} onClick={handleClickOpen}>New</Button>
+                        </Box>
                     </Box>
                 </Grid>
                 <Divider />
