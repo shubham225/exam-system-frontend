@@ -1,6 +1,7 @@
 import { Button, ButtonGroup, Grid, Paper, Tab, Tabs, Typography } from '@mui/material'
 import LargeWindow from 'layouts/LargeWindow'
-import React from 'react'
+import React from 'react';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 
 function a11yProps(index) {
   return {
@@ -26,7 +27,7 @@ function ModuleBar(props) {
           sx={{ borderRight: 1, borderColor: 'divider' }}
           >
             {list.map((row) => (
-              <Tab onClick={() => setModuleId(row.id)} value={row.id} label={row.moduleName} />
+              <Tab sx={{justifyContent : 'start'}} iconPosition='start' icon={<AssignmentIcon />} onClick={() => setModuleId(row.id)} value={row.id} label={row.moduleName} />
             ))}
       </Tabs>
     </LargeWindow>

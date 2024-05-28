@@ -1,23 +1,32 @@
 import { Grid } from '@mui/material'
 import React from 'react'
 import ExamCard from 'components/ui/ExamCard';
-import { ExamStatus } from 'utils/Enums';
-import Timer from 'components/ui/Timer';
+import useLoading from 'hooks/useLoading';
+import StudentTestService from 'services/StudentTestService';
+import useAlert from 'hooks/useAlert';
+import AuthService from 'services/AuthService';
 
 function Examination() {
   const [exams, setExams] = React.useState([]);
-  const time = new Date();
+  const {startLoading, stopLoading} = useLoading();
+  const {setAlert} = useAlert();
+
+  const fetchAllExamsByUserId = React.useCallback(async (id) => {
+    startLoading();
+    
+    try {
+        const examList = await StudentTestService.getAllExamsByUserId(id);
+        setExams(examList);
+    }catch(error) {
+        setAlert(error, 'error');
+    }
+
+    stopLoading();
+  });
 
   React.useEffect(() => {
-    let newExams = [];
-
-    for (let i = 0; i < 4; i++) {
-      newExams = [...newExams, {id : i, name : ('Exam-'+i), description : ("This is description for exam - " + i), status : ExamStatus.PENDING}];
-    }
-    
-  time.setSeconds(time.getSeconds() + 600); // 10 minutes timer
-  
-    setExams(newExams);
+    const userId = AuthService.getUserId();
+    fetchAllExamsByUserId(userId);
   },[])
 
   return (

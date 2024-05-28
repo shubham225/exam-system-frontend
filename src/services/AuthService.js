@@ -49,6 +49,13 @@ function registerNewUser(userData) {
     });
 }
 
+function getUserId() {
+    const tokenString = sessionStorage.getItem('auth_token');
+    const userToken = JSON.parse(tokenString);
+    const userId = userToken?.userId;
+    return userId;
+}
+
 function getUserRoles() {
     const tokenString = sessionStorage.getItem('auth_token');
     const userToken = JSON.parse(tokenString);
@@ -70,6 +77,7 @@ const AuthService = {
     registerNewUser,
     logout,
     isUserAdmin,
+    getUserId,
     getUserRoles
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useNavigate } from 'react-router-dom'
 
 import Button from '@mui/material/Button';
@@ -8,8 +8,10 @@ import Typography from '@mui/material/Typography';
 import useAuth from "hooks/useAuth";
 import useAlert from "hooks/useAlert";
 import { AppContext } from "context/AppContext";
-import Timer from "./ui/Timer";
 import { useTimer } from "react-timer-hook";
+import { ExamStatus } from "utils/Enums";
+import useLoading from "hooks/useLoading";
+import StudentTestService from "services/StudentTestService";
 
 function secondsToTime(secs)
 {
@@ -32,9 +34,11 @@ function secondsToTime(secs)
 const NavBar = () => {
     const navigateTo = useNavigate();
     const {token, setToken} = useAuth();
+    const {startLoading, stopLoading} = useLoading();
     const {setAlert} = useAlert();
     const {appContext, setAppContext} = React.useContext(AppContext);
-    const time = new Date();
+    const duration = new Date();
+
 
     const {
         totalSeconds,
@@ -47,13 +51,43 @@ const NavBar = () => {
         pause,
         resume,
         restart,
-      } = useTimer({ time, onExpire: () => handleEndExam() });
+      } = useTimer({ duration, onExpire: () => handleEndExam() });
+
+    const endExamById = React.useCallback(async (id) => {
+    startLoading();
+    
+    try {
+        const examDetail = await StudentTestService.updateExamStatusById(id, ExamStatus.COMPLETED);
+    }catch(error) {
+        setAlert(error, 'error');
+    }
+
+    stopLoading();
+    });
 
     React.useEffect(() => {
-        const time = new Date();
-        time.setSeconds(time.getSeconds() + 3600);
-        restart(time)
+
+        let time = appContext?.examStartTime;
+
+        if(time) {
+            time.setSeconds(time.getSeconds() + appContext.examDuration);
+            restart(time)
+        }
     },[appContext.examStartTime])
+
+    React.useEffect(() => {
+        // IF EXAM IS STARTED AND APPLICTION CONTEXT IS NOT STARTED THEN SYNC APP CONTEXT
+        // TODO : NEED TO UPDATE LOGIC TO SYNC APP CONTEXT FROM BACKEND RATHER THAN FROM SESSION STORAGE
+        const examDetail = JSON.parse(sessionStorage.getItem('current_exam'));
+        const examStarted = examDetail?.examStarted;
+        if(appContext.examStarted === false && examStarted === true) {
+            setAppContext({...appContext, 
+                              examStarted : examDetail.examStarted, 
+                              examStartTime : new Date(Date.parse(examDetail.examStartTime)), 
+                              examDuration : examDetail.examDuration});
+        }
+        console.log(appContext);
+    },[])
 
     const handleLogout = () => {
         setToken({});
@@ -63,7 +97,14 @@ const NavBar = () => {
 
     const handleEndExam = () => {
         pause();
+        endExamById(appContext.examId)
         setAppContext({...appContext, examStarted : false, examEnded : new Date()})
+
+        // STORE EXAM DETAILS IN SESSION STORAGE
+        let examDetails = sessionStorage.getItem('current_exam');
+        examDetails = {...examDetails, examStarted : false, examEnded : new Date()}
+        sessionStorage.setItem('current_exam', JSON.stringify(examDetails));
+
         setAlert({message : 'Exam Ended Successfully'}, 'success');
         navigateTo('/dashboard');
     }

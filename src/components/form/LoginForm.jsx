@@ -25,8 +25,14 @@ function LoginForm() {
 
     const loginWithCredentials = useCallback(async (creds) => {
         try {
+            setDisableLogin(true);
             const data = await AuthService.loginWithEmailIdPassword(creds); 
             setToken(data);
+            setDisableLogin(false);
+            if(data) {
+                navigateTo('/dashboard');
+                navigateTo(0);
+            }
         }catch(error) {
             setToken({});
             setAlert(error, 'error');
@@ -35,14 +41,8 @@ function LoginForm() {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        setDisableLogin(true);
         const creds = {username : username, password : password};
         loginWithCredentials(creds);
-        setDisableLogin(false);
-        if(token) {
-            navigateTo('/dashboard');
-            navigateTo(0);
-        }
     };
 
     return (

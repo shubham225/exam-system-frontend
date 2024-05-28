@@ -26,6 +26,7 @@ export default function Instructions(props) {
         title,
         onButtonClick,
         buttonLabel,
+        closeButtonLabel,
         handleClose
     } = props;
 
@@ -67,7 +68,7 @@ export default function Instructions(props) {
             {buttonLabel}
           </Button>
           <Button onClick={handleClose}>
-            Close
+            {(closeButtonLabel) ? closeButtonLabel : "Close"}
           </Button>
         </DialogActions>
       </BootstrapDialog>
