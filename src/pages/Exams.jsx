@@ -1,24 +1,33 @@
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
+
+import { useNavigate } from 'react-router-dom';
+
+import useLoading from 'hooks/useLoading';
+import useAlert from 'hooks/useAlert';
+
+import { Box, 
+         Button, 
+         Divider, 
+         Grid, 
+         Typography } from '@mui/material';
+
+import AddIcon from '@mui/icons-material/Add';
+import HomeIcon from '@mui/icons-material/Home';
 
 import LargeWindow from 'layouts/LargeWindow';
+
 import ExamDialog from 'components/dialog/ExamDialog';
 import DataTable from 'components/form/DataTable';
 import EditActions from 'components/ui/EditActions';
-import { examColumns } from 'data/columnDefinitions';
-
-import { Box, Button, Divider, Grid, Typography } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import ExamService from 'services/ExamService';
-import { Action, Click } from 'utils/Enums';
-import { useNavigate } from 'react-router-dom';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import useLoading from 'hooks/useLoading';
-import useAlert from 'hooks/useAlert';
 import BreadcrumbsPath from 'components/ui/BreadcrumbsPath';
-import HomeIcon from '@mui/icons-material/Home';
+
+import ExamService from 'services/ExamService';
+
+import { examColumns } from 'utils/CommonObjects';
+
+import { Action, Click } from 'utils/Enums';
 
 function Exams() {
-    // const {alert, setAlert} = React.useContext(AlertContext);
     const [open, setOpen] = React.useState(false);
     const [rows, setRows] = React.useState([]);
     const [action, setAction] = React.useState(Action.NEW_RECORD);
@@ -29,18 +38,22 @@ function Exams() {
 
     const navigateTo = useNavigate();
 
-    const columns = [...examColumns, 
-        {
-        field: 'action',
-        headerName: 'Action',
-        type: 'action',
-        width: 200,
-        renderCell: (params)=> (
-            <EditActions {...{params, handleView, handleEdit, handleDelete}}/>
-        )
-        }];
+    const path = [{name : 'Home', path : '/dashboard', icon : <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />}]
+
+    const columns = 
+        [...examColumns, 
+            {
+                field: 'action',
+                headerName: 'Action',
+                type: 'action',
+                width: 200,
+                renderCell: (params)=> (
+                    <EditActions {...{params, handleView, handleEdit, handleDelete}}/>
+                )
+            }
+        ];
         
-    const fetchAllExams = useCallback(async () => {
+    const fetchAllExams = React.useCallback(async () => {
         startLoading();
         
         try {
@@ -53,7 +66,7 @@ function Exams() {
         stopLoading();
     });
 
-    const createNewExam = useCallback(async () => {
+    const createNewExam = React.useCallback(async () => {
         startLoading();
 
         try {
@@ -66,7 +79,7 @@ function Exams() {
         stopLoading();
     });
 
-    const modifyExam = useCallback(async () => {
+    const modifyExam = React.useCallback(async () => {
         startLoading();
         
         try {
@@ -82,7 +95,7 @@ function Exams() {
         stopLoading();
     });
 
-    const deleteExam = useCallback(async (id) => {
+    const deleteExam = React.useCallback(async (id) => {
         startLoading();
 
         try {
@@ -96,7 +109,7 @@ function Exams() {
         stopLoading();
     });
 
-    useEffect(() => {
+    React.useEffect(() => {
         fetchAllExams();
     }, [])
 
@@ -145,8 +158,6 @@ function Exams() {
         }
         setOpen(false);
     };
-
-    const path = [{name : 'Home', path : '/dashboard', icon : <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />}]
 
     return (
         <LargeWindow>

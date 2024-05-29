@@ -1,23 +1,33 @@
-import React, { useEffect, useCallback } from 'react';
+import React from 'react';
 
-import LargeWindow from 'layouts/LargeWindow';
-import DataTable from 'components/form/DataTable';
-import EditActions from 'components/ui/EditActions';
-import { questionColumns } from 'data/columnDefinitions';
+import { useParams } from 'react-router-dom';
 
-import { Box, Button, Divider, Grid, Typography } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import { useNavigate, useParams } from 'react-router-dom';
-import QuestionService from 'services/QuestionService';
-import ModuleService from 'services/ModuleService';
-import QuestionDialog  from 'components/dialog/QuestionDialog';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { Action, Click } from 'utils/Enums';
 import useAlert from 'hooks/useAlert';
 import useLoading from 'hooks/useLoading';
-import BreadcrumbsPath from 'components/ui/BreadcrumbsPath';
+
+import LargeWindow from 'layouts/LargeWindow';
+
+import { Box, 
+         Button, 
+         Divider, 
+         Grid, 
+         Typography } from '@mui/material';
+
+import AddIcon from '@mui/icons-material/Add';
 import HomeIcon from '@mui/icons-material/Home';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
+
+import DataTable from 'components/form/DataTable';
+import EditActions from 'components/ui/EditActions';
+import BreadcrumbsPath from 'components/ui/BreadcrumbsPath';
+import QuestionDialog  from 'components/dialog/QuestionDialog';
+
+import QuestionService from 'services/QuestionService';
+import ModuleService from 'services/ModuleService';
+
+import { questionColumns } from 'utils/CommonObjects';
+
+import { Action, Click } from 'utils/Enums';
 
 function Module() {
   const { id } = useParams();
@@ -29,23 +39,32 @@ function Module() {
 
   const {startLoading, stopLoading} = useLoading();
   const {setAlert} = useAlert();
-  const navigateTo = useNavigate();
 
-  const columns = [...questionColumns, 
-                  {
-                    field: 'action',
-                    headerName: 'Action',
-                    type: 'action',
-                    width: 200,
-                    renderCell: (params)=> (
-                      <EditActions {...{ params, 
-                                         handleView: handleViewRecord, 
-                                         handleEdit: handleEditRecord, 
-                                         handleDelete: handleDeleteRecord}}/>
-                    )
-                  }];
+  const path = [{name : 'Home', path : '/dashboard', icon : <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />},
+                {name : 'Exams', path : '/exam', icon : <WhatshotIcon sx={{ mr: 0.5 }} fontSize="inherit" />}]
+
+  const columns = 
+      [...questionColumns, 
+        {
+          field: 'action',
+          headerName: 'Action',
+          type: 'action',
+          width: 200,
+          renderCell: (params)=> (
+            <EditActions {...{ params, 
+                                handleView: handleViewRecord, 
+                                handleEdit: handleEditRecord, 
+                                handleDelete: handleDeleteRecord}}/>
+          )
+        }
+      ];
+
+  React.useEffect(() => {
+    getModuleById(id);
+    getQuestionsByModuleId(id);
+  },[id])
         
-  const getModuleById = useCallback(async (id) => {
+  const getModuleById = React.useCallback(async (id) => {
     startLoading();
 
     try {
@@ -58,7 +77,7 @@ function Module() {
     stopLoading();
   }, [id]);
     
-  const getQuestionsByModuleId = useCallback(async (id) => {
+  const getQuestionsByModuleId = React.useCallback(async (id) => {
     startLoading();
 
     try{
@@ -71,7 +90,7 @@ function Module() {
     stopLoading();
   }, [id]);
 
-  const createNewQuestion = useCallback(async () => {
+  const createNewQuestion = React.useCallback(async () => {
     startLoading();
 
     try {
@@ -85,7 +104,7 @@ function Module() {
     stopLoading();
   }, [question]);
 
-  const modifyQuestion = useCallback(async () => {
+  const modifyQuestion = React.useCallback(async () => {
     startLoading();
 
     try {
@@ -102,7 +121,7 @@ function Module() {
     stopLoading();
   }, [question]);
 
-  const deleteQuestionById = useCallback(async (id) => {
+  const deleteQuestionById = React.useCallback(async (id) => {
     startLoading();
 
     try {
@@ -115,11 +134,6 @@ function Module() {
 
     stopLoading();
   });
-
-  useEffect(() => {
-    getModuleById(id);
-    getQuestionsByModuleId(id);
-  },[id])
 
   const handleViewRecord = (e, selectedRow) => {
     e.preventDefault();
@@ -172,9 +186,6 @@ function Module() {
       setOpenQuestionDlg(false);
     }
   };
-
-  const path = [{name : 'Home', path : '/dashboard', icon : <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />},
-                {name : 'Exams', path : '/exam', icon : <WhatshotIcon sx={{ mr: 0.5 }} fontSize="inherit" />}]
 
   return (
       <LargeWindow>

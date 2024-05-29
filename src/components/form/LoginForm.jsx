@@ -1,5 +1,9 @@
-import React, { useCallback } from 'react'
+import React from 'react';
+
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
+
+import useAuth from 'hooks/useAuth'; 
+import useAlert from 'hooks/useAlert';
 
 import {Box, 
         TextField,
@@ -8,9 +12,8 @@ import {Box,
         Stack} from '@mui/material';
 
 import LoginIcon from '@mui/icons-material/Login';
+
 import AuthService from 'services/AuthService';
-import useAuth from 'hooks/useAuth'; 
-import useAlert from 'hooks/useAlert';
 
 function LoginForm() {
 
@@ -23,16 +26,23 @@ function LoginForm() {
 
     const navigateTo = useNavigate();
 
-    const loginWithCredentials = useCallback(async (creds) => {
+    React.useEffect(() => {
+        if (token) {
+            navigateTo('/dashboard');
+        }
+    }, []);
+
+    const loginWithCredentials = React.useCallback(async (creds) => {
         try {
             setDisableLogin(true);
             const data = await AuthService.loginWithEmailIdPassword(creds); 
             setToken(data);
-            setDisableLogin(false);
+
             if(data) {
                 navigateTo('/dashboard');
                 navigateTo(0);
             }
+            setDisableLogin(false);
         }catch(error) {
             setToken({});
             setAlert(error, 'error');

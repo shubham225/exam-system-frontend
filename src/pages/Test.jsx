@@ -1,11 +1,16 @@
+import React from 'react'
+
+import { useParams } from 'react-router-dom'
+
 import { Grid } from '@mui/material'
+
+import useAlert from 'hooks/useAlert'
+import useLoading from 'hooks/useLoading'
+
 import MainTest from 'components/screen/MainTest'
 import ModuleBar from 'components/screen/ModuleBar'
 import QuestionBar from 'components/screen/QuestionBar'
-import useAlert from 'hooks/useAlert'
-import useLoading from 'hooks/useLoading'
-import React, { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+
 import StudentTestService from 'services/StudentTestService'
 
 function Test() {
@@ -49,11 +54,11 @@ function Test() {
     stopLoading();
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetchAssignedModulesByExamId(id);
   },[id]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetchAssignedQuestionsByModuleId(moduleId);
   },[moduleId]);
 

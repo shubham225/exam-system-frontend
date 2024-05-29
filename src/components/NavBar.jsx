@@ -1,35 +1,22 @@
 import React from "react";
+
 import { useNavigate } from 'react-router-dom'
+import { useTimer } from "react-timer-hook";
+import { AppContext } from "context/AppContext";
 
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+
 import useAuth from "hooks/useAuth";
 import useAlert from "hooks/useAlert";
-import { AppContext } from "context/AppContext";
-import { useTimer } from "react-timer-hook";
-import { ExamStatus } from "utils/Enums";
 import useLoading from "hooks/useLoading";
+
 import StudentTestService from "services/StudentTestService";
+import SessionService from "services/SessionService";
 
-function secondsToTime(secs)
-{
-    var hours = Math.floor(secs / (60 * 60));
-
-    var divisor_for_minutes = secs % (60 * 60);
-    var minutes = Math.floor(divisor_for_minutes / 60);
-
-    var divisor_for_seconds = divisor_for_minutes % 60;
-    var seconds = Math.ceil(divisor_for_seconds);
-
-    var obj = {
-        "h": hours,
-        "m": minutes,
-        "s": seconds
-    };
-    return obj;
-}
+import { ExamStatus } from "utils/Enums";
 
 const NavBar = () => {
     const navigateTo = useNavigate();
@@ -54,39 +41,39 @@ const NavBar = () => {
       } = useTimer({ duration, onExpire: () => handleEndExam() });
 
     const endExamById = React.useCallback(async (id) => {
-    startLoading();
-    
-    try {
-        const examDetail = await StudentTestService.updateExamStatusById(id, ExamStatus.COMPLETED);
-    }catch(error) {
-        setAlert(error, 'error');
-    }
+        startLoading();
+        
+        try {
+            await StudentTestService.updateExamStatusById(id, ExamStatus.COMPLETED);
+        }catch(error) {
+            setAlert(error, 'error');
+        }
 
-    stopLoading();
+        stopLoading();
     });
 
     React.useEffect(() => {
-
-        let time = appContext?.examStartTime;
+        const currentExam = appContext?.exam;
+        let time = currentExam?.startTime;
 
         if(time) {
-            time.setSeconds(time.getSeconds() + appContext.examDuration);
-            restart(time)
+            time.setSeconds(time.getSeconds() + currentExam.duration);
+            restart(time);
         }
-    },[appContext.examStartTime])
+
+    },[appContext.exam.startTime])
 
     React.useEffect(() => {
-        // IF EXAM IS STARTED AND APPLICTION CONTEXT IS NOT STARTED THEN SYNC APP CONTEXT
-        // TODO : NEED TO UPDATE LOGIC TO SYNC APP CONTEXT FROM BACKEND RATHER THAN FROM SESSION STORAGE
-        const examDetail = JSON.parse(sessionStorage.getItem('current_exam'));
-        const examStarted = examDetail?.examStarted;
-        if(appContext.examStarted === false && examStarted === true) {
-            setAppContext({...appContext, 
-                              examStarted : examDetail.examStarted, 
-                              examStartTime : new Date(Date.parse(examDetail.examStartTime)), 
-                              examDuration : examDetail.examDuration});
+
+        // Fetching the exam data from session storage on refresh. 
+        const currentExam = appContext?.exam;
+        const storedExam = SessionService.getCurrentExam();
+        const storedExamIsStarted = (storedExam?.started) ? storedExam.started : false;
+
+
+        if(currentExam.started === false && storedExamIsStarted) {
+            setAppContext({...appContext, exam : storedExam});
         }
-        console.log(appContext);
     },[])
 
     const handleLogout = () => {
@@ -97,13 +84,14 @@ const NavBar = () => {
 
     const handleEndExam = () => {
         pause();
-        endExamById(appContext.examId)
-        setAppContext({...appContext, examStarted : false, examEnded : new Date()})
 
-        // STORE EXAM DETAILS IN SESSION STORAGE
-        let examDetails = sessionStorage.getItem('current_exam');
-        examDetails = {...examDetails, examStarted : false, examEnded : new Date()}
-        sessionStorage.setItem('current_exam', JSON.stringify(examDetails));
+        // Ending the exam and updating details in backend, appContext and session storage
+
+        endExamById(appContext.examId);
+        const currentExam = {...appContext.exam, started : false, endTime : new Date()};
+        setAppContext({...appContext, exam : currentExam});
+
+        SessionService.setCurrentExam(currentExam);
 
         setAlert({message : 'Exam Ended Successfully'}, 'success');
         navigateTo('/dashboard');
@@ -117,14 +105,14 @@ const NavBar = () => {
                 </Typography>
                 
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}></Typography>
-                {(appContext.examStarted) && 
+                {(appContext.exam.started) && 
                     <Typography variant='outlined'>
                         TIME REMAINING : {("0" + hours).slice(-2)}:{("0" + minutes).slice(-2)}:{("0" + seconds).slice(-2)}
                     </Typography>}
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}></Typography>
                 {
                     (token) && (
-                    (appContext.examStarted) ? 
+                    (appContext.exam.started) ? 
                         (
                             <Button 
                             variant="contained"

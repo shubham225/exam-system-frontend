@@ -1,12 +1,17 @@
 import React from 'react';
+
 import { useNavigate } from 'react-router-dom';
 
-import {Box, Button, Typography, Stack} from '@mui/material';
+import useAuth from 'hooks/useAuth';
+
+import {Button, 
+        Typography, 
+        Stack} from '@mui/material';
 
 import LoginIcon from '@mui/icons-material/Login';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
-import useAuth from 'hooks/useAuth';
+
 
 function Home() {
     const {token, setToken} = useAuth();
@@ -37,7 +42,10 @@ function Home() {
                                 Sign in
                             </Button>
 
-                            <Button variant="outlined" size='large' endIcon={<AssignmentIndIcon />} onClick={() => navigateTo('/register')} >
+                            <Button variant="outlined" 
+                                size='large' 
+                                endIcon={<AssignmentIndIcon />} 
+                                onClick={() => navigateTo('/register')} >
                                 Register
                             </Button>
                         </Stack>

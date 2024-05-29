@@ -1,4 +1,4 @@
-import { Alert, AlertTitle, Snackbar } from '@mui/material';
+import { Alert, Snackbar } from '@mui/material';
 import React from 'react'
 
 function AlertSnackBar(props) {

@@ -1,9 +1,13 @@
-import { Grid } from '@mui/material'
 import React from 'react'
-import ExamCard from 'components/ui/ExamCard';
-import useLoading from 'hooks/useLoading';
-import StudentTestService from 'services/StudentTestService';
+
+import { Grid } from '@mui/material'
+
 import useAlert from 'hooks/useAlert';
+import useLoading from 'hooks/useLoading';
+
+import ExamCard from 'components/ui/ExamCard';
+
+import StudentTestService from 'services/StudentTestService';
 import AuthService from 'services/AuthService';
 
 function Examination() {
@@ -27,7 +31,7 @@ function Examination() {
   React.useEffect(() => {
     const userId = AuthService.getUserId();
     fetchAllExamsByUserId(userId);
-  },[])
+  }, [])
 
   return (
     <Grid container height='100%' width='70%' justifyContent='space-around' alignContent='space-around' overflow='auto'>

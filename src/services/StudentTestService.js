@@ -10,9 +10,11 @@ function getAllExamsByUserId(userId) {
 
             let newExams = [];
 
-            for (let i = 0; i < 4; i++) {
-                newExams = [...newExams, {id : i, name : ('Exam-'+i), description : ("This is description for exam - " + i), status : ExamStatus.PENDING, duration : 3600}];
-            }
+
+            newExams = [{id : 1, name : ('Exam- Software Dev'), description : ("This is description for exam - Software Dev "), status : ExamStatus.COMPLETED, duration : 3600},
+                        {id : 2, name : ('Exam- Software Dev-2'), description : ("This is description for exam - Software Dev - 2 "), status : ExamStatus.IN_PROGRESS, duration : 10},
+                        {id : 3, name : ('Exam- Software Dev-3'), description : ("This is description for exam - Software Dev - 3 "), status : ExamStatus.PENDING, duration : 300}
+                    ];
 
             const response = {data : newExams}
             resolve(response.data);

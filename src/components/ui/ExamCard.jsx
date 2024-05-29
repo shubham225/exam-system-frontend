@@ -1,15 +1,19 @@
 import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { Box, Chip, Stack } from '@mui/material';
+
+import { Card, 
+         CardActions, 
+         CardContent, 
+         CardMedia, 
+         Button, 
+         Typography, 
+         Box, 
+         Chip, 
+         Stack } from '@mui/material';
+
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import { useNavigate } from 'react-router-dom';
-import { AppContext } from 'context/AppContext';
 import Instructions from 'components/dialog/Instructions';
+
+import { ExamStatus } from 'utils/Enums';
 
 function ExamCard(props) {
     const {
@@ -25,6 +29,19 @@ function ExamCard(props) {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const getColor = (status) => {
+        switch (status) {
+            case ExamStatus.IN_PROGRESS:
+                return 'primary';
+            case ExamStatus.COMPLETED:
+                return 'success';
+            case ExamStatus.PENDING:
+                return 'error';
+            default:
+                return 'secondary';
+        }
+    }
 
     return (
         <Box>
@@ -47,10 +64,13 @@ function ExamCard(props) {
             </CardContent>
             <CardActions justifyContent='space-between'>
                 <Button variant='contained' 
+                    disabled={(exam.status === ExamStatus.COMPLETED || exam.status === ExamStatus.BLOCKED)}
                     size="small"
                     onClick={(e)=> handleClickOpen()}
-                    startIcon={<PlayArrowIcon />}>Start</Button>
-                <Chip variant="outlined" color="success" size="small" sx={{height:1}} label={exam.status} />
+                    startIcon={<PlayArrowIcon />}>
+                        {(exam.status === ExamStatus.IN_PROGRESS) ? "Resume" : "Start"}
+                    </Button>
+                <Chip variant="outlined" color={getColor(exam.status)} size="small" sx={{height:1}} label={exam.status} />
             </CardActions>
             </Card>
             <Instructions open={open} exam={exam} handleClose={handleClose}/>

@@ -2,12 +2,11 @@ import React from 'react'
 
 import MediumWindow from 'layouts/MediumWindow';
 
-import LoginForm from 'components/form/LoginForm';
-
 import {Grid,
         Typography,
         Divider} from '@mui/material';
 
+import LoginForm from 'components/form/LoginForm';
 
 function Login() {
 

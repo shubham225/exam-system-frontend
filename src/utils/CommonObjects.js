@@ -1,4 +1,3 @@
-
 export const examColumns = 
   [
     { field: 'id', headerName: 'ID', width: 100 },

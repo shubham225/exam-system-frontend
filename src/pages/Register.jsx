@@ -1,11 +1,12 @@
-import React from 'react'
+import React from 'react';
+
 import { Link as RouterLink } from 'react-router-dom';
 
 import MediumWindow from 'layouts/MediumWindow';
 
 import RegisterationForm from 'components/form/RegistrationForm';
 
-import {Box, Typography} from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 function Register() {
 

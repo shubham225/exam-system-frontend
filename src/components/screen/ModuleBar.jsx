@@ -1,14 +1,10 @@
-import { Button, ButtonGroup, Grid, Paper, Tab, Tabs, Typography } from '@mui/material'
-import LargeWindow from 'layouts/LargeWindow'
 import React from 'react';
-import AssignmentIcon from '@mui/icons-material/Assignment';
 
-function a11yProps(index) {
-  return {
-    id: `vertical-tab-${index}`,
-    'aria-controls': `vertical-tabpanel-${index}`,
-  };
-}
+import { Tab, Tabs } from '@mui/material';
+
+import LargeWindow from 'layouts/LargeWindow';
+
+import AssignmentIcon from '@mui/icons-material/Assignment';
 
 function ModuleBar(props) {
   const {
@@ -27,7 +23,12 @@ function ModuleBar(props) {
           sx={{ borderRight: 1, borderColor: 'divider' }}
           >
             {list.map((row) => (
-              <Tab sx={{justifyContent : 'start'}} iconPosition='start' icon={<AssignmentIcon />} onClick={() => setModuleId(row.id)} value={row.id} label={row.moduleName} />
+              <Tab 
+                sx={{justifyContent : 'start'}} 
+                iconPosition='start' 
+                icon={<AssignmentIcon />} 
+                value={row.id} label={row.moduleName}
+                onClick={() => setModuleId(row.id)} />
             ))}
       </Tabs>
     </LargeWindow>

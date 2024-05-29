@@ -1,12 +1,18 @@
 import * as React from 'react';
-import Typography from '@mui/material/Typography';
+
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from 'context/AppContext';
+
+import Typography from '@mui/material/Typography';
 import DialogWindow from './DialogWindow';
-import { ExamStatus } from 'utils/Enums';
+
 import useLoading from 'hooks/useLoading';
 import useAlert from 'hooks/useAlert';
+
 import StudentTestService from 'services/StudentTestService';
+import SessionService from 'services/SessionService';
+
+import { ExamStatus } from 'utils/Enums';
 
 export default function Instructions(props) {
     const {
@@ -25,7 +31,7 @@ export default function Instructions(props) {
     startLoading();
     
     try {
-        const examDetail = await StudentTestService.updateExamStatusById(id, ExamStatus.IN_PROGRESS);
+        await StudentTestService.updateExamStatusById(id, ExamStatus.IN_PROGRESS);
     }catch(error) {
         setAlert(error, 'error');
     }
@@ -34,15 +40,12 @@ export default function Instructions(props) {
   });
 
   const onButtonClick = () => {
-    startExamById(exam.id);
-    setAppContext({...appContext, examId : exam.id, examStarted : true, examStartTime : new Date(), examDuration : exam.duration});
+    const currentExam = {id : exam.id, started : true, startTime : new Date(), duration : exam.duration};
     
-    // STORE EXAM DETAILS IN SESSION STORAGE
-    // TODO : UPDATE LOGIC TO SYNC APPCONTEXT WITH BACKEND
-    let examDetails = sessionStorage.getItem('current_exam');
-    examDetails = {examId : exam.id, examStarted : true, examStartTime : new Date(), examDuration : exam.duration};
-    sessionStorage.setItem('current_exam', JSON.stringify(examDetails));
-
+    // Updating Exam Status and startTime in Backend, AppContext and SessionStorage
+    startExamById(exam.id);
+    setAppContext({...appContext, exam : currentExam});
+    SessionService.setCurrentExam(currentExam);
     
     handleClose();
     navigateTo("/test/" + exam.id);

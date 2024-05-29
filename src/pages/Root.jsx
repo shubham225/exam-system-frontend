@@ -1,12 +1,19 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom'
 
-import { Backdrop, Box, CircularProgress, Container} from '@mui/material';
-import NavBar from 'components/NavBar';
-import AlertSnackBar from 'components/ui/AlertSnackBar';
+import { Outlet } from 'react-router-dom';
+
 import { AppContext } from 'context/AppContext';
+
 import useAlert from 'hooks/useAlert';
 import useLoading from 'hooks/useLoading';
+
+import { Backdrop, 
+         Box, 
+         CircularProgress, 
+         Container} from '@mui/material';
+
+import NavBar from 'components/NavBar';
+import AlertSnackBar from 'components/ui/AlertSnackBar';
 
 function Root() {
     const {appContext, setAppContext} = React.useContext(AppContext);

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react';
 
 
 const useAuth = () => {
@@ -9,14 +9,14 @@ const useAuth = () => {
         return userToken?.token;
     } 
 
-    const [token, setToken] = useState(getToken());
+    const [token, setToken] = React.useState(getToken());
 
     const saveToken = (userToken) => {
         sessionStorage.setItem('auth_token', JSON.stringify(userToken));
         setToken(userToken.token);
     }
 
-    useEffect(() => {
+    React.useEffect(() => {
         setToken(token)
     }, [token]);
 

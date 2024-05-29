@@ -1,15 +1,14 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
+
 import { styled } from '@mui/material/styles';
+import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
+
 import CloseIcon from '@mui/icons-material/Close';
-import Typography from '@mui/material/Typography';
-import { useNavigate } from 'react-router-dom';
-import { AppContext } from 'context/AppContext';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -29,9 +28,6 @@ export default function Instructions(props) {
         closeButtonLabel,
         handleClose
     } = props;
-
-  const navigateTo = useNavigate();
-  const {appContext, setAppContext} = React.useContext(AppContext);
   
   return (
     <React.Fragment>

@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -7,9 +8,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Grid, Button, Box, Checkbox } from '@mui/material';
+import { IconButton, Tooltip } from '@mui/material';
 
 import { Delete, Edit} from '@mui/icons-material';
-import { IconButton, Tooltip } from '@mui/material'
 
 import OptionDialog from 'components/dialog/OptionDialog';
 import { Action, Click } from 'utils/Enums';
@@ -63,7 +64,6 @@ export default function OptionsTable(props) {
                     break;
                 }
                 case (Action.MODIFY_RECORD) : {
-                    //TODO : Call API to modify Record
                     let filteredOption = options.filter((row) => row.id !== option.id)
                     let data = [...filteredOption, option];
                     data.sort((a, b) => {return a.id - b.id});

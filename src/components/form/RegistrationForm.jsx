@@ -1,4 +1,7 @@
-import React, { useCallback } from "react";
+import React from "react";
+
+import useForm from "hooks/useForm";
+import useAlert from "hooks/useAlert";
 
 import {Box, 
         Grid,
@@ -11,12 +14,13 @@ import {Box,
         Select,
         MenuItem,
         Button } from '@mui/material';
+
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
+
 import Input  from "components/ui/Input";
+
 import AuthService from "services/AuthService.js";
-import useForm from "hooks/useForm";
-import useAlert from "hooks/useAlert";
 
 const initialFormValues = {
     fullName: '',
@@ -44,7 +48,7 @@ const RegisterationForm = (props) => {
 
     const {setAlert} = useAlert();
 
-    const registerNewUser = useCallback(async (userData) => {
+    const registerNewUser = React.useCallback(async (userData) => {
         try {
             const data = await AuthService.registerNewUser(userData); 
             setAlert({message : 'User Registered Sucesssfully'}, 'success');

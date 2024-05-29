@@ -1,23 +1,34 @@
-import React, { useEffect, useCallback } from 'react';
+import React from 'react';
+
+import { useNavigate, useParams } from 'react-router-dom';
+
+import useAlert from 'hooks/useAlert';
+import useLoading from 'hooks/useLoading';
+
+import { Box, 
+         Button, 
+         Divider, 
+         Grid, 
+         Typography } from '@mui/material';
+
+import AddIcon from '@mui/icons-material/Add';
+import HomeIcon from '@mui/icons-material/Home';
+import WhatshotIcon from '@mui/icons-material/Whatshot';
 
 import LargeWindow from 'layouts/LargeWindow';
+
 import ModuleDialog from 'components/dialog/ModuleDialog';
 import DataTable from 'components/form/DataTable';
 import EditActions from 'components/ui/EditActions';
-import { moduleColumns } from 'data/columnDefinitions';
+import BreadcrumbsPath from 'components/ui/BreadcrumbsPath';
+
 import ExamService from 'services/ExamService';
 import ModuleService from 'services/ModuleService';
 
-import { Box, Button, Divider, Grid, Typography } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import { useNavigate, useParams } from 'react-router-dom';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import { moduleColumns } from 'utils/CommonObjects';
+
 import { Action, Click } from 'utils/Enums';
-import useAlert from 'hooks/useAlert';
-import useLoading from 'hooks/useLoading';
-import BreadcrumbsPath from 'components/ui/BreadcrumbsPath';
-import HomeIcon from '@mui/icons-material/Home';
-import WhatshotIcon from '@mui/icons-material/Whatshot';
+
 
 function Exam() {
   const { id } = useParams();
@@ -31,18 +42,24 @@ function Exam() {
   const {setAlert} = useAlert();
 
   const navigateTo = useNavigate();
-  const columns = [...moduleColumns, 
-                  {
-                    field: 'action',
-                    headerName: 'Action',
-                    type: 'action',
-                    width: 200,
-                    renderCell: (params)=> (
-                      <EditActions {...{params, handleView, handleEdit, handleDelete}}/>
-                    )
-                  }];
+
+  const path = [{name : 'Home', path : '/dashboard', icon : <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />},
+                {name : 'Exams', path : '/exam', icon : <WhatshotIcon sx={{ mr: 0.5 }} fontSize="inherit" />}]
+
+  const columns = 
+      [...moduleColumns, 
+        {
+          field: 'action',
+          headerName: 'Action',
+          type: 'action',
+          width: 200,
+          renderCell: (params)=> (
+            <EditActions {...{params, handleView, handleEdit, handleDelete}}/>
+          )
+        }
+      ];
           
-  const getExamById = useCallback(async (id) => {
+  const getExamById = React.useCallback(async (id) => {
     startLoading();
 
     try {
@@ -56,7 +73,7 @@ function Exam() {
     stopLoading();
   });
     
-  const getModulesByExamId = useCallback(async (id) => {
+  const getModulesByExamId = React.useCallback(async (id) => {
     startLoading();
 
     try {
@@ -69,7 +86,7 @@ function Exam() {
     stopLoading();
   });
 
-  const createNewModule = useCallback(async () => {
+  const createNewModule = React.useCallback(async () => {
     startLoading();
 
     try {
@@ -82,7 +99,7 @@ function Exam() {
     stopLoading();
   });
 
-  const modifyModule = useCallback(async () => {
+  const modifyModule = React.useCallback(async () => {
     startLoading();
 
     try {
@@ -98,7 +115,7 @@ function Exam() {
     stopLoading();
   });
 
-  const deleteModule = useCallback(async (id) => {
+  const deleteModule = React.useCallback(async (id) => {
     startLoading();
 
     try {
@@ -112,7 +129,7 @@ function Exam() {
     stopLoading();
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
       getExamById(id); 
       getModulesByExamId(id);
   },[id])
@@ -162,9 +179,6 @@ function Exam() {
     }
     setOpen(false);
   };
-
-  const path = [{name : 'Home', path : '/dashboard', icon : <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />},
-                {name : 'Exams', path : '/exam', icon : <WhatshotIcon sx={{ mr: 0.5 }} fontSize="inherit" />}]
           
   return (
       <LargeWindow>
@@ -176,7 +190,8 @@ function Exam() {
                         <BreadcrumbsPath path={path} currLocation={exam.examName}/>
                     </Box>
                     <Box alignSelf='center'>
-                        <Button size='medium' variant='contained'  startIcon={<AddIcon/>} onClick={handleClickOpen}>New</Button>
+                        <Button size='medium' variant='contained'  
+                          startIcon={<AddIcon/>} onClick={handleClickOpen}>New</Button>
                     </Box>
                   </Box>
               </Grid>

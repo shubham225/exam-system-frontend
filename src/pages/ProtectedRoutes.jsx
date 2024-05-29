@@ -1,6 +1,9 @@
+import React from 'react';
+
 import useAuth from 'hooks/useAuth';
-import React from 'react'
+
 import { Outlet } from 'react-router-dom';
+
 import Login from './Login';
 
 function ProtectedRoutes() {

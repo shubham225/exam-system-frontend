@@ -1,15 +1,26 @@
-import { Box, Button, ButtonGroup, Checkbox, FormControl, FormControlLabel, FormLabel, Grid, Paper, Radio, RadioGroup, Typography } from '@mui/material'
-import LargeWindow from 'layouts/LargeWindow'
-import React, { useCallback, useEffect } from 'react'
+import React from 'react';
+
+import useAlert from 'hooks/useAlert';
+import useLoading from 'hooks/useLoading';
+
+import { Box, 
+         Button, 
+         FormControl, 
+         FormControlLabel, 
+         FormLabel, 
+         Grid, 
+         Radio, 
+         RadioGroup, 
+         Typography } from '@mui/material';
+
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import KeyboardTabIcon from '@mui/icons-material/KeyboardTab';
 import SaveIcon from '@mui/icons-material/Save';
-import { QuestionStatus } from 'utils/Enums';
-import { AppContext } from 'context/AppContext';
+
+import LargeWindow from 'layouts/LargeWindow'
+
 import StudentTestService from 'services/StudentTestService';
-import useLoading from 'hooks/useLoading';
-import useAlert from 'hooks/useAlert';
+import { QuestionStatus } from 'utils/Enums';
 
 function MainTest(props) {
   const {
@@ -22,22 +33,21 @@ function MainTest(props) {
 
   } = props;
 
-  const {appContext, setAppContext} = React.useContext(AppContext);
-
   const [answer, setAnswer] = React.useState(null);
   const [question, setQuestion] = React.useState({options : []});
 
   const {startLoading, stopLoading} = useLoading();
   const {setAlert} = useAlert();
 
-  const fetchAssignedQuestionById = useCallback(async (id) => {
+  const fetchAssignedQuestionById = React.useCallback(async (id) => {
     startLoading();
     
     try {
         const questionObject = await StudentTestService.getAssignedQuestionById(id);
 
         const newList = questionList.map( ques => 
-          (ques.id == questionObject.id && ques.status == QuestionStatus.NOT_VISITED)? {...ques, status : QuestionStatus.NOT_ANSWERED} : ques 
+          (ques.id == questionObject.id && ques.status == QuestionStatus.NOT_VISITED) ? 
+                      {...ques, status : QuestionStatus.NOT_ANSWERED} : ques
         );
     
         setQuestion(questionObject);
@@ -50,7 +60,7 @@ function MainTest(props) {
     stopLoading();
   });
 
-  const saveAssignedQuestion = useCallback(async (question) => {
+  const saveAssignedQuestion = React.useCallback(async (question) => {
     startLoading();
     
     try {
@@ -73,7 +83,7 @@ function MainTest(props) {
     stopLoading();
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetchAssignedQuestionById(questionId);
   },[moduleId, questionId]);
 

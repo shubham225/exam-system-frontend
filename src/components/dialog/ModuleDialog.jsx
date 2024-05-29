@@ -1,13 +1,10 @@
 import React from 'react';
 
-import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import { Action, Click } from 'utils/Enums';
+
 import DialogFormWindow from './DialogFormWindow';
+
+import { Action, Click } from 'utils/Enums';
 
 export default function ModuleDialog(props) {
     const {
