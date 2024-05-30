@@ -31,7 +31,13 @@ export default function Instructions(props) {
     startLoading();
     
     try {
-        await StudentTestService.updateExamStatusById(id, ExamStatus.IN_PROGRESS);
+        let examObj = {id : exam.id, started : true, startTime : new Date(), duration : exam.duration};
+
+        examObj = await StudentTestService.updateExamStatusById(id, ExamStatus.IN_PROGRESS);
+        examObj = {...examObj, started : true, startTime : new Date(examObj.startTime)};
+        
+        setAppContext({...appContext, exam : examObj});
+        SessionService.setCurrentExam(examObj);
     }catch(error) {
         setAlert(error, 'error');
     }
@@ -40,13 +46,9 @@ export default function Instructions(props) {
   });
 
   const onButtonClick = () => {
-    const currentExam = {id : exam.id, started : true, startTime : new Date(), duration : exam.duration};
-    
     // Updating Exam Status and startTime in Backend, AppContext and SessionStorage
     startExamById(exam.id);
-    setAppContext({...appContext, exam : currentExam});
-    SessionService.setCurrentExam(currentExam);
-    
+
     handleClose();
     navigateTo("/test/" + exam.id);
   }

@@ -27,3 +27,11 @@ Fetching Questions By Module Id : 2
 Creating New Question : {"options":[{"optionText":"Yes","id":0},{"optionText":"No","isAnswer":true,"id":0}],"questionText":"is this valid?"}
 Modifying Question : {"id":1,"questionText":"Question - Snow Laport","options":[{"id":1,"optionText":"Option 1","isAnswer":false},{"id":2,"optionText":"Option 2","isAnswer":true},{"optionText":"Option 4","id":0},{"optionText":"OPtion 3","id":0}]}
 Deleting Question by Id : 3
+
+
+Issues:
+	- Exam Not Modifying Duration
+	- Duration not displayed on the form
+	- Console.log in Frontend needs to be removed.
+	- Assign exam and Results needs to be implemented.
+	- favicon and Title needs to be changed.

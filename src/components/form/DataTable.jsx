@@ -14,7 +14,7 @@ function DataTable(props) {
   const [pageSize, setPageSize] = React.useState(7);
 
   return (
-    <Box sx={{ height: {height}, width: {width} }}>
+    <Box sx={{ height: {height}, width: '100%' }}>
       <DataGrid
         pageSize={pageSize}
         rowsPerPageOptions={[7, 14, 21]}

@@ -64,8 +64,9 @@ export default function OptionsTable(props) {
                     break;
                 }
                 case (Action.MODIFY_RECORD) : {
-                    let filteredOption = options.filter((row) => row.id !== option.id)
+                    let filteredOption = options.filter((row) => row.optionText != option.optionText)
                     let data = [...filteredOption, option];
+
                     data.sort((a, b) => {return a.id - b.id});
                     setOptions(data)
                     setQuestion({...question, options: data});

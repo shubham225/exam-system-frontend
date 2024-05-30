@@ -50,9 +50,9 @@ function createNewExam(exam) {
 
 function modifyExam(exam) {
     return new Promise(async (resolve, reject) => {
-        console.log("Modify Exam : " + JSON.stringify(exam));
         try {
             const response = await request( "PUT", ("/admin/exam/" + exam.id), exam);
+            
             resolve(response.data);
         }catch(error) {
             if(error.response) {

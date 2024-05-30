@@ -55,7 +55,7 @@ const NavBar = () => {
     React.useEffect(() => {
         const currentExam = appContext?.exam;
         let time = currentExam?.startTime;
-
+        
         if(time) {
             time.setSeconds(time.getSeconds() + currentExam.duration);
             restart(time);
@@ -69,7 +69,6 @@ const NavBar = () => {
         const currentExam = appContext?.exam;
         const storedExam = SessionService.getCurrentExam();
         const storedExamIsStarted = (storedExam?.started) ? storedExam.started : false;
-
 
         if(currentExam.started === false && storedExamIsStarted) {
             setAppContext({...appContext, exam : storedExam});
@@ -87,7 +86,7 @@ const NavBar = () => {
 
         // Ending the exam and updating details in backend, appContext and session storage
 
-        endExamById(appContext.examId);
+        endExamById(appContext.exam.id);
         const currentExam = {...appContext.exam, started : false, endTime : new Date()};
         setAppContext({...appContext, exam : currentExam});
 
@@ -106,7 +105,7 @@ const NavBar = () => {
                 
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}></Typography>
                 {(appContext.exam.started) && 
-                    <Typography variant='outlined'>
+                    <Typography variant='outlined' color={(parseInt(minutes) <= 2) ? 'error' : 'primary'}>
                         TIME REMAINING : {("0" + hours).slice(-2)}:{("0" + minutes).slice(-2)}:{("0" + seconds).slice(-2)}
                     </Typography>}
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}></Typography>

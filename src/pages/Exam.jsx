@@ -196,7 +196,7 @@ function Exam() {
                   </Box>
               </Grid>
               <Divider />
-              <Grid item alignSelf='center' pt={2}>
+              <Grid item alignSelf='center' pt={2} width='100%'>
                   <DataTable 
                       columns={columns}
                       rows={rows}

@@ -33,17 +33,20 @@ function MainTest(props) {
 
   } = props;
 
-  const [answer, setAnswer] = React.useState(null);
+  const [answer, setAnswer] = React.useState(0);
   const [question, setQuestion] = React.useState({options : []});
 
   const {startLoading, stopLoading} = useLoading();
   const {setAlert} = useAlert();
 
   const fetchAssignedQuestionById = React.useCallback(async (id) => {
+    
+    if(id == 0) return;
+
     startLoading();
     
     try {
-        const questionObject = await StudentTestService.getAssignedQuestionById(id);
+        let questionObject = await StudentTestService.getAssignedQuestionById(id);
 
         const newList = questionList.map( ques => 
           (ques.id == questionObject.id && ques.status == QuestionStatus.NOT_VISITED) ? 
@@ -52,7 +55,7 @@ function MainTest(props) {
     
         setQuestion(questionObject);
         setQuestionList(newList);
-        setAnswer('');
+        setAnswer(questionObject.answer);
     }catch(error) {
         setAlert(error, 'error');
     }
@@ -98,7 +101,7 @@ function MainTest(props) {
   };
 
   const resetQuestion = () => {
-    let newQuestion = {...question, status : QuestionStatus.NOT_ANSWERED, answer : null};
+    let newQuestion = {...question, status : QuestionStatus.VISITED, answer : 0};
     saveAssignedQuestion(newQuestion);
   };
 
@@ -117,7 +120,7 @@ function MainTest(props) {
                 <RadioGroup
                     name="option"
                     value={answer}
-                    onChange={(e) => {setAnswer(e.target.value)}}
+                    onChange={(e) => {setAnswer(parseInt(e.target.value))}}
                     column
                     aria-labelledby="row-radio-buttons-group-label"
                 >   

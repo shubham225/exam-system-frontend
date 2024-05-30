@@ -51,8 +51,6 @@ export function createNewQuestion(question) {
 
 function modifyQuestion(question) {
     return new Promise(async (resolve, reject) => {
-        console.log("Modify Question : " + JSON.stringify(question));
-
         try {
             const response = await request( "PUT", ("/admin/question/" + question.id), question);
             resolve(response.data);

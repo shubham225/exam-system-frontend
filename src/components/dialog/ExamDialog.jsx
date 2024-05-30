@@ -63,11 +63,11 @@ export default function ExamDialog(props) {
                 required
                 variant="outlined"
                 id="duration"
-                name="examDuration"
-                label="Exam Duration (In Hours)"
+                name="duration"
+                label="Exam Duration (In Seconds)"
                 type="number"
-                value={exam.examDuration}
-                onChange={(e) => {e.preventDefault(); setExam({...exam, examDuration: e.target.value});}}
+                value={exam.duration}
+                onChange={(e) => {e.preventDefault(); setExam({...exam, duration: parseInt(e.target.value)});}}
                 fullWidth
             />
         </DialogFormWindow>

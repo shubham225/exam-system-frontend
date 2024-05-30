@@ -1,40 +1,45 @@
 export const examColumns = 
   [
-    { field: 'id', headerName: 'ID', width: 100 },
+    { field: 'id', headerName: 'ID', width: 150 },
     {
       field: 'examName',
       headerName: 'Exam name',
-      width: 200
+      width: 300
     },
     {
       field: 'description',
       headerName: 'Description',
-      width: 350
+      flex : 1
+    },
+    {
+      field: 'duration',
+      headerName: 'Duration',
+      width: 150
     }
   ];
 
 export const moduleColumns = 
   [
-    { field: 'id', headerName: 'ID', width: 100 },
+    { field: 'id', headerName: 'ID', width: 150 },
     {
       field: 'moduleName',
       headerName: 'Module name',
-      width: 200
+      width: 300
     },
     {
       field: 'description',
       headerName: 'Description',
-      width: 350
+      flex : 1
     }
   ];
 
 export const questionColumns = 
   [
-    { field: 'id', headerName: 'ID', width: 100 },
+    { field: 'id', headerName: 'ID', width: 150 },
     {
       field: 'questionText',
       headerName: 'Question Text',
-      width: 300
+      width: 500
     },
     {
       field: 'options',
@@ -42,6 +47,6 @@ export const questionColumns =
       valueGetter: (params) => {
         return params.row.options.map((option) => option.optionText);
       },
-      width: 300
+      flex : 1
     }
   ];

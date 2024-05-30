@@ -24,6 +24,9 @@ function Test() {
   const {setAlert} = useAlert();
 
   const fetchAssignedModulesByExamId = React.useCallback(async (id) => {
+    
+    if(id == 0) return;
+
     startLoading();
     
     try {
@@ -39,6 +42,9 @@ function Test() {
   });
 
   const fetchAssignedQuestionsByModuleId = React.useCallback(async (id) => {
+
+    if(id == 0) return;
+    
     startLoading();
     
     try {
@@ -67,7 +73,7 @@ function Test() {
         <Grid item width={300} >
             <ModuleBar list={moduleList} moduleId={moduleId} setModuleId={setModuleId} />
         </Grid>
-        <Grid item flexGrow={1} mx={2} >
+        <Grid item flexGrow={1} mx={2} width='50%'>
             <MainTest 
               moduleId={moduleId} setModuleId={setModuleId}
               questionId={questionId} setQuestionId={setQuestionId}

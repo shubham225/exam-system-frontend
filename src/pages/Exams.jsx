@@ -72,6 +72,7 @@ function Exams() {
         try {
             let data = await ExamService.createNewExam(exam);
             setRows([...rows, data]);
+            
         }catch(error) {
             setAlert(error, 'error');
         }
@@ -87,6 +88,7 @@ function Exams() {
             let filteredRows = rows.filter((row) => row.id !== modifiedExam.id);
             let data = [...filteredRows, modifiedExam];
             data.sort((a, b) => {return a.id - b.id});
+            
             setRows(data);
         }catch(error) {
             setAlert(error, 'error');
@@ -174,7 +176,7 @@ function Exams() {
                     </Box>
                 </Grid>
                 <Divider />
-                <Grid item alignSelf='center' pt={2}>
+                <Grid item alignSelf='center' pt={2} width='100%'>
                     <DataTable 
                         columns={columns}
                         rows={rows}

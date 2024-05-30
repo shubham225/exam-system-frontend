@@ -28,7 +28,7 @@ function QuestionBar(props) {
         return {variant : 'contained', color : 'secondary'}; 
 
       case QuestionStatus.VISITED:
-        return {variant : 'contained', color : 'primary'};
+        return {variant : 'contained', color : 'error'};
 
       default:
         return {variant : 'outlined', color : 'primary'};
@@ -45,7 +45,7 @@ function QuestionBar(props) {
               ac
               sx={{height : '60px', width : '60px', m : 1}} 
               onClick={() => setQuestionId(row.id)}>
-                <Typography variant={(questionId == row.id) ? 'h6' : 'h7'}>{row.seq}</Typography>
+                <Typography variant={(questionId == row.id) ? 'h6' : 'h7'}>{row.sequence}</Typography>
             </Button>
           </Grid>
         ))}
