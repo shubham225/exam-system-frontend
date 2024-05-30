@@ -50,3 +50,58 @@ export const questionColumns =
       flex : 1
     }
   ];
+
+  export const usersColumns = 
+  [
+    { field: 'id', headerName: 'ID', width: 100 },
+    {
+      field: 'userName',
+      headerName: 'Username',
+      width: 200
+    },
+    {
+      field: 'fullName',
+      headerName: 'Description',
+      flex : 400
+    },
+    {
+      field: 'institute',
+      headerName: 'Institute',
+      flex : 400
+    },
+    {
+      field: 'degree',
+      headerName: 'Degree',
+      flex : 400
+    },
+  ];
+
+  export const resultColumns = 
+  [
+    {
+      field: 'userName',
+      headerName: 'Username',
+      width: 200
+    },
+    {
+      field: 'fullName',
+      headerName: 'Name',
+      flex : 300
+    },
+    {
+      field: 'examName',
+      headerName: 'Exam',
+      flex : 300
+    },
+    { field: 'rank', headerName: 'Rank', width: 100 },
+    {
+      field: 'institute',
+      headerName: 'Institute',
+      flex : 300
+    },
+    {
+      field: 'score',
+      headerName: 'Score',
+      flex : 300
+    },
+  ];

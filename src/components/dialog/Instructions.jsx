@@ -55,6 +55,7 @@ export default function Instructions(props) {
 
   return (
       <DialogWindow open={open}
+        maxWidth='sm'
         title="Instructions"
         buttonLabel="Continue"
         onButtonClick={onButtonClick}

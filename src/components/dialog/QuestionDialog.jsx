@@ -33,6 +33,7 @@ export default function QuestionDialog(props) {
             buttonLabel={(action == Action.NEW_RECORD) ? "Add" : (action == Action.DISPLAY_RECORD) ? "Ok" : "Modify"}
             onButtonClick={onButtonClick}
             handleClose={handleClose}
+            maxWidth='lg'
             >
             <QuestionForm 
                 action={action}

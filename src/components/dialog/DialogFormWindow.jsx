@@ -19,12 +19,13 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-export default function Instructions(props) {
+export default function DialogFormWindow(props) {
     const {
         open,
         title,
         onButtonClick,
         buttonLabel,
+        maxWidth,
         handleClose
     } = props;
   
@@ -32,16 +33,18 @@ export default function Instructions(props) {
     <React.Fragment>
       <BootstrapDialog
         open={open}
-        maxWidth='lg'
         minWidth='md'
+        maxWidth={(maxWidth) ? maxWidth : 'md'}
         onClose={handleClose}
         PaperProps={{
-              component: 'form',
-              onSubmit: (event) => {
-                  event.preventDefault();
-                  onButtonClick();
-              },
-              }} 
+                style: {
+                  width : '-webkit-fill-available'
+                },
+                component: 'form',
+                onSubmit: (event) => {
+                    event.preventDefault();
+                    onButtonClick();
+              }}} 
         >
         <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
           {title}

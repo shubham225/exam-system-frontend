@@ -81,12 +81,30 @@ function deleteExamById(id) {
     });
 }
 
+function getResultOfAllUsers() {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await request( "GET", "/admin/result", {});
+            console.log(response);
+            resolve(response.data);
+        }catch(error) {
+            if(error.response) {
+                reject(error.response.data);
+            }else {
+                const message = error.code + " : " + error.message;
+                reject({message : message});
+            }
+        }
+    });
+}
+
 const ExamService = {
     getExamById,
     getAllExams,
     createNewExam,
     modifyExam,
-    deleteExamById
+    deleteExamById,
+    getResultOfAllUsers
 }
 
 export default ExamService;

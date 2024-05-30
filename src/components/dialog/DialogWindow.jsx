@@ -19,12 +19,13 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-export default function Instructions(props) {
+export default function DialogWindow(props) {
     const {
         open,
         title,
         onButtonClick,
         buttonLabel,
+        maxWidth,
         closeButtonLabel,
         handleClose
     } = props;
@@ -35,7 +36,17 @@ export default function Instructions(props) {
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
-        maxWidth='md'
+        minWidth='sx'
+        maxWidth={(maxWidth) ? maxWidth : 'md'}
+        PaperProps={{
+          style: {
+            width : '-webkit-fill-available'
+          },
+          component: 'form',
+          onSubmit: (event) => {
+              event.preventDefault();
+              onButtonClick();
+        }}} 
       >
         <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
           {title}
