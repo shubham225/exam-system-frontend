@@ -1,6 +1,8 @@
 import axios from "axios";
 
-axios.defaults.baseURL = 'http://localhost:9050/api/V1';
+var address = 'http://localhost';
+
+axios.defaults.baseURL = (address + ':9050/api/V1');
 axios.defaults.headers.post["Content-type"] = 'application/json'
 
 function request(method, url, data) {
@@ -22,6 +24,10 @@ function request(method, url, data) {
             data : data
         }
     );
+}
+
+export function removeAuth() {
+    sessionStorage.removeItem("auth_token");
 }
 
 export default request;

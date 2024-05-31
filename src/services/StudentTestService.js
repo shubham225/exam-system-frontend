@@ -1,4 +1,4 @@
-import request from "utils/AxiosHelper";
+import request, { removeAuth } from "utils/AxiosHelper";
 
 function getAllExamsByUserId(userId) {
     return new Promise(async (resolve, reject) => {
@@ -11,7 +11,11 @@ function getAllExamsByUserId(userId) {
                 reject(error.response.data);
             }else {
                 const message = error.code + " : " + error.message;
-                reject({message : message});
+                reject({message : message, status : error.status.toString()});
+            }
+            
+            if (error.response.status == 401) {
+                removeAuth();
             }
         }
     });
