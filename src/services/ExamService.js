@@ -85,7 +85,6 @@ function getResultOfAllUsers() {
     return new Promise(async (resolve, reject) => {
         try {
             const response = await request( "GET", "/admin/result", {});
-            console.log(response);
             resolve(response.data);
         }catch(error) {
             if(error.response) {

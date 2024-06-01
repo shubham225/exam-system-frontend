@@ -21,7 +21,7 @@ function Root() {
     const {stopLoading} = useLoading();
 
     return (
-        <Container fixed maxWidth={false} sx={{width: '100vw', height: '100vh'}}>
+        <Container fixed maxWidth={false} sx={{width: '100vw', height: '100vh'}} >
             <Box pt={1} height='10%' >
                 <NavBar />
             </Box>
