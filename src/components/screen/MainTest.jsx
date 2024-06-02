@@ -39,6 +39,9 @@ function MainTest(props) {
   const {startLoading, stopLoading} = useLoading();
   const {setAlert} = useAlert();
 
+  const charArray = ['A) ', 'B) ', 'C) ', 'D) ', 'E) ', 'F) ', 'G) ' , 'H) ', 'I) ', 'J) ', 'K) '];
+  let counter = 0;
+
   const fetchAssignedQuestionById = React.useCallback(async (id) => {
     
     if(id == 0) return;
@@ -52,7 +55,7 @@ function MainTest(props) {
           (ques.id == questionObject.id && ques.status == QuestionStatus.NOT_VISITED) ? 
                       {...ques, status : QuestionStatus.NOT_ANSWERED} : ques
         );
-    
+        
         setQuestion(questionObject);
         setQuestionList(newList);
         setAnswer(questionObject.answer);
@@ -76,7 +79,7 @@ function MainTest(props) {
     
         let index = newList.findIndex(ques => ques.id == questionObject.id);
         let newQuestionId = newList[((index+1) % newList.length)]?.id;
-    
+    	
         setQuestionList(newList);
         setQuestionId(newQuestionId)
     }catch(error) {
@@ -111,7 +114,7 @@ function MainTest(props) {
         <Grid item flexGrow={1} >
           <Grid container direction='column' justifyContent='space-between'>
             <Grid item my={3}>
-              <Typography variant='overline'>Question : {questionId}</Typography> 
+              <Typography variant='overline'>Question : {question.id}</Typography> 
               <Typography variant='h4'>{question.questionText}</Typography> 
             </Grid>
             <Grid item m={3}> 
@@ -123,9 +126,12 @@ function MainTest(props) {
                     onChange={(e) => {setAnswer(parseInt(e.target.value))}}
                     column
                     aria-labelledby="row-radio-buttons-group-label"
-                >   
-                  {question.options.map((option) => (
+                > 
+                  { question.options.map((option, index) => (
+                    <Box display='flex' alignItems='center'>
+                      <Typography variant='h7' pr={1}>{charArray[index]}</Typography>
                       <FormControlLabel key={option.id} value={option.id} control={<Radio />} label={option.optionText} />
+                    </ Box>
                     ))
                   }
                 </RadioGroup>

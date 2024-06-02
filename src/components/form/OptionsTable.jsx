@@ -40,7 +40,7 @@ export default function OptionsTable(props) {
     const handleDeleteOptionRecord = (e, selectedRow) => {
         e.preventDefault();
 
-        let optionsNew = options.filter((option) => option.id !== selectedRow.id);
+        let optionsNew = options.filter((option) => option.optionText !== selectedRow.optionText);
         setOptions(optionsNew);
         setQuestion({...question, options: optionsNew});
     }
