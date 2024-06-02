@@ -62,7 +62,6 @@ function Results() {
     }, [])
 
     React.useEffect(() => {
-      console.log(rowsBackup.current);
       let rowsBackupData = rowsBackup.current;
       let filteredRows = rowsBackupData.filter((row) => row.examName == filterValue);
       setRows(filteredRows);

@@ -59,8 +59,6 @@ export default function SelectUsersDialog(props) {
     }, [])
 
     const onButtonClick = () => {
-        console.log("Selected Rows", selectedRows);
-        console.log("Exam Details : ", exam);
         assignExamToStudents(exam.id, selectedRows);
     };
 

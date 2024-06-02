@@ -17,21 +17,6 @@ function loginWithEmailIdPassword(credentials) {
     });
 }
 
-function logout(userId) {
-    return new Promise((resolve, reject) => {
-        // TODO : IMPLEMENT LOGOUT AT BACKEND
-        setTimeout(() => {
-            console.log("Logging out... : " + userId);
-
-            if(userId) {
-                resolve(userId);
-            }else {
-                reject({});
-            }
-        },1000)
-    });
-}
-
 function registerNewUser(userData) {
     return new Promise(async (resolve, reject) => {
 
@@ -75,7 +60,6 @@ function isUserAdmin() {
 const AuthService = {
     loginWithEmailIdPassword,
     registerNewUser,
-    logout,
     isUserAdmin,
     getUserId,
     getUserRoles
