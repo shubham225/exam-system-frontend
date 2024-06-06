@@ -2,7 +2,7 @@ import React from 'react'
 
 import { useNavigate } from 'react-router-dom';
 
-import {Box, Grid, Button } from '@mui/material';
+import {Box, Grid } from '@mui/material';
 
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import AssessmentIcon from '@mui/icons-material/Assessment';

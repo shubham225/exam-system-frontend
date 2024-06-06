@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { useNavigate } from 'react-router-dom';
 import useAlert from 'hooks/useAlert';
 import useLoading from 'hooks/useLoading';
 
@@ -22,8 +21,6 @@ function AssignExam() {
 
   const {startLoading, stopLoading} = useLoading();
   const {setAlert} = useAlert();
-
-  const navigateTo = useNavigate();
 
   const path = [{name : 'Home', path : '/dashboard', icon : <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />}]
 
